@@ -1,0 +1,98 @@
+name: Production Deploy & CloudFront Invalidation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  id-token: write # Required for AWS OIDC authentication
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  validate-and-test:
+    name: Code Quality & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Typecheck TypeScript Codebase
+        run: npm run typecheck
+
+      - name: Build Production Bundle
+        run: npm run build
+
+      - name: Archive Production Artifacts
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-artifacts
+          path: dist/
+          retention-days: 2
+
+  deploy-to-aws:
+    name: AWS S3 Sync & CloudFront Invalidate
+    needs: validate-and-test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+      OIDC_ROLE_ARN: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+      S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET }}
+      CLOUDFRONT_DIST_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: dist
+
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.OIDC_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          audience: sts.amazonaws.com
+          role-session-name: GitHubActions-NafeesPortfolioDeploy
+
+      - name: Sync Static Assets to S3 (Immutable Cache)
+        run: |
+          echo "Syncing hashed static assets with 1-year immutable cache header..."
+          aws s3 sync dist/assets/ s3://${{ env.S3_BUCKET_NAME }}/assets/ \
+            --delete \
+            --cache-control "public,max-age=31536000,immutable"
+
+      - name: Sync Root & HTML Files to S3 (No-Cache Revalidation)
+        run: |
+          echo "Syncing HTML, XML, and JSON files with no-cache revalidation..."
+          aws s3 sync dist/ s3://${{ env.S3_BUCKET_NAME }}/ \
+            --exclude "assets/*" \
+            --delete \
+            --cache-control "public,max-age=0,must-revalidate"
+
+      - name: Invalidate CloudFront Edge Caches
+        run: |
+          echo "Creating CloudFront cache invalidation for instant propagation..."
+          INVALIDATION_ID=$(aws cloudfront create-invalidation \
+            --distribution-id ${{ env.CLOUDFRONT_DIST_ID }} \
+            --paths "/*" \
+            --query "Invalidation.Id" \
+            --output text)
+          echo "Invalidation created: ${INVALIDATION_ID}"

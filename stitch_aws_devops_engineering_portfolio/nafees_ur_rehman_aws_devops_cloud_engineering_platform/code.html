@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nafees Ur Rehman | AWS DevOps &amp; Cloud Infrastructure Portfolio</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#070A0F',
+            panel: '#0D1117',
+            surface: '#111827',
+            cardBorder: '#21262D',
+            subtleBorder: '#30363D',
+            awsOrange: '#FF9900',
+            awsCyan: '#22D3EE',
+            telemetryGreen: '#3FB950',
+            terminalBg: '#090D13'
+          },
+          fontFamily: {
+            mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="base-layout">
+  body {
+    background-color: #070A0F;
+    color: #E6EDF3;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .code-font {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .terminal-cursor {
+    display: inline-block;
+    width: 7px;
+    height: 15px;
+    vertical-align: middle;
+    background-color: #3FB950;
+    animation: blink 1s step-start infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  .blueprint-grid {
+    background-size: 24px 24px;
+    background-image: 
+      linear-gradient(to right, rgba(33, 38, 45, 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(33, 38, 45, 0.4) 1px, transparent 1px);
+  }
+</style><style data-purpose="scrollbar-and-accents">
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #070A0F;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #21262D;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #30363D;
+  }
+</style></head>
+<!-- Custom Styles Section -->
+<body class="selection:bg-awsOrange selection:text-black">
+<!-- BEGIN: TopTelemetryBar -->
+<aside class="w-full bg-[#04070B] border-b border-cardBorder text-xs code-font text-gray-400 py-1.5 px-4 sticky top-0 z-50" data-purpose="telemetry-bar">
+<div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center space-x-4">
+<span class="flex items-center gap-1.5 text-telemetryGreen font-medium">
+<span class="w-2 h-2 rounded-full bg-telemetryGreen animate-pulse"></span>
+          AWS CONTROL PLANE: ONLINE
+        </span>
+<span class="hidden sm:inline text-gray-600">|</span>
+<span class="hidden sm:inline text-gray-300">REGION: <span class="text-white font-mono">us-east-1 (N. Virginia)</span></span>
+<span class="hidden md:inline text-gray-600">|</span>
+<span class="hidden md:inline text-gray-300">LATENCY: <span class="text-telemetryGreen font-mono">14ms</span></span>
+</div>
+<div class="flex items-center space-x-4">
+<span class="text-gray-300">TF_STATE: <span class="text-awsCyan font-mono">S3_LOCKED</span></span>
+<span class="hidden lg:inline text-gray-600">|</span>
+<span class="hidden lg:inline text-gray-300">DEPLOY_PIPELINE: <span class="text-telemetryGreen font-mono">STABLE_02_41A</span></span>
+</div>
+</div>
+</aside>
+<!-- END: TopTelemetryBar -->
+<!-- BEGIN: StickyHeader -->
+<header class="w-full bg-panel/90 backdrop-blur-md border-b border-cardBorder sticky top-[29px] z-40" data-purpose="main-navigation">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+<!-- Brand Monogram -->
+<a class="flex items-center gap-3 group" href="#">
+<div class="w-9 h-9 rounded-lg bg-surface border border-cardBorder flex items-center justify-center font-mono font-bold text-white group-hover:border-awsOrange transition-colors">
+<span class="text-awsOrange">N</span>R
+        </div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold tracking-tight text-white group-hover:text-awsOrange transition-colors">Nafees Ur Rehman</span>
+<span class="text-[11px] text-gray-400 code-font">DevOps &amp; Cloud Infra</span>
+</div>
+</a>
+<!-- Desktop Nav Links -->
+<nav class="hidden md:flex items-center space-x-6 text-sm code-font">
+<a class="text-gray-300 hover:text-white transition-colors" href="#overview">About</a>
+<a class="text-gray-300 hover:text-white transition-colors" href="#projects">Stack</a>
+<a class="text-gray-300 hover:text-white transition-colors" href="#architecture">Projects</a>
+<a class="text-gray-300 hover:text-white transition-colors" href="#architecture">Architecture</a>
+<a class="text-gray-300 hover:text-white transition-colors" href="#evolution">Journey</a>
+<a class="text-gray-300 hover:text-white transition-colors" href="#logs">Engineering Logs</a>
+</nav>
+<!-- Action & Status Badge -->
+<div class="flex items-center gap-3">
+<div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded bg-telemetryGreen/10 border border-telemetryGreen/30 text-telemetryGreen text-xs code-font">
+<span class="w-1.5 h-1.5 rounded-full bg-telemetryGreen"></span>
+          AVAILABLE FOR CLOUD / DEVOPS OPPORTUNITIES
+        </div>
+<a class="px-3.5 py-1.5 rounded text-xs font-semibold code-font bg-awsOrange text-black hover:bg-awsOrange/90 transition-all shadow-sm flex items-center gap-1.5" href="#contact">
+<span>CONTACT ME</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</div>
+</header>
+<!-- END: StickyHeader -->
+<main>
+<!-- BEGIN: HeroSection -->
+<section class="py-14 lg:py-20 border-b border-cardBorder relative overflow-hidden" data-purpose="hero-overview" id="overview">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+<!-- Left Column: Bio and Value Proposition -->
+<div class="lg:col-span-7 space-y-6">
+<!-- Eyebrow Badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-surface border border-cardBorder text-xs text-gray-300 code-font">
+<span class="text-awsOrange font-mono font-bold">AWS DEVOPS</span>
+<span class="text-gray-600">//</span>
+<span>CLOUD INFRASTRUCTURE</span>
+<span class="text-gray-600">//</span>
+<span>AUTOMATION</span>
+</div>
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+              Building reliable infrastructure. <br/>
+<span class="text-awsOrange">Automating everything else.</span>
+</h1>
+<p class="text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed">
+              I'm <strong class="text-white font-semibold">Nafees Ur Rehman</strong>, an AWS DevOps Engineer focused on resilient cloud infrastructure, Infrastructure as Code, CI/CD pipelines, containerization, and zero-drift operational environments.
+            </p>
+<div class="p-3.5 rounded-lg bg-panel border border-cardBorder flex items-start gap-3 text-xs text-gray-300 code-font">
+<svg class="w-4 h-4 text-awsOrange mt-0.5 shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Previously: AI Automation Engineering — now engineering production cloud systems and deployment infrastructures.</span>
+</div>
+<!-- CTAs -->
+<div class="flex flex-wrap items-center gap-4 pt-2">
+<a class="px-5 py-2.5 rounded text-sm font-semibold bg-awsOrange text-black hover:bg-[#e08600] transition-colors flex items-center gap-2" href="#architecture">
+<span>Explore Infrastructure</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a class="px-4 py-2.5 rounded text-sm font-medium bg-panel border border-cardBorder text-gray-200 hover:text-white hover:border-gray-500 transition-colors flex items-center gap-2 code-font" href="#public-work">
+<svg class="w-4 h-4 text-gray-400" fill="currentColor" viewbox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path></svg>
+<span>View GitHub</span>
+</a>
+<a class="px-4 py-2.5 rounded text-sm font-medium bg-transparent border border-dashed border-cardBorder text-gray-300 hover:text-white hover:border-awsOrange transition-colors code-font text-xs flex items-center gap-1.5" href="#pipeline">
+<span class="text-awsOrange">ARCH LAB</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<!-- Core Tooling Badges -->
+<div class="pt-4 border-t border-cardBorder/60">
+<span class="text-[11px] font-mono text-gray-400 block mb-2 tracking-wider">CORE TOOLING VERIFIED:</span>
+<div class="flex flex-wrap gap-2 text-xs code-font">
+<span class="px-2.5 py-1 rounded bg-surface border border-cardBorder text-gray-200">AWS Cloud</span>
+<span class="px-2.5 py-1 rounded bg-surface border border-cardBorder text-awsOrange">Terraform</span>
+<span class="px-2.5 py-1 rounded bg-surface border border-cardBorder text-gray-200">Docker</span>
+<span class="px-2.5 py-1 rounded bg-surface border border-cardBorder text-gray-200">Kubernetes</span>
+<span class="px-2.5 py-1 rounded bg-surface border border-cardBorder text-awsCyan">GitHub Actions</span>
+<span class="px-2.5 py-1 rounded bg-surface border border-cardBorder text-gray-200">Linux / Bash</span>
+<span class="px-2.5 py-1 rounded bg-surface border border-cardBorder text-telemetryGreen">Python</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Interactive Linux tmux Terminal -->
+<div class="lg:col-span-5">
+<div class="w-full rounded-lg bg-terminalBg border border-cardBorder shadow-2xl overflow-hidden font-mono text-xs" data-purpose="tmux-terminal-window">
+<!-- Window Titlebar -->
+<div class="bg-surface px-4 py-2.5 border-b border-cardBorder flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="w-3 h-3 rounded-full bg-[#FF5F56] inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-[#FFBD2E] inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-[#27C93F] inline-block"></span>
+</div>
+<div class="text-[11px] text-gray-400 font-mono tracking-tight flex items-center gap-1.5">
+<svg class="w-3 h-3 text-awsOrange" fill="currentColor" viewbox="0 0 20 20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z"></path></svg>
+<span>nafees@control-plane:~/aws (tmux: 0)</span>
+</div>
+<span class="text-[10px] text-gray-500">v1.8.2</span>
+</div>
+<!-- Terminal Content -->
+<div class="p-4 space-y-3 leading-relaxed text-gray-300">
+<div>
+<span class="text-telemetryGreen">nafees@cloud</span>:<span class="text-awsCyan">~</span>$ whoami<br/>
+<span class="text-white font-semibold">Nafees Ur Rehman</span>
+</div>
+<div>
+<span class="text-telemetryGreen">nafees@cloud</span>:<span class="text-awsCyan">~</span>$ cat role.json<br/>
+<span class="text-gray-400">{</span><br/>
+                    <span class="text-awsOrange">"role"</span>: <span class="text-telemetryGreen">"AWS DevOps Engineer | Cloud Infrastructure | Automation Engineering"</span><br/>
+<span class="text-gray-400">}</span>
+</div>
+<div>
+<span class="text-telemetryGreen">nafees@cloud</span>:<span class="text-awsCyan">~/infra</span>$ <span class="text-yellow-400">terraform plan</span><br/>
+<span class="text-gray-400">aws_vpc.production: Refreshing state... [id=vpc-0a49bc]</span><br/>
+<span class="text-gray-400">aws_db_cluster.aurora_fleet: Refreshing state... [id=rds-prod-fleet]</span><br/>
+<span class="text-telemetryGreen">Plan: 12 to add, 0 to change, 0 to destroy.</span>
+</div>
+<div>
+<span class="text-telemetryGreen">nafees@cloud</span>:<span class="text-awsCyan">~/ci</span>$ ./deploy --production --verified<br/>
+<span class="text-telemetryGreen">[OK] ECR sha:ec4e1a verified</span>   <span class="text-awsCyan">[OK] ECS Pipeline Complied</span><br/>
+<span class="text-white">State locked: DynamoDB terraform-locks (100% encrypted)</span>
+</div>
+<div class="pt-1">
+<span class="text-telemetryGreen">nafees@cloud</span>:<span class="text-awsCyan">~</span>$ <span class="terminal-cursor"></span>
+</div>
+</div>
+<!-- Terminal Status Line -->
+<div class="bg-[#0c1017] px-4 py-1.5 border-t border-cardBorder text-[10px] flex items-center justify-between text-gray-400">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-telemetryGreen"></span> CLUSTER: HEALTH_100%</span>
+<span class="text-gray-400">DIAG: PROD-READY (0 err)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: InfrastructureTelemetryOverview -->
+<section class="py-10 border-b border-cardBorder bg-panel/30" data-purpose="telemetry-metrics">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Metric 1: AWS Services -->
+<div class="p-4 rounded-lg bg-surface border border-cardBorder hover:border-awsOrange/40 transition-colors">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs text-gray-400 code-font">AWS Cloud Platform</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-telemetryGreen/15 text-telemetryGreen code-font">OPERATIONAL</span>
+</div>
+<div class="text-2xl font-bold text-white tracking-tight font-mono">14 Services</div>
+<p class="text-xs text-gray-400 mt-1">Multi-AZ Resilient Architecture (VPC, ECS, RDS, CloudFront, Route53)</p>
+</div>
+<!-- Metric 2: IaC Tooling -->
+<div class="p-4 rounded-lg bg-surface border border-cardBorder hover:border-awsOrange/40 transition-colors">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs text-gray-400 code-font">IaC Toolchain</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-awsCyan/15 text-awsCyan code-font">SYNCHRONIZED</span>
+</div>
+<div class="text-2xl font-bold text-white tracking-tight font-mono">v1.8+ Declarative</div>
+<p class="text-xs text-gray-400 mt-1">Remote S3 Backend with DynamoDB State Locking &amp; KMS encryption</p>
+</div>
+<!-- Metric 3: Automated CI/CD -->
+<div class="p-4 rounded-lg bg-surface border border-cardBorder hover:border-awsOrange/40 transition-colors">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs text-gray-400 code-font">Automated CI/CD</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-purple-500/15 text-purple-400 code-font">P50 &lt; 4.5 MINS</span>
+</div>
+<div class="text-2xl font-bold text-white tracking-tight font-mono">4.2m Deploy</div>
+<p class="text-xs text-gray-400 mt-1">GitHub Actions, Docker BuildKit, Automated ECR push &amp; ECS rollout</p>
+</div>
+<!-- Metric 4: Clusters & Containers -->
+<div class="p-4 rounded-lg bg-surface border border-cardBorder hover:border-awsOrange/40 transition-colors">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs text-gray-400 code-font">Docker &amp; K8s</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-telemetryGreen/15 text-telemetryGreen code-font">RUNNING</span>
+</div>
+<div class="text-2xl font-bold text-white tracking-tight font-mono">ECS + EKS</div>
+<p class="text-xs text-gray-400 mt-1">Microservices containerization with zero-downtime blue/green rollouts</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: InfrastructureTelemetryOverview -->
+<!-- BEGIN: EvolutionTrack -->
+<section class="py-14 border-b border-cardBorder" data-purpose="career-evolution" id="evolution">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Narrative Left -->
+<div class="lg:col-span-5 space-y-4">
+<div class="inline-flex items-center gap-2 text-xs code-font text-awsOrange">
+<span>// EVOLUTION TRACK</span>
+</div>
+<h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              From AI Automation to Cloud Infrastructure
+            </h2>
+<p class="text-sm text-gray-300 leading-relaxed">
+              I began in AI Automation Engineering, orchestrating complex multi-agent workflows, writing Python integrations, and automating business logic via APIs. That foundation gave me a keen instinct for failure modes and pipeline bottlenecks.
+            </p>
+<p class="text-sm text-gray-300 leading-relaxed">
+              Recognizing that automated workflows are only as resilient as the infrastructure supporting them, I transitioned directly into Linux systems, cloud engineering, Infrastructure as Code, and automated deployment architectures on AWS.
+            </p>
+<div class="p-3 rounded bg-surface border-l-2 border-awsOrange text-xs text-gray-300 code-font">
+<span class="text-awsOrange font-bold">PHILOSOPHY SHIFT:</span> "Code that executes without deterministic, reproducible cloud environments is technical debt. Infrastructure as Code solves the runtime."
+            </div>
+</div>
+<!-- Technical Transition Pipeline Right -->
+<div class="lg:col-span-7 space-y-3 font-mono text-xs">
+<div class="text-gray-400 text-[11px] mb-2 flex items-center justify-between">
+<span>ITINERARY CAPABILITY PIPELINE (DAG GRAPH)</span>
+<span class="text-telemetryGreen">ALL STAGES RESOLVED</span>
+</div>
+<!-- Stage 01 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder flex items-center justify-between hover:border-gray-600 transition-colors">
+<div class="flex items-center space-x-3">
+<span class="w-6 h-6 rounded bg-cardBorder flex items-center justify-center text-gray-300 font-bold text-[11px]">01</span>
+<div>
+<div class="text-white font-semibold">AI Automation &amp; Workflows</div>
+<div class="text-[11px] text-gray-400">Python • API Orchestrations • Agent Logic</div>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] bg-telemetryGreen/10 text-telemetryGreen border border-telemetryGreen/30">COMPLETED</span>
+</div>
+<!-- Stage 02 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder flex items-center justify-between hover:border-gray-600 transition-colors">
+<div class="flex items-center space-x-3">
+<span class="w-6 h-6 rounded bg-cardBorder flex items-center justify-center text-awsCyan font-bold text-[11px]">02</span>
+<div>
+<div class="text-white font-semibold">Linux Systems &amp; Networking</div>
+<div class="text-[11px] text-gray-400">Kernel Permissions • CIDR Subnets • Bash Automation</div>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] bg-awsCyan/10 text-awsCyan border border-awsCyan/30">CORE BASE</span>
+</div>
+<!-- Stage 03 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder flex items-center justify-between hover:border-gray-600 transition-colors">
+<div class="flex items-center space-x-3">
+<span class="w-6 h-6 rounded bg-cardBorder flex items-center justify-center text-awsOrange font-bold text-[11px]">03</span>
+<div>
+<div class="text-white font-semibold">AWS Cloud Architecture &amp; IaC</div>
+<div class="text-[11px] text-gray-400">Terraform • Multi-AZ VPC • IAM Security • S3 • RDS</div>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] bg-awsOrange/10 text-awsOrange border border-awsOrange/30">PRODUCTION</span>
+</div>
+<!-- Stage 04 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder flex items-center justify-between hover:border-gray-600 transition-colors">
+<div class="flex items-center space-x-3">
+<span class="w-6 h-6 rounded bg-cardBorder flex items-center justify-center text-purple-400 font-bold text-[11px]">04</span>
+<div>
+<div class="text-white font-semibold">DevOps &amp; Continuous Delivery</div>
+<div class="text-[11px] text-gray-400">Docker • EKS/ECS • GitHub Actions • CloudWatch Observability</div>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] bg-purple-500/10 text-purple-400 border border-purple-500/30">ACTIVE FOCUS</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: EvolutionTrack -->
+<!-- BEGIN: EngineeringStack -->
+<section class="py-14 border-b border-cardBorder bg-panel/30" data-purpose="engineering-stack" id="projects">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="mb-10">
+<div class="text-xs text-awsOrange code-font mb-1">// INFRASTRUCTURE TAXONOMY</div>
+<h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Engineering Stack &amp; Tooling</h2>
+<p class="text-sm text-gray-400 mt-1 max-w-2xl">Deterministic, hardened platforms built on modern cloud conventions, declarative definitions, and security-first engineering.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Category 1: Cloud Infrastructure -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded bg-awsOrange/10 border border-awsOrange/30 flex items-center justify-center text-awsOrange mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h3 class="text-base font-semibold text-white">Cloud Infrastructure</h3>
+<p class="text-xs text-gray-400 mt-1">AWS production topology with isolation, least-privilege identity, and high availability patterns.</p>
+</div>
+<div class="flex flex-wrap gap-1.5 mt-5 font-mono text-xs">
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">EC2</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-awsCyan">VPC</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">IAM</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">S3</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">CloudFront</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Route 53</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-awsOrange">RDS</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">CloudWatch</span>
+</div>
+</div>
+<!-- Category 2: Infrastructure as Code -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h3 class="text-base font-semibold text-white">Infrastructure as Code</h3>
+<p class="text-xs text-gray-400 mt-1">Declarative lifecycle management, zero-drift states, reusable modular packages, and testing.</p>
+</div>
+<div class="flex flex-wrap gap-1.5 mt-5 font-mono text-xs">
+<span class="px-2 py-0.5 rounded bg-panel border border-purple-500/30 text-purple-300">Terraform</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">HCL</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-awsCyan">Remote S3 State</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">DynamoDB Locks</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">AWS CloudFormation</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-telemetryGreen">tfsec</span>
+</div>
+</div>
+<!-- Category 3: Containers & Kubernetes -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded bg-telemetryGreen/10 border border-telemetryGreen/30 flex items-center justify-center text-telemetryGreen mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h3 class="text-base font-semibold text-white">Containers &amp; Kubernetes</h3>
+<p class="text-xs text-gray-400 mt-1">Multi-stage container builds, vulnerability scans, ingress controllers and cluster operations.</p>
+</div>
+<div class="flex flex-wrap gap-1.5 mt-5 font-mono text-xs">
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-awsCyan">Docker</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Kubernetes</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-white font-semibold">Amazon ECS</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Amazon EKS</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Helm</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-telemetryGreen">ECR</span>
+</div>
+</div>
+<!-- Category 4: CI/CD & Delivery -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded bg-awsCyan/10 border border-awsCyan/30 flex items-center justify-center text-awsCyan mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h3 class="text-base font-semibold text-white">CI/CD &amp; Delivery</h3>
+<p class="text-xs text-gray-400 mt-1">Automated delivery gates, pre-flight linting, container scanning and canary rollouts.</p>
+</div>
+<div class="flex flex-wrap gap-1.5 mt-5 font-mono text-xs">
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-awsCyan">GitHub Actions</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Workflows</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Argo CD</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-telemetryGreen/30 text-telemetryGreen">Automated Rollbacks</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Semantic Versioning</span>
+</div>
+</div>
+<!-- Category 5: Systems & Networking -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded bg-gray-600/20 border border-gray-600/40 flex items-center justify-center text-gray-300 mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h3 class="text-base font-semibold text-white">Systems &amp; Networking</h3>
+<p class="text-xs text-gray-400 mt-1">Kernel concepts, systemd services, routing tables, security groups and packet inspection.</p>
+</div>
+<div class="flex flex-wrap gap-1.5 mt-5 font-mono text-xs">
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Ubuntu</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Amazon Linux</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-awsOrange">Bash CLI</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-awsCyan">CIDR / Subnetting</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">TLS / SSL</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">SSH Keys</span>
+</div>
+</div>
+<!-- Category 6: Automation & Event Loops -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 mb-4">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h3 class="text-base font-semibold text-white">Automation &amp; Event Loops</h3>
+<p class="text-xs text-gray-400 mt-1">Translating business conditions into cloud event triggers and programmatic remediation scripts.</p>
+</div>
+<div class="flex flex-wrap gap-1.5 mt-5 font-mono text-xs">
+<span class="px-2 py-0.5 rounded bg-panel border border-yellow-500/30 text-yellow-300">Python 3</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Boto3</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-awsCyan">REST APIs</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">EventBridge</span>
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-telemetryGreen">CloudWatch Alarms</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: EngineeringStack -->
+<!-- BEGIN: FeaturedInfrastructureProjects -->
+<section class="py-14 border-b border-cardBorder" data-purpose="featured-projects" id="architecture">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+<div>
+<div class="text-xs text-awsOrange code-font mb-1">// TECHNICAL CASE STUDIES</div>
+<h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Featured Infrastructure Projects</h2>
+</div>
+<span class="text-xs code-font text-telemetryGreen flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-telemetryGreen"></span>
+            All configurations validated with Terraform dry-runs
+          </span>
+</div>
+<!-- Project 1: Production AWS Three-Tier Architecture -->
+<article class="rounded-lg bg-surface border border-cardBorder overflow-hidden shadow-lg">
+<div class="p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<div class="lg:col-span-7 space-y-4">
+<div class="flex items-center space-x-2 text-xs font-mono">
+<span class="text-awsOrange font-bold">PROJECT_01 //</span>
+<span class="text-gray-400">PRODUCTION SPEC</span>
+</div>
+<h3 class="text-2xl font-bold text-white tracking-tight">Production AWS Three-Tier Architecture</h3>
+<p class="text-sm text-gray-300 leading-relaxed">
+                Designed and provisioned a fault-tolerant, highly scalable three-tier web application architecture across 2 Availability Zones. Built with complete separation of public web, private compute, and isolated database subnets.
+              </p>
+<!-- Technical Specifications Grid -->
+<div class="grid grid-cols-2 gap-3 pt-2 text-xs code-font">
+<div class="p-2.5 rounded bg-panel border border-cardBorder text-gray-300">
+<span class="text-gray-400 block text-[10px]">COMPUTE FABRIC</span>
+<span class="text-white">Auto Scaling (2-6 instances)</span>
+</div>
+<div class="p-2.5 rounded bg-panel border border-cardBorder text-gray-300">
+<span class="text-gray-400 block text-[10px]">TRAFFIC INGRESS</span>
+<span class="text-awsCyan">Application Load Balancer</span>
+</div>
+<div class="p-2.5 rounded bg-panel border border-cardBorder text-gray-300">
+<span class="text-gray-400 block text-[10px]">ISOLATION</span>
+<span class="text-purple-400">Private Subnets (NAT Routed)</span>
+</div>
+<div class="p-2.5 rounded bg-panel border border-cardBorder text-gray-300">
+<span class="text-gray-400 block text-[10px]">PERSISTENCE</span>
+<span class="text-awsOrange">Multi-AZ RDS Aurora PostgreSQL</span>
+</div>
+</div>
+<!-- Tags and CTA -->
+<div class="pt-4 flex flex-wrap items-center gap-3">
+<a class="px-4 py-2 rounded text-xs font-semibold bg-awsOrange text-black hover:bg-awsOrange/90 transition-colors code-font flex items-center gap-1.5" href="#architecture-lab">
+<span>View Topology Schematic</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<span class="text-xs code-font text-gray-400">terraform-module: v1.4</span>
+</div>
+</div>
+<!-- Architecture Diagram Canvas Miniature -->
+<div class="lg:col-span-5 bg-panel rounded-lg border border-cardBorder p-4 blueprint-grid relative">
+<div class="text-[10px] code-font text-gray-400 mb-3 flex justify-between">
+<span>TOPOLOGY FLOW DIAGRAM</span>
+<span class="text-telemetryGreen">MULTI-AZ HA • PORT 443 -&gt; 3306</span>
+</div>
+<div class="space-y-3 font-mono text-[11px]">
+<!-- Step 1 -->
+<div class="p-2 rounded bg-surface border border-cardBorder text-center text-awsCyan flex items-center justify-center gap-2">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Public Web: Route 53 + CloudFront</span>
+<span class="text-[9px] text-gray-400 ml-auto">Edge PoPs</span>
+</div>
+<div class="text-center text-gray-600 text-xs">▼ HTTPS 443</div>
+<!-- Step 2 -->
+<div class="p-2 rounded bg-surface border border-cardBorder text-center text-white flex items-center justify-center gap-2">
+<svg class="w-3.5 h-3.5 text-awsOrange" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Application Load Balancer (ALB)</span>
+<span class="text-[9px] text-gray-400 ml-auto">Public Subnets</span>
+</div>
+<div class="text-center text-gray-600 text-xs">▼ Target Group (Port 8080)</div>
+<!-- Step 3 -->
+<div class="p-2 rounded bg-surface border border-cardBorder text-center text-telemetryGreen flex items-center justify-center gap-2">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>EC2 Auto Scaling Target Group</span>
+<span class="text-[9px] text-gray-400 ml-auto">Private Subnets (No Public IP)</span>
+</div>
+<div class="text-center text-gray-600 text-xs">▼ TLS Encrypted Port 5432</div>
+<!-- Step 4 -->
+<div class="p-2 rounded bg-surface border border-cardBorder text-center text-purple-400 flex items-center justify-center gap-2">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Multi-AZ RDS Aurora Cluster</span>
+<span class="text-[9px] text-gray-400 ml-auto">Isolated Subnets</span>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Project 2: Terraform Modular AWS Infrastructure -->
+<article class="rounded-lg bg-surface border border-cardBorder overflow-hidden shadow-lg">
+<div class="p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<div class="lg:col-span-7 space-y-4">
+<div class="flex items-center space-x-2 text-xs font-mono">
+<span class="text-purple-400 font-bold">PROJECT_02 //</span>
+<span class="text-gray-400">INFRA AS CODE</span>
+</div>
+<h3 class="text-2xl font-bold text-white tracking-tight">Terraform Modular AWS Infrastructure</h3>
+<p class="text-sm text-gray-300 leading-relaxed">
+                Standardized enterprise-grade Terraform modules covering VPC, Bastion, EKS, and secure RDS instances with parameter validation and automatic state locking. 100% declarative and version-controlled.
+              </p>
+<div class="flex flex-wrap gap-2 text-xs code-font">
+<span class="px-2.5 py-1 rounded bg-panel border border-cardBorder text-telemetryGreen">Zero Drift S3 State</span>
+<span class="px-2.5 py-1 rounded bg-panel border border-cardBorder text-awsOrange">DynamoDB Mutex</span>
+<span class="px-2.5 py-1 rounded bg-panel border border-cardBorder text-awsCyan">KMS Enforced</span>
+<span class="px-2.5 py-1 rounded bg-panel border border-cardBorder text-gray-300">HCL Linting</span>
+</div>
+<div class="pt-2">
+<a class="inline-flex items-center gap-1.5 text-xs font-mono text-awsOrange hover:underline" href="#public-work">
+<span>Inspect HCL Structure</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</div>
+<!-- Code snippet view -->
+<div class="lg:col-span-5 bg-panel rounded-lg border border-cardBorder p-4 text-xs font-mono text-gray-300 overflow-x-auto">
+<div class="flex justify-between items-center text-[10px] text-gray-400 mb-2 pb-2 border-b border-cardBorder">
+<span>backend.tf</span>
+<span class="text-telemetryGreen">VERIFIED</span>
+</div>
+<pre class="text-[11px] leading-relaxed"><code><span class="text-purple-400">terraform</span> {
+  <span class="text-awsOrange">backend</span> <span class="text-telemetryGreen">"s3"</span> {
+    <span class="text-gray-400">bucket</span>         = <span class="text-telemetryGreen">"nafees-tf-state-prod-useast1"</span>
+    <span class="text-gray-400">key</span>            = <span class="text-telemetryGreen">"core/app-fleet.tfstate"</span>
+    <span class="text-gray-400">region</span>         = <span class="text-telemetryGreen">"us-east-1"</span>
+    <span class="text-gray-400">dynamodb_table</span> = <span class="text-telemetryGreen">"terraform-state-lock"</span>
+    <span class="text-gray-400">encrypt</span>        = <span class="text-awsCyan">true</span>
+    <span class="text-gray-400">kms_key_id</span>     = <span class="text-telemetryGreen">"arn:aws:kms:us-east-1:xxxx:key/tf-backend"</span>
+  }
+}</code></pre>
+</div>
+</div>
+</article>
+<!-- Project 3: End-to-End Automated CI/CD Pipeline -->
+<article class="rounded-lg bg-surface border border-cardBorder overflow-hidden shadow-lg">
+<div class="p-6 lg:p-8 space-y-4">
+<div class="flex items-center space-x-2 text-xs font-mono">
+<span class="text-awsCyan font-bold">PROJECT_03 //</span>
+<span class="text-gray-400">AUTOMATION</span>
+</div>
+<h3 class="text-2xl font-bold text-white tracking-tight">End-to-End Automated CI/CD Pipeline (Git-to-Cloud)</h3>
+<p class="text-sm text-gray-300 leading-relaxed max-w-4xl">
+              Zero-human-touch production pipeline. Automatically triggers unit tests, checks linting, runs Docker layer-cached builds, pushes to AWS ECR, and orchestrates rolling updates on AWS ECS Fargate with automated rollbacks on health check failure.
+            </p>
+<div class="pt-4 grid grid-cols-2 sm:grid-cols-5 gap-3 text-center font-mono text-xs">
+<div class="p-3 rounded bg-panel border border-cardBorder">
+<span class="text-[10px] text-gray-400 block mb-1">01 - TRIGGER</span>
+<span class="text-white font-semibold">Git Push</span>
+<span class="text-[10px] text-gray-400 block mt-1">main branch</span>
+</div>
+<div class="p-3 rounded bg-panel border border-cardBorder">
+<span class="text-[10px] text-gray-400 block mb-1">02 - VALIDATE</span>
+<span class="text-awsCyan font-semibold">Linter &amp; Tests</span>
+<span class="text-[10px] text-gray-400 block mt-1">Pytest &amp; Flake8</span>
+</div>
+<div class="p-3 rounded bg-panel border border-cardBorder">
+<span class="text-[10px] text-gray-400 block mb-1">03 - PACKAGING</span>
+<span class="text-awsOrange font-semibold">Docker Build</span>
+<span class="text-[10px] text-gray-400 block mt-1">Multi-stage cache</span>
+</div>
+<div class="p-3 rounded bg-panel border border-cardBorder">
+<span class="text-[10px] text-gray-400 block mb-1">04 - REGISTRY</span>
+<span class="text-purple-400 font-semibold">AWS ECR</span>
+<span class="text-[10px] text-gray-400 block mt-1">SHA tagged image</span>
+</div>
+<div class="p-3 rounded bg-panel border border-cardBorder col-span-2 sm:col-span-1">
+<span class="text-[10px] text-gray-400 block mb-1">05 - SHIP</span>
+<span class="text-telemetryGreen font-semibold">ECS Fargate</span>
+<span class="text-[10px] text-gray-400 block mt-1">Zero Downtime</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- END: FeaturedInfrastructureProjects -->
+<!-- BEGIN: ArchitectureLab -->
+<section class="py-14 border-b border-cardBorder bg-panel/20" data-purpose="architecture-blueprints" id="architecture-lab">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+<div>
+<div class="text-xs text-awsOrange code-font mb-1">// SYSTEMS REVIEW &amp; TOPOLOGIES</div>
+<h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Architecture Lab</h2>
+<p class="text-sm text-gray-400 mt-1 max-w-2xl">
+            Systems I've designed, tested, and stressed while building cloud architectures. Every node maps to actual AWS primitives.
+          </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Blueprint Card 1 -->
+<div class="p-6 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all space-y-4">
+<div class="flex items-center justify-between text-xs font-mono">
+<span class="text-white font-bold">SYSTEM_01</span>
+<span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-awsCyan border border-awsCyan/30">SCOPE: RESILIENT</span>
+</div>
+<h3 class="text-lg font-bold text-white">Highly Available Web Platform</h3>
+<p class="text-xs text-gray-400 leading-relaxed">
+              Global edge routing with AWS Route 53 anycast DNS, CloudFront caching, ALB layer-7 traffic distribution across 2 AZs, and automated recovery EC2 fleets.
+            </p>
+<!-- Vector Schematic Visual -->
+<div class="p-4 rounded bg-panel border border-cardBorder font-mono text-[11px] space-y-3 blueprint-grid">
+<div class="flex items-center justify-between gap-2">
+<span class="p-2 rounded bg-surface border border-cardBorder text-awsOrange">Route 53</span>
+<span class="text-gray-500">───►</span>
+<span class="p-2 rounded bg-surface border border-cardBorder text-awsCyan">CloudFront</span>
+<span class="text-gray-500">───►</span>
+<span class="p-2 rounded bg-surface border border-cardBorder text-white">ALB Dual-AZ</span>
+<span class="text-gray-500">───►</span>
+<div class="flex flex-col gap-1">
+<span class="px-2 py-1 rounded bg-surface border border-cardBorder text-telemetryGreen text-[10px]">ASG EC2-Prod</span>
+<span class="px-2 py-1 rounded bg-surface border border-cardBorder text-telemetryGreen text-[10px]">ASG EC2-Repl</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-[11px] font-mono text-gray-400 pt-2">
+<span>Active Ingress: Port 443 HTTPS</span>
+<span class="text-telemetryGreen">Healthchecks: passing</span>
+</div>
+</div>
+<!-- Blueprint Card 2 -->
+<div class="p-6 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all space-y-4">
+<div class="flex items-center justify-between text-xs font-mono">
+<span class="text-white font-bold">SYSTEM_02</span>
+<span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/30">AIR-GAPPED DB</span>
+</div>
+<h3 class="text-lg font-bold text-white">Secure Multi-Tier Isolated VPC</h3>
+<p class="text-xs text-gray-400 leading-relaxed">
+              Granular network segregation featuring public subnets with Internet Gateway, private application subnets via NAT Gateways, and isolated database subnets without outbound internet routes.
+            </p>
+<!-- Vector Schematic Visual -->
+<div class="p-4 rounded bg-panel border border-cardBorder font-mono text-[11px] blueprint-grid">
+<div class="grid grid-cols-3 gap-2 text-center text-[10px]">
+<div class="p-2 rounded bg-surface border border-cardBorder text-awsCyan">
+<span class="block text-gray-400 text-[9px]">10.0.1.0/24</span>
+                  ALB / NAT Gateway<br/>(Public Subnet)
+                </div>
+<div class="p-2 rounded bg-surface border border-cardBorder text-telemetryGreen">
+<span class="block text-gray-400 text-[9px]">10.0.10.0/24</span>
+                  App Servers<br/>(App Priv Subnet)
+                </div>
+<div class="p-2 rounded bg-surface border border-cardBorder text-awsOrange">
+<span class="block text-gray-400 text-[9px]">10.0.20.0/24</span>
+                  PostgreSQL / Aurora<br/>(No Internet Access)
+                </div>
+</div>
+</div>
+<div class="flex items-center justify-between text-[11px] font-mono text-gray-400 pt-2">
+<span>Route Tables: 3 Discrete Associations</span>
+<span class="text-awsCyan">Zero public DB leaks</span>
+</div>
+</div>
+<!-- Blueprint Card 3 -->
+<div class="p-6 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all space-y-4">
+<div class="flex items-center justify-between text-xs font-mono">
+<span class="text-white font-bold">SYSTEM_03</span>
+<span class="text-[10px] px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-300 border border-yellow-500/30">STATE LOCKING</span>
+</div>
+<h3 class="text-lg font-bold text-white">Terraform Remote State Architecture</h3>
+<p class="text-xs text-gray-400 leading-relaxed">
+              Centralized state repository utilizing Amazon S3 bucket with strict versioning, AWS SSE-KMS encryption, and DynamoDB lock tables preventing concurrent mutating plans.
+            </p>
+<!-- Vector Schematic Visual -->
+<div class="p-4 rounded bg-panel border border-cardBorder font-mono text-[11px] flex items-center justify-around blueprint-grid text-[10px]">
+<div class="p-2 rounded bg-surface border border-cardBorder text-white text-center">
+<span>CI / CD Pipeline</span><br/>
+<span class="text-gray-400 text-[9px]">terraform apply</span>
+</div>
+<span class="text-gray-500 font-bold">◄── mutex ──►</span>
+<div class="p-2 rounded bg-surface border border-cardBorder text-awsOrange text-center">
+<span>DynamoDB Mutex</span><br/>
+<span class="text-gray-400 text-[9px]">LockID: Check / Acquire</span>
+</div>
+<span class="text-gray-500 font-bold">───►</span>
+<div class="p-2 rounded bg-surface border border-cardBorder text-telemetryGreen text-center">
+<span>S3 Bucket (KMS)</span><br/>
+<span class="text-gray-400 text-[9px]">Encrypted state write</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-[11px] font-mono text-gray-400 pt-2">
+<span>Concurrency Control: Active</span>
+<span class="text-telemetryGreen">Atomic state writes</span>
+</div>
+</div>
+<!-- Blueprint Card 4 -->
+<div class="p-6 rounded-lg bg-surface border border-cardBorder hover:border-gray-600 transition-all space-y-4">
+<div class="flex items-center justify-between text-xs font-mono">
+<span class="text-white font-bold">SYSTEM_04</span>
+<span class="text-[10px] px-2 py-0.5 rounded bg-telemetryGreen/10 text-telemetryGreen border border-telemetryGreen/30">CONTAINERS</span>
+</div>
+<h3 class="text-lg font-bold text-white">Microservices on AWS EKS / ECS Fargate</h3>
+<p class="text-xs text-gray-400 leading-relaxed">
+              Container orchestrator running on managed nodes. Integrates AWS Load Balancer Controller for dynamic TargetGroupBindings, AWS Secrets Manager sidecars, and fluent-bit logging.
+            </p>
+<!-- Vector Schematic Visual -->
+<div class="p-4 rounded bg-panel border border-cardBorder font-mono text-[11px] blueprint-grid">
+<div class="grid grid-cols-3 gap-2 text-center text-[10px]">
+<div class="p-2 rounded bg-surface border border-cardBorder text-awsCyan">
+<span>Ingress</span><br/>
+<span class="text-gray-400 text-[9px]">ALB Controller</span>
+</div>
+<div class="p-2 rounded bg-surface border border-cardBorder text-white">
+<span>Compute</span><br/>
+<span class="text-gray-400 text-[9px]">Fargate / EC2</span>
+</div>
+<div class="p-2 rounded bg-surface border border-cardBorder text-telemetryGreen">
+<span>Telemetry</span><br/>
+<span class="text-gray-400 text-[9px]">Prometheus</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-[11px] font-mono text-gray-400 pt-2">
+<span>Kubernetes: v1.29 Compatible</span>
+<span class="text-telemetryGreen">Autoscaling enabled</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: ArchitectureLab -->
+<!-- BEGIN: DevOpsDeliveryPipeline -->
+<section class="py-14 border-b border-cardBorder" data-purpose="delivery-pipeline" id="pipeline">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="text-xs text-awsOrange code-font mb-1">// OPERATIONAL GUARANTEE</div>
+<h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              "Infrastructure shouldn't depend on someone remembering the right commands."
+            </h2>
+</div>
+<span class="text-xs code-font text-gray-400 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-telemetryGreen"></span>
+            Automated Rollback Safeguard Engaged
+          </span>
+</div>
+<!-- 8-Stage Horizontal Pipeline Flow -->
+<div class="overflow-x-auto pb-4">
+<div class="min-w-[840px] grid grid-cols-7 gap-3 font-mono text-xs text-center">
+<!-- Step 1 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder relative">
+<span class="text-awsCyan block text-sm mb-1">&lt;/&gt;</span>
+<div class="text-gray-400 text-[10px]">01. CODE</div>
+<div class="text-white font-semibold mt-1">Feature Branch</div>
+</div>
+<!-- Step 2 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder">
+<span class="text-awsOrange block text-sm mb-1">⌥</span>
+<div class="text-gray-400 text-[10px]">02. GIT</div>
+<div class="text-white font-semibold mt-1">PR Review</div>
+</div>
+<!-- Step 3 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder">
+<span class="text-telemetryGreen block text-sm mb-1">✓</span>
+<div class="text-gray-400 text-[10px]">03. CI / TEST</div>
+<div class="text-white font-semibold mt-1">Action: Lint</div>
+</div>
+<!-- Step 4 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder">
+<span class="text-purple-400 block text-sm mb-1">▤</span>
+<div class="text-gray-400 text-[10px]">04. BUILD</div>
+<div class="text-white font-semibold mt-1">Docker Layered</div>
+</div>
+<!-- Step 5 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder">
+<span class="text-yellow-400 block text-sm mb-1">🛡</span>
+<div class="text-gray-400 text-[10px]">05. SCAN</div>
+<div class="text-white font-semibold mt-1">Trivy / Snyk</div>
+</div>
+<!-- Step 6 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder">
+<span class="text-awsOrange block text-sm mb-1">▲</span>
+<div class="text-gray-400 text-[10px]">06. DEPLOY</div>
+<div class="text-white font-semibold mt-1">AWS ECS/Fargate</div>
+</div>
+<!-- Step 7 -->
+<div class="p-3.5 rounded-lg bg-surface border border-cardBorder">
+<span class="text-awsCyan block text-sm mb-1">📈</span>
+<div class="text-gray-400 text-[10px]">07. OBSERVE</div>
+<div class="text-white font-semibold mt-1">CloudWatch Alarms</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: DevOpsDeliveryPipeline -->
+<!-- BEGIN: EngineeringPhilosophy -->
+<section class="py-14 border-b border-cardBorder bg-panel/30" data-purpose="principles">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="mb-10">
+<div class="text-xs text-awsOrange code-font mb-1">// SYSTEM TENETS</div>
+<h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Engineering Philosophy</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Tenet 1 -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder space-y-3">
+<span class="text-xs font-mono text-awsOrange">PRINCIPLE_01</span>
+<h3 class="text-base font-bold text-white">Automate Repetitive Work</h3>
+<p class="text-xs text-gray-400 leading-relaxed">
+              "If it needs to happen repeatedly, automate it." Manual configuration drifts, decays, and causes human error during outages.
+            </p>
+<div class="text-[11px] font-mono text-gray-500 pt-2 border-t border-cardBorder">
+              ZERO MANUAL CLI FIXES
+            </div>
+</div>
+<!-- Tenet 2 -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder space-y-3">
+<span class="text-xs font-mono text-awsCyan">PRINCIPLE_02</span>
+<h3 class="text-base font-bold text-white">Infrastructure as Code</h3>
+<p class="text-xs text-gray-400 leading-relaxed">
+              Infrastructure should be version-controlled, reviewable, and reproducible." If it isn't in Git, it does not exist in production.
+            </p>
+<div class="text-[11px] font-mono text-gray-500 pt-2 border-t border-cardBorder">
+              100% DECLARATIVE HCL
+            </div>
+</div>
+<!-- Tenet 3 -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder space-y-3">
+<span class="text-xs font-mono text-purple-400">PRINCIPLE_03</span>
+<h3 class="text-base font-bold text-white">Reliability Over Complexity</h3>
+<p class="text-xs text-gray-400 leading-relaxed">
+              "Good systems aren't the ones with the most technologies. They're the ones that continue running predictably when components fail."
+            </p>
+<div class="text-[11px] font-mono text-gray-500 pt-2 border-t border-cardBorder">
+              LEAN ARCHITECTURE
+            </div>
+</div>
+<!-- Tenet 4 -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder space-y-3">
+<span class="text-xs font-mono text-telemetryGreen">PRINCIPLE_04</span>
+<h3 class="text-base font-bold text-white">Security by Default</h3>
+<p class="text-xs text-gray-400 leading-relaxed">
+              "Least privilege IAM, private networking by default, zero secrets in plain text, and strict ingress/egress boundaries."
+            </p>
+<div class="text-[11px] font-mono text-gray-500 pt-2 border-t border-cardBorder">
+              ZERO TRUST NETWORK
+            </div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: EngineeringPhilosophy -->
+<!-- BEGIN: EngineeringLogs -->
+<section class="py-14 border-b border-cardBorder" data-purpose="technical-writings" id="logs">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+<div>
+<div class="text-xs text-awsOrange code-font mb-1">// TECHNICAL DOCUMENTATION &amp; WRITING</div>
+<h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Engineering Logs</h2>
+<p class="text-sm text-gray-400 mt-1 max-w-2xl">
+            In-depth breakdowns of cloud infrastructure concepts, production pitfalls, and systems programming fundamentals.
+          </p>
+</div>
+<div class="space-y-4">
+<!-- Article 1 -->
+<article class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-500 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer group">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono text-awsOrange">[ARCHITECTURE]</span>
+<span class="text-xs text-gray-400 font-mono">Published in Production Logs</span>
+</div>
+<h3 class="text-lg font-bold text-white group-hover:text-awsOrange transition-colors">
+                How Linux permissions, groups, and namespaces actually work
+              </h3>
+<p class="text-xs text-gray-400">Diving beyond chmod 777: inspecting POSIX ACLs, UID mapping inside unprivileged container namespaces, and systemd isolation flags.</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-mono text-gray-400 shrink-0">
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Systems</span>
+<span>8 min read</span>
+<span>•</span>
+<span>2024</span>
+</div>
+</article>
+<!-- Article 2 -->
+<article class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-500 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer group">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono text-awsCyan">[NETWORKING]</span>
+<span class="text-xs text-gray-400 font-mono">Published in Production Logs</span>
+</div>
+<h3 class="text-lg font-bold text-white group-hover:text-awsOrange transition-colors">
+                Building a production-ready AWS VPC with private routing and NAT gateways
+              </h3>
+<p class="text-xs text-gray-400">Architecting dual-AZ redundant VPC topologies, configuring route table associations, and optimizing NAT gateway costs without compromising compute security.</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-mono text-gray-400 shrink-0">
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Networking</span>
+<span>12 min read</span>
+<span>•</span>
+<span>2024</span>
+</div>
+</article>
+<!-- Article 3 -->
+<article class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-500 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer group">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono text-purple-400">[TERRAFORM]</span>
+<span class="text-xs text-gray-400 font-mono">Published in Production Logs</span>
+</div>
+<h3 class="text-lg font-bold text-white group-hover:text-awsOrange transition-colors">
+                Deploying idempotent multi-environment infrastructure with Terraform
+              </h3>
+<p class="text-xs text-gray-400">Best practices for modular HCL, utilizing remote S3 backend state locking with DynamoDB, and managing workspace drift across staging and production.</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-mono text-gray-400 shrink-0">
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">IaC</span>
+<span>10 min read</span>
+<span>•</span>
+<span>2024</span>
+</div>
+</article>
+<!-- Article 4 -->
+<article class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-500 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer group">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono text-telemetryGreen">[SECURITY]</span>
+<span class="text-xs text-gray-400 font-mono">Published in Production Logs</span>
+</div>
+<h3 class="text-lg font-bold text-white group-hover:text-awsOrange transition-colors">
+                Breaking down AWS IAM: Roles, Policies, and Least Privilege in Practice
+              </h3>
+<p class="text-xs text-gray-400">Constructing permission boundaries, cross-account assume role conditions, and preventing accidental wildcard policies in automated CI pipelines.</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-mono text-gray-400 shrink-0">
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Security</span>
+<span>7 min read</span>
+<span>•</span>
+<span>2024</span>
+</div>
+</article>
+<!-- Article 5 -->
+<article class="p-5 rounded-lg bg-surface border border-cardBorder hover:border-gray-500 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer group">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono text-yellow-400">[CONTAINERS]</span>
+<span class="text-xs text-gray-400 font-mono">Published in Production Logs</span>
+</div>
+<h3 class="text-lg font-bold text-white group-hover:text-awsOrange transition-colors">
+                Docker container networking and lifecycle management under the hood
+              </h3>
+<p class="text-xs text-gray-400">Bridge vs Host network modes, veth pairs, enabling NAT tables behind Docker daemon, and achieving slim multi-stage production images.</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-mono text-gray-400 shrink-0">
+<span class="px-2 py-0.5 rounded bg-panel border border-cardBorder text-gray-300">Containers</span>
+<span>9 min read</span>
+<span>•</span>
+<span>2024</span>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- END: EngineeringLogs -->
+<!-- BEGIN: EngineeringInPublic -->
+<section class="py-14 border-b border-cardBorder bg-panel/30" data-purpose="github-telemetry" id="public-work">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+<div>
+<div class="text-xs text-awsOrange code-font mb-1">// OPEN SOURCE &amp; PUBLIC COMMITS</div>
+<h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Engineering In Public</h2>
+</div>
+<a class="text-xs font-mono text-awsCyan hover:underline flex items-center gap-1" href="https://github.com" rel="noopener noreferrer" target="_blank">
+<span>github.com/nafees-cloud</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<!-- Git Activity Simulation Grid -->
+<div class="p-5 rounded-lg bg-surface border border-cardBorder space-y-3 font-mono">
+<div class="flex items-center justify-between text-xs text-gray-400">
+<span>Current commit cadence: 247 contributions in the last year</span>
+<span class="text-[11px] text-gray-500">Less <span class="text-telemetryGreen">■ ■ ■ ■</span> More</span>
+</div>
+<!-- Heatmap grid representation -->
+<div class="grid grid-cols-12 sm:grid-cols-24 lg:grid-cols-36 gap-1.5 pt-2">
+<span class="w-2.5 h-2.5 rounded-sm bg-cardBorder"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/30"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/60"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/80"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-cardBorder"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/40"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-cardBorder"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/80"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/30"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-cardBorder"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/70"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-cardBorder"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/50"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-cardBorder"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/30"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen/90"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-cardBorder"></span>
+<span class="w-2.5 h-2.5 rounded-sm bg-telemetryGreen"></span>
+</div>
+</div>
+<!-- 4 Production Repositories -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+<div class="p-4 rounded-lg bg-surface border border-cardBorder hover:border-gray-500 transition-colors space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-awsCyan font-bold">aws-three-tier-architecture</span>
+<span class="text-gray-400">★ 24</span>
+</div>
+<p class="text-gray-300 font-sans text-xs">Production modular AWS deployment: VPC, Application Load Balancers, ASG EC2 nodes, Multi-AZ Aurora MySQL with full terraform plan checks.</p>
+<div class="flex items-center gap-3 text-gray-400 text-[10px]">
+<span class="text-purple-400">● HCL / Terraform</span>
+<span>MIT</span>
+<span>Updated 3 days ago</span>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface border border-cardBorder hover:border-gray-500 transition-colors space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-awsCyan font-bold">terraform-aws-infrastructure</span>
+<span class="text-gray-400">★ 19</span>
+</div>
+<p class="text-gray-300 font-sans text-xs">Reusable Terraform modules for resilient networking, IAM role delegation, CloudWatch alarms, and KMS encrypted remote state storage.</p>
+<div class="flex items-center gap-3 text-gray-400 text-[10px]">
+<span class="text-purple-400">● HCL</span>
+<span>Apache</span>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface border border-cardBorder hover:border-gray-500 transition-colors space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-awsCyan font-bold">docker-cicd-pipeline</span>
+<span class="text-gray-400">★ 17</span>
+</div>
+<p class="text-gray-300 font-sans text-xs">Continuous delivery configuration with GitHub Actions, linting matrices, multi-stage Docker builds, and Amazon ECS continuous rollout triggers.</p>
+<div class="flex items-center gap-3 text-gray-400 text-[10px]">
+<span class="text-awsCyan">● Shell / Docker</span>
+<span>MIT</span>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface border border-cardBorder hover:border-gray-500 transition-colors space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-awsCyan font-bold">aws-networking-labs</span>
+<span class="text-gray-400">★ 12</span>
+</div>
+<p class="text-gray-300 font-sans text-xs">Hands-on Bash and python scripts for inspecting subnet routing, testing latency between VPC peering links, and verifying firewall security group rules.</p>
+<div class="flex items-center gap-3 text-gray-400 text-[10px]">
+<span class="text-yellow-400">● Python</span>
+<span>MIT</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: EngineeringInPublic -->
+<!-- BEGIN: VerifiedCredentials -->
+<section class="py-12 border-b border-cardBorder" data-purpose="credentials">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="p-6 rounded-lg bg-surface border border-cardBorder flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center space-x-4">
+<div class="w-14 h-14 rounded-lg bg-awsOrange/10 border border-awsOrange/30 flex items-center justify-center shrink-0">
+<svg class="w-8 h-8 text-awsOrange" fill="currentColor" viewbox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"></path></svg>
+</div>
+<div>
+<div class="text-xs font-mono text-gray-400">CREDENTIAL PATH</div>
+<h3 class="text-lg font-bold text-white">AWS Certified Solutions Architect – Associate</h3>
+<p class="text-xs text-gray-300 mt-0.5">Comprehensive mastery of AWS architectural design patterns, multi-tier high availability, VPC security, and cost optimization.</p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0 font-mono text-xs">
+<span class="px-3 py-1 rounded bg-telemetryGreen/15 text-telemetryGreen border border-telemetryGreen/30">
+              ● SAA-C03 EXAM TRACK READY
+            </span>
+<span class="text-gray-400">TARGET COMPLETION: Q1 2025</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: VerifiedCredentials -->
+<!-- BEGIN: ContactControlPlane -->
+<section class="py-20 border-b border-cardBorder relative" data-purpose="contact-control-plane" id="contact">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-surface border border-cardBorder text-xs text-telemetryGreen font-mono">
+<span class="w-2 h-2 rounded-full bg-telemetryGreen"></span>
+          READY FOR HIGH-IMPACT CLOUD ROLES
+        </div>
+<h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+          Let's build reliable systems together.
+        </h2>
+<p class="text-base text-gray-300 max-w-xl mx-auto leading-relaxed">
+          Interested in AWS infrastructure, DevOps automation, cloud migrations, or resilient systems engineering? Let's connect and discuss how I can contribute to your engineering organization.
+        </p>
+<!-- Direct CTA Buttons -->
+<div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+<a class="px-6 py-3 rounded-lg text-sm font-semibold bg-awsOrange text-black hover:bg-awsOrange/90 transition-all flex items-center gap-2 shadow-lg" href="mailto:nafeesurrehman@example.com">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Send Direct Message</span>
+</a>
+<a class="px-5 py-3 rounded-lg text-sm font-medium bg-surface border border-cardBorder text-gray-200 hover:text-white hover:border-gray-500 transition-colors flex items-center gap-2 font-mono" href="https://linkedin.com" rel="noopener noreferrer" target="_blank">
+<svg class="w-4 h-4 text-blue-400" fill="currentColor" viewbox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+<span>Connect on LinkedIn</span>
+</a>
+<a class="px-5 py-3 rounded-lg text-sm font-medium bg-surface border border-cardBorder text-gray-200 hover:text-white hover:border-gray-500 transition-colors flex items-center gap-2 font-mono" href="https://github.com" rel="noopener noreferrer" target="_blank">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path></svg>
+<span>GitHub Activity</span>
+</a>
+</div>
+<div class="pt-8 text-xs font-mono text-gray-500">
+<span class="text-telemetryGreen">nafees@aws</span>:<span class="text-awsCyan">~</span># echo "Build. Automate. Scale."
+          <span class="text-white">➔ "Build. Automate. Scale."</span>
+</div>
+</div>
+</section>
+<!-- END: ContactControlPlane -->
+</main>
+<!-- BEGIN: Footer -->
+<footer class="py-8 bg-obsidian text-xs font-mono text-gray-400" data-purpose="control-plane-footer">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-telemetryGreen"></span>
+<span>System Normal</span>
+<span class="text-gray-600">|</span>
+<span>Built with React + Tailwind</span>
+<span class="text-gray-600">|</span>
+<span>Deployed on AWS</span>
+<span class="text-gray-600">|</span>
+<span>IaC: Terraform</span>
+<span class="text-gray-600">|</span>
+<span>CI/CD: GitHub Actions</span>
+<span class="text-gray-600">|</span>
+<span class="text-gray-300">Pakistan ➔ Global</span>
+</div>
+<div class="text-gray-400 text-[11px]">
+        TELEMETRY: V1.4.0 • COMMIT: 8c3857
+      </div>
+</div>
+</footer>
+<!-- END: Footer -->
+</body></html>

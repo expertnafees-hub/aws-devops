@@ -1,0 +1,14 @@
+# AWS Region
+aws_region = "us-east-1"
+
+# Environment tag
+environment = "production"
+
+# Production domain name
+domain_name = "nafees.cloud"
+
+# Automatically create Route 53 DNS records and SSL Certificate
+create_route53_records = true
+
+# CloudFront Price Class
+price_class = "PriceClass_100"

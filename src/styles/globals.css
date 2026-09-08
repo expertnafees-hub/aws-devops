@@ -1,0 +1,75 @@
+/* Base layout & typography variables */
+:root {
+  --color-obsidian: #070A0F;
+  --color-panel: #0D1117;
+  --color-surface-container: #1c2026;
+  --color-aws-amber: #FF9900;
+  --color-telemetry-cyan: #22D3EE;
+  --color-operational-green: #3FB950;
+  --border-hairline: #21262D;
+}
+
+/* Custom Blueprint Grid */
+.blueprint-grid {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(33, 38, 45, 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(33, 38, 45, 0.4) 1px, transparent 1px);
+}
+
+/* Accessible focus styling for interactive SVG nodes */
+.interactive-svg-node:focus-visible {
+  outline: 2px solid #FF9900;
+  outline-offset: 3px;
+  rx: 6px;
+}
+
+.interactive-svg-node:hover rect {
+  stroke-width: 2.2px;
+  filter: drop-shadow(0 0 4px rgba(255, 153, 0, 0.35));
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070A0F;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #21262D;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #30363D;
+}
+
+/* SVG Flow Animations */
+@keyframes flowDash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.animate-flow-dash {
+  animation: flowDash 1.8s linear infinite;
+}
+
+/* Reduced Motion Overrides */
+@media (prefers-reduced-motion: reduce) {
+  .animate-flow-dash,
+  .animate-terminal-blink,
+  .animate-pulse,
+  .animate-ping,
+  .animate-bounce {
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
+}
