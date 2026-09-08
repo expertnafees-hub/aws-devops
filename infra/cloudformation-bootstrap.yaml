@@ -7,7 +7,7 @@ Parameters:
   GitHubRepo:
     Type: String
     Default: 'expertnafees-hub/aws-devops'
-    Description: GitHub owner and repository name for OIDC subject condition (format: owner/repo)
+    Description: 'GitHub owner and repository name for OIDC subject condition (format owner/repo)'
 
   EnvironmentName:
     Type: String
