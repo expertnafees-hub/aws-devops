@@ -1,0 +1,198 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  AWS Infrastructure for Nafees Ur Rehman DevOps Portfolio.
+  Creates S3 SPA bucket, CloudFront CDN with OAC, and GitHub Actions OIDC IAM Role.
+
+Parameters:
+  GitHubRepo:
+    Type: String
+    Default: 'expertnafees-hub/aws-devops'
+    Description: GitHub owner and repository name for OIDC subject condition (format: owner/repo)
+
+  EnvironmentName:
+    Type: String
+    Default: 'production'
+    Description: Environment name tag
+
+Resources:
+  # ----------------------------------------------------------------------------
+  # 1. GitHub OIDC Identity Provider
+  # ----------------------------------------------------------------------------
+  GitHubActionsOIDCProvider:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: 'https://token.actions.githubusercontent.com'
+      ClientIdList:
+        - 'sts.amazonaws.com'
+      ThumbprintList:
+        - '6938fd4d98bab03faadb97b34396831e3780aea1'
+        - '1c58a3a8518e8759bf075b76b750d4f8d264fcd9'
+
+  # ----------------------------------------------------------------------------
+  # 2. Private S3 Bucket for Website Assets
+  # ----------------------------------------------------------------------------
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'nafees-portfolio-spa-${AWS::AccountId}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      Tags:
+        - Key: Project
+          Value: DevOpsPortfolio
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  # ----------------------------------------------------------------------------
+  # 3. CloudFront Origin Access Control (OAC)
+  # ----------------------------------------------------------------------------
+  CloudFrontOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub '${AWS::StackName}-s3-oac'
+        Description: 'Origin Access Control for Private S3 Website Origin'
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # ----------------------------------------------------------------------------
+  # 4. CloudFront CDN Distribution
+  # ----------------------------------------------------------------------------
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: !Sub 'Production CDN for ${GitHubRepo}'
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
+        PriceClass: PriceClass_100
+        Origins:
+          - DomainName: !GetAtt WebsiteBucket.RegionalDomainName
+            Id: S3Origin
+            OriginAccessControlId: !GetAtt CloudFrontOAC.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          MinTTL: 0
+          DefaultTTL: 86400
+          MaxTTL: 31536000
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 10
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 10
+      Tags:
+        - Key: Project
+          Value: DevOpsPortfolio
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  # ----------------------------------------------------------------------------
+  # 5. S3 Bucket Policy (OAC CloudFront Only)
+  # ----------------------------------------------------------------------------
+  WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref WebsiteBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipalReadOnly
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: 's3:GetObject'
+            Resource: !Sub '${WebsiteBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                'AWS:SourceArn': !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}'
+
+  # ----------------------------------------------------------------------------
+  # 6. IAM Role for GitHub Actions OIDC Deployment
+  # ----------------------------------------------------------------------------
+  GitHubDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'GitHubActions-Deploy-DevOpsPortfolio'
+      Description: 'Allows GitHub Actions runner to sync S3 and invalidate CloudFront via OIDC'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !GetAtt GitHubActionsOIDCProvider.Arn
+            Action: 'sts:AssumeRoleWithWebIdentity'
+            Condition:
+              StringEquals:
+                'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com'
+              StringLike:
+                'token.actions.githubusercontent.com:sub': !Sub 'repo:${GitHubRepo}:*'
+      Policies:
+        - PolicyName: S3AndCloudFrontDeploymentPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: S3SyncPermissions
+                Effect: Allow
+                Action:
+                  - 's3:PutObject'
+                  - 's3:GetObject'
+                  - 's3:ListBucket'
+                  - 's3:DeleteObject'
+                Resource:
+                  - !GetAtt WebsiteBucket.Arn
+                  - !Sub '${WebsiteBucket.Arn}/*'
+              - Sid: CloudFrontInvalidatePermissions
+                Effect: Allow
+                Action:
+                  - 'cloudfront:CreateInvalidation'
+                  - 'cloudfront:GetInvalidation'
+                  - 'cloudfront:GetDistribution'
+                Resource: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}'
+
+# ------------------------------------------------------------------------------
+# Outputs: Copy these 3 values into GitHub Secrets
+# ------------------------------------------------------------------------------
+Outputs:
+  AWS_OIDC_ROLE_ARN:
+    Description: 'IAM Role ARN to configure in GitHub Secret AWS_OIDC_ROLE_ARN'
+    Value: !GetAtt GitHubDeployRole.Arn
+
+  AWS_S3_BUCKET:
+    Description: 'S3 Bucket name to configure in GitHub Secret AWS_S3_BUCKET'
+    Value: !Ref WebsiteBucket
+
+  AWS_CLOUDFRONT_DISTRIBUTION_ID:
+    Description: 'CloudFront Distribution ID to configure in GitHub Secret AWS_CLOUDFRONT_DISTRIBUTION_ID'
+    Value: !Ref CloudFrontDistribution
+
+  LiveWebsiteURL:
+    Description: 'Your live portfolio URL (CloudFront Edge)'
+    Value: !Sub 'https://${CloudFrontDistribution.DomainName}'
