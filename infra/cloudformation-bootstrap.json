@@ -269,7 +269,7 @@
     }
   },
   "Outputs": {
-    "AWS_OIDC_ROLE_ARN": {
+    "AwsOidcRoleArn": {
       "Description": "IAM Role ARN to configure in GitHub Secret AWS_OIDC_ROLE_ARN",
       "Value": {
         "Fn::GetAtt": [
@@ -278,19 +278,19 @@
         ]
       }
     },
-    "AWS_S3_BUCKET": {
+    "AwsS3Bucket": {
       "Description": "S3 Bucket name to configure in GitHub Secret AWS_S3_BUCKET",
       "Value": {
         "Ref": "WebsiteBucket"
       }
     },
-    "AWS_CLOUDFRONT_DISTRIBUTION_ID": {
+    "AwsCloudfrontDistributionId": {
       "Description": "CloudFront Distribution ID to configure in GitHub Secret AWS_CLOUDFRONT_DISTRIBUTION_ID",
       "Value": {
         "Ref": "CloudFrontDistribution"
       }
     },
-    "LiveWebsiteURL": {
+    "LiveWebsiteUrl": {
       "Description": "Your live portfolio URL (CloudFront Edge)",
       "Value": {
         "Fn::Sub": "https://${CloudFrontDistribution.DomainName}"
