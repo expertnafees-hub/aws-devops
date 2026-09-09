@@ -161,7 +161,7 @@ resource "aws_wafv2_web_acl" "waf" {
   count       = var.enable_waf ? 1 : 0
   provider    = aws.acm_provider
   name        = "${replace(var.domain_name, ".", "-")}-cloudfront-waf"
-  description = "Edge WAF v2 protection for CloudFront distribution (Rate Limiting + AWS Common Rule Set)"
+  description = "Edge WAF v2 protection for CloudFront distribution - Rate Limiting and AWS Common Rule Set"
   scope       = "CLOUDFRONT"
 
   default_action {

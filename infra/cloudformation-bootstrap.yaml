@@ -90,7 +90,7 @@ Resources:
     Condition: CreateWAFResources
     Properties:
       Name: !Sub '${AWS::StackName}-cloudfront-waf'
-      Description: 'Edge WAF v2 protection for CloudFront distribution (Rate Limiting + AWS Common Rule Set)'
+      Description: 'Edge WAF v2 protection for CloudFront distribution - Rate Limiting and AWS Common Rule Set'
       Scope: CLOUDFRONT
       DefaultAction:
         Allow: {}
