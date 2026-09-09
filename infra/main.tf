@@ -336,3 +336,85 @@ resource "aws_route53_record" "www_a" {
     evaluate_target_health = false
   }
 }
+
+# -----------------------------------------------------------------------------
+# SRE OBSERVABILITY: CLOUDWATCH 4XX CLIENT ERROR RATE ALARM
+# -----------------------------------------------------------------------------
+resource "aws_cloudwatch_metric_alarm" "cloudfront_4xx_errors" {
+  provider            = aws.acm_provider
+  alarm_name          = "${replace(var.domain_name, ".", "-")}-4xx-error-rate-alarm"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "4xxErrorRate"
+  namespace           = "AWS/CloudFront"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 10.0
+  alarm_description   = "Trigger alert if CloudFront 4xx client error rate exceeds 10% in a 5-minute window"
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    DistributionId = aws_cloudfront_distribution.cdn.id
+    Region         = "Global"
+  }
+}
+
+# -----------------------------------------------------------------------------
+# SRE OBSERVABILITY: CLOUDWATCH EXECUTIVE DASHBOARD
+# -----------------------------------------------------------------------------
+resource "aws_cloudwatch_dashboard" "sre_dashboard" {
+  provider       = aws.acm_provider
+  dashboard_name = "${replace(var.domain_name, ".", "-")}-sre-dashboard"
+
+  dashboard_body = jsonencode({
+    widgets = [
+      {
+        type   = "text"
+        x      = 0
+        y      = 0
+        width  = 24
+        height = 3
+        properties = {
+          markdown = "# 🚀 Nafees Ur Rehman — SRE Production Command Center\n**Architecture:** Amazon CloudFront CDN ➔ S3 Private Origin (OAC) | **Observability:** CloudWatch Metrics & Alarms\n*Domain:* `${var.domain_name}` | *Region:* Global (`us-east-1`)"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 3
+        width  = 12
+        height = 5
+        properties = {
+          metrics = [
+            ["AWS/CloudFront", "Requests", "DistributionId", aws_cloudfront_distribution.cdn.id, "Region", "Global", { stat = "Sum", label = "Total Requests" }]
+          ]
+          view   = "timeSeries"
+          region = "us-east-1"
+          title  = "CloudFront Global Ingress Requests"
+          period = 300
+        }
+      },
+      {
+        type   = "metric"
+        x      = 12
+        y      = 3
+        width  = 12
+        height = 5
+        properties = {
+          metrics = [
+            ["AWS/CloudFront", "5xxErrorRate", "DistributionId", aws_cloudfront_distribution.cdn.id, "Region", "Global", { stat = "Average", color = "#d62728", label = "5xx Server Error Rate (%)" }],
+            [".", "4xxErrorRate", ".", ".", ".", ".", { stat = "Average", color = "#ff7f0e", label = "4xx Client Error Rate (%)" }]
+          ]
+          view   = "timeSeries"
+          region = "us-east-1"
+          title  = "Error Rates (4xx & 5xx) Telemetry"
+          period = 300
+          yAxis = {
+            left = { min = 0 }
+          }
+        }
+      }
+    ]
+  })
+}
+
