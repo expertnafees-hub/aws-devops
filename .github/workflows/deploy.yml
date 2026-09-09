@@ -40,6 +40,15 @@ jobs:
       - name: Build Production Bundle
         run: npm run build
 
+      - name: DevSecOps Vulnerability Scan (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'
+
       - name: Archive Production Artifacts
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
@@ -71,6 +80,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: us-east-1
+          audience: sts.amazonaws.com
 
       - name: Configure AWS Credentials via Access Keys
         if: env.HAS_AWS_ACCESS_KEY != ''
@@ -95,12 +105,12 @@ jobs:
             --delete \
             --cache-control "public,max-age=0,must-revalidate"
 
-      - name: Invalidate CloudFront Edge Caches
+      - name: Invalidate CloudFront Selective Edge Caches (FinOps Compliant)
         run: |
-          echo "Creating CloudFront cache invalidation for instant propagation..."
+          echo "Creating targeted CloudFront cache invalidation for dynamic entry points..."
           INVALIDATION_ID=$(aws cloudfront create-invalidation \
             --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*" \
+            --paths "/index.html" "/robots.txt" "/sitemap.xml" \
             --query "Invalidation.Id" \
             --output text)
-          echo "Invalidation created: ${INVALIDATION_ID}"
+          echo "FinOps Invalidation created: ${INVALIDATION_ID}"
