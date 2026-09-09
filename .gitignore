@@ -10,6 +10,7 @@ lerna-debug.log*
 # Archives
 *.zip
 .profile_repo/
+Screenshot*.png
 
 node_modules
 dist
