@@ -16,6 +16,25 @@
       "Type": "String",
       "Default": "expertnafees@gmail.com",
       "Description": "Email address to receive CloudWatch downtime and error rate alerts"
+    },
+    "EnableWAF": {
+      "Type": "String",
+      "Default": "true",
+      "AllowedValues": [
+        "true",
+        "false"
+      ],
+      "Description": "Toggle AWS WAF v2 WebACL edge protection on CloudFront distribution for FinOps cost control"
+    }
+  },
+  "Conditions": {
+    "CreateWAFResources": {
+      "Fn::Equals": [
+        {
+          "Ref": "EnableWAF"
+        },
+        "true"
+      ]
     }
   },
   "Resources": {
@@ -84,6 +103,75 @@
         }
       }
     },
+    "CloudFrontWebACL": {
+      "Type": "AWS::WAFv2::WebACL",
+      "Condition": "CreateWAFResources",
+      "Properties": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-cloudfront-waf"
+        },
+        "Description": "Edge WAF v2 protection for CloudFront distribution (Rate Limiting + AWS Common Rule Set)",
+        "Scope": "CLOUDFRONT",
+        "DefaultAction": {
+          "Allow": {}
+        },
+        "VisibilityConfig": {
+          "SampledRequestsEnabled": true,
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "CloudFrontWebACLMetric"
+        },
+        "Rules": [
+          {
+            "Name": "RateLimit300RequestsPer5Minutes",
+            "Priority": 1,
+            "Action": {
+              "Block": {}
+            },
+            "Statement": {
+              "RateBasedStatement": {
+                "Limit": 300,
+                "AggregateKeyType": "IP"
+              }
+            },
+            "VisibilityConfig": {
+              "SampledRequestsEnabled": true,
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "RateLimit300RequestsPer5MinutesMetric"
+            }
+          },
+          {
+            "Name": "AWSManagedRulesCommonRuleSet",
+            "Priority": 2,
+            "OverrideAction": {
+              "None": {}
+            },
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "VendorName": "AWS",
+                "Name": "AWSManagedRulesCommonRuleSet"
+              }
+            },
+            "VisibilityConfig": {
+              "SampledRequestsEnabled": true,
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWSManagedRulesCommonRuleSetMetric"
+            }
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Project",
+            "Value": "DevOpsPortfolio"
+          },
+          {
+            "Key": "Environment",
+            "Value": {
+              "Ref": "EnvironmentName"
+            }
+          }
+        ]
+      }
+    },
     "CloudFrontDistribution": {
       "Type": "AWS::CloudFront::Distribution",
       "Properties": {
@@ -95,6 +183,20 @@
           "DefaultRootObject": "index.html",
           "HttpVersion": "http2and3",
           "PriceClass": "PriceClass_100",
+          "WebACLId": {
+            "Fn::If": [
+              "CreateWAFResources",
+              {
+                "Fn::GetAtt": [
+                  "CloudFrontWebACL",
+                  "Arn"
+                ]
+              },
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          },
           "Origins": [
             {
               "DomainName": {
@@ -370,6 +472,26 @@
       "Description": "SNS Topic ARN for CloudWatch SRE Alerts",
       "Value": {
         "Ref": "DevOpsAlertsSNSTopic"
+      }
+    },
+    "WebACLArn": {
+      "Condition": "CreateWAFResources",
+      "Description": "ARN of the AWS WAF v2 WebACL associated with CloudFront",
+      "Value": {
+        "Fn::GetAtt": [
+          "CloudFrontWebACL",
+          "Arn"
+        ]
+      }
+    },
+    "WebACLId": {
+      "Condition": "CreateWAFResources",
+      "Description": "ID of the AWS WAF v2 WebACL associated with CloudFront",
+      "Value": {
+        "Fn::GetAtt": [
+          "CloudFrontWebACL",
+          "Id"
+        ]
       }
     }
   }

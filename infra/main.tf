@@ -155,6 +155,75 @@ resource "aws_acm_certificate_validation" "cert" {
 }
 
 # -----------------------------------------------------------------------------
+# AWS WAF v2 WEB ACL (Edge Rate Limiting & Managed Rules)
+# -----------------------------------------------------------------------------
+resource "aws_wafv2_web_acl" "waf" {
+  count       = var.enable_waf ? 1 : 0
+  provider    = aws.acm_provider
+  name        = "${replace(var.domain_name, ".", "-")}-cloudfront-waf"
+  description = "Edge WAF v2 protection for CloudFront distribution (Rate Limiting + AWS Common Rule Set)"
+  scope       = "CLOUDFRONT"
+
+  default_action {
+    allow {}
+  }
+
+  rule {
+    name     = "RateLimit300RequestsPer5Minutes"
+    priority = 1
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = 300
+        aggregate_key_type = "IP"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "RateLimit300RequestsPer5MinutesMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWSManagedRulesCommonRuleSet"
+    priority = 2
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "AWSManagedRulesCommonRuleSetMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "CloudFrontWebACLMetric"
+    sampled_requests_enabled   = true
+  }
+
+  tags = {
+    Name = "${replace(var.domain_name, ".", "-")}-cloudfront-waf"
+  }
+}
+
+# -----------------------------------------------------------------------------
 # CLOUDFRONT CDN DISTRIBUTION
 # -----------------------------------------------------------------------------
 resource "aws_cloudfront_distribution" "cdn" {
@@ -164,6 +233,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   default_root_object = "index.html"
   price_class         = var.price_class
   aliases             = var.create_route53_records ? [var.domain_name, "www.${var.domain_name}"] : []
+  web_acl_id          = var.enable_waf ? aws_wafv2_web_acl.waf[0].arn : null
 
   origin {
     domain_name              = aws_s3_bucket.website.bucket_regional_domain_name

@@ -27,3 +27,9 @@ variable "price_class" {
   type        = string
   default     = "PriceClass_100"
 }
+
+variable "enable_waf" {
+  description = "Toggle AWS WAF v2 WebACL edge protection on CloudFront distribution for FinOps cost control"
+  type        = bool
+  default     = true
+}

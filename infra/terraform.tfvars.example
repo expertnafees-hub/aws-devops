@@ -12,3 +12,6 @@ create_route53_records = true
 
 # CloudFront Price Class
 price_class = "PriceClass_100"
+
+# Enable AWS WAF v2 WebACL Edge Defense (Set to false for FinOps cost-saving)
+enable_waf = true

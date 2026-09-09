@@ -22,3 +22,13 @@ output "website_url" {
   description = "Production URL of the website"
   value       = "https://${var.domain_name}"
 }
+
+output "web_acl_arn" {
+  description = "ARN of the CloudFront WAF v2 WebACL"
+  value       = var.enable_waf ? aws_wafv2_web_acl.waf[0].arn : null
+}
+
+output "web_acl_id" {
+  description = "ID of the CloudFront WAF v2 WebACL"
+  value       = var.enable_waf ? aws_wafv2_web_acl.waf[0].id : null
+}
