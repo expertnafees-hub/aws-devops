@@ -14,6 +14,11 @@ Parameters:
     Default: 'production'
     Description: Environment name tag
 
+  AlertEmail:
+    Type: String
+    Default: 'expertnafees@gmail.com'
+    Description: 'Email address to receive CloudWatch downtime and error rate alerts'
+
 Resources:
   # ----------------------------------------------------------------------------
   # 1. GitHub OIDC Identity Provider
@@ -177,8 +182,50 @@ Resources:
                   - 'cloudfront:GetDistribution'
                 Resource: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}'
 
+  # ----------------------------------------------------------------------------
+  # 7. SRE Observability: SNS Topic & Email Subscription
+  # ----------------------------------------------------------------------------
+  DevOpsAlertsSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub '${AWS::StackName}-alerts'
+      DisplayName: 'DevOps Portfolio SRE Alerts'
+
+  DevOpsAlertsSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref DevOpsAlertsSNSTopic
+      Protocol: email
+      Endpoint: !Ref AlertEmail
+
+  # ----------------------------------------------------------------------------
+  # 8. SRE Observability: CloudWatch 5xx Error Rate Alarm
+  # ----------------------------------------------------------------------------
+  CloudFront5xxAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub '${AWS::StackName}-5xx-error-rate-alarm'
+      AlarmDescription: 'Trigger alert if CloudFront 5xx error rate exceeds 1% in a 5-minute window'
+      Namespace: AWS/CloudFront
+      MetricName: 5xxErrorRate
+      Dimensions:
+        - Name: DistributionId
+          Value: !Ref CloudFrontDistribution
+        - Name: Region
+          Value: Global
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1.0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref DevOpsAlertsSNSTopic
+      OKActions:
+        - !Ref DevOpsAlertsSNSTopic
+
 # ------------------------------------------------------------------------------
-# Outputs: Copy these 3 values into GitHub Secrets
+# Outputs: Copy these values into GitHub Secrets
 # ------------------------------------------------------------------------------
 Outputs:
   AwsOidcRoleArn:
@@ -196,3 +243,7 @@ Outputs:
   LiveWebsiteUrl:
     Description: 'Your live portfolio URL (CloudFront Edge)'
     Value: !Sub 'https://${CloudFrontDistribution.DomainName}'
+
+  SnsTopicArn:
+    Description: 'SNS Topic ARN for CloudWatch SRE Alerts'
+    Value: !Ref DevOpsAlertsSNSTopic
