@@ -160,8 +160,11 @@ Resources:
             Condition:
               StringEquals:
                 'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com'
+                'token.actions.githubusercontent.com:repository': 'expertnafees-hub/aws-devops'
               StringLike:
-                'token.actions.githubusercontent.com:sub': !Sub 'repo:${GitHubRepo}:*'
+                'token.actions.githubusercontent.com:sub':
+                  - 'repo:expertnafees-hub/aws-devops:*'
+                  - 'repo:expertnafees-hub@*/aws-devops@*:*'
       Policies:
         - PolicyName: S3AndCloudFrontDeploymentPolicy
           PolicyDocument:

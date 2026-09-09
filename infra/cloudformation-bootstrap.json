@@ -219,12 +219,14 @@
               "Action": "sts:AssumeRoleWithWebIdentity",
               "Condition": {
                 "StringEquals": {
-                  "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+                  "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+                  "token.actions.githubusercontent.com:repository": "expertnafees-hub/aws-devops"
                 },
                 "StringLike": {
-                  "token.actions.githubusercontent.com:sub": {
-                    "Fn::Sub": "repo:${GitHubRepo}:*"
-                  }
+                  "token.actions.githubusercontent.com:sub": [
+                    "repo:expertnafees-hub/aws-devops:*",
+                    "repo:expertnafees-hub@*/aws-devops@*:*"
+                  ]
                 }
               }
             }
