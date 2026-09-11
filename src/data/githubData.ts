@@ -3,12 +3,12 @@ import { GitRepository } from '../types';
 export const githubRepositories: GitRepository[] = [
   {
     name: 'aws-three-tier-architecture',
-    description: 'Production modular AWS deployment: VPC, Application Load Balancers, ASG EC2 nodes, Multi-AZ Aurora MySQL with full terraform plan checks.',
+    description: 'Enterprise AWS 3-tier architecture: Zero-SSH SSM access, Route 53/ACM TLS 1.3 HTTPS, chaos-tested ASG self-healing, and CloudWatch full-stack telemetry.',
     stars: 24,
     language: 'HCL / Terraform',
     languageColor: '#ff9900',
     branch: 'main',
-    updatedAt: 'Updated 2 days ago',
+    updatedAt: 'Updated today',
     githubUrl: 'https://github.com/expertnafees-hub/aws-three-tier-architecture'
   },
   {

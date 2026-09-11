@@ -85,16 +85,16 @@ export const ProjectsSection: React.FC = () => {
               {/* Topology Flow Block */}
               <div className="lg:col-span-6 rounded-lg bg-surface-container-lowest border border-cardBorder p-5">
                 <div className="flex items-center justify-between pb-3 mb-4 bg-surface-container-high/40 p-2 rounded text-[11px] font-mono text-outline border border-cardBorder/60">
-                  <span>TOPOLOGY FLOW DIAGRAM</span>
-                  <span className="text-tertiary">SSL/TLS 443 → PORT 8080 → 3306</span>
+                  <span>TOPOLOGY FLOW &amp; TELEMETRY</span>
+                  <span className="text-tertiary">HTTPS :443 → PORT 80 → PORT 3306</span>
                 </div>
                 <div className="space-y-2.5 font-mono text-xs">
                   <div className="p-2.5 rounded bg-surface-container border border-cardBorder flex items-center justify-between text-secondary">
                     <span className="flex items-center gap-2">
                       <Globe className="w-4 h-4" />
-                      <span>Public Web: Route 53 + CloudFront</span>
+                      <span>Public Web: Route 53 + ACM HTTPS</span>
                     </span>
-                    <span className="text-[10px] text-on-surface-variant">Edge PoPs</span>
+                    <span className="text-[10px] text-on-surface-variant">TLS 1.3 Termination</span>
                   </div>
                   <div className="flex justify-center text-outline text-xs">▼</div>
                   <div className="p-2.5 rounded bg-surface-container border border-cardBorder flex items-center justify-between text-primary">
@@ -102,23 +102,23 @@ export const ProjectsSection: React.FC = () => {
                       <Split className="w-4 h-4" />
                       <span>Application Load Balancer (ALB)</span>
                     </span>
-                    <span className="text-[10px] text-on-surface-variant">Public Subnets</span>
+                    <span className="text-[10px] text-on-surface-variant">HTTP 80 ➔ 443 Redirect</span>
                   </div>
                   <div className="flex justify-center text-outline text-xs">▼</div>
                   <div className="p-2.5 rounded bg-surface-container border border-cardBorder flex items-center justify-between text-on-surface">
                     <span className="flex items-center gap-2">
                       <Server className="w-4 h-4" />
-                      <span>EC2 Auto Scaling Target Group</span>
+                      <span>EC2 Auto Scaling Fleet (SSM Managed)</span>
                     </span>
-                    <span className="text-[10px] text-tertiary">Private Subnets</span>
+                    <span className="text-[10px] text-tertiary">Zero Port 22 SSH</span>
                   </div>
                   <div className="flex justify-center text-outline text-xs">▼</div>
                   <div className="p-2.5 rounded bg-surface-container border border-cardBorder flex items-center justify-between text-tertiary">
                     <span className="flex items-center gap-2">
                       <Database className="w-4 h-4" />
-                      <span>Multi-AZ Aurora Cluster</span>
+                      <span>Multi-AZ RDS MySQL + Secrets Vault</span>
                     </span>
-                    <span className="text-[10px] text-error font-medium">Isolated Subnets</span>
+                    <span className="text-[10px] text-error font-medium">Air-Gapped Subnets</span>
                   </div>
                 </div>
               </div>

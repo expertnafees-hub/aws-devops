@@ -4,59 +4,64 @@ export const projectsData: ProjectCaseStudy[] = [
   {
     id: 'three-tier-architecture',
     projectNumber: 'PROJECT_01',
-    tag: 'PRODUCTION SPEC',
+    tag: 'PRODUCTION SPEC // 4 UPGRADES VERIFIED',
     tagColor: 'tertiary',
     title: 'Production AWS Three-Tier Architecture',
-    summary: 'Designed and provisioned a fault-tolerant, highly scalable three-tier web application architecture across 2 Availability Zones. Built with complete separation of public web, private compute, and isolated database subnets.',
-    fullDescription: 'A multi-tier cloud infrastructure blueprint engineered according to the AWS Well-Architected Framework. Traffic enters via Amazon Route 53 with DNS latency routing and Amazon CloudFront Edge locations. An internet-facing Application Load Balancer distributes requests across stateless EC2 compute instances residing in private subnets across two AZs. An Auto Scaling Group (ASG) dynamically provisions instances based on CPU and request latency metrics. The database layer consists of an Amazon Aurora Multi-AZ MySQL cluster stationed in isolated data subnets with zero internet ingress or egress routing.',
+    summary: 'Enterprise AWS Three-Tier Architecture across dual AZs with Zero-SSH AWS Systems Manager (SSM) access, automated Route 53/ACM HTTPS (TLS 1.3), chaos-tested ASG self-healing (<90s failover with 0 dropped requests), and full-stack CloudWatch observability with SNS alerting.',
+    fullDescription: 'A battle-tested cloud infrastructure blueprint engineered strictly according to the AWS Well-Architected Framework and audited through 4 production upgrades. Public client traffic enters via Amazon Route 53 with automated ACM TLS 1.3 certificate validation and permanent HTTP 80 -> 443 redirection on the Application Load Balancer. The compute tier runs stateless Amazon Linux 2023 EC2 instances in an Auto Scaling Group across dual Availability Zones, hardened with IMDSv2 and managed via AWS Systems Manager Session Manager (zero Port 22 SSH exposure). The database tier features a Multi-AZ Amazon RDS MySQL instance residing in isolated subnets with dynamic AES-256 KMS AWS Secrets Manager credentials. Operational resilience is proven via an empirical chaos recovery drill (100% 200 OK during instance termination) and codified CloudWatch metric alarms monitoring 5xx error rates, p95 target latency SLAs, and fleet health.',
     metadata: [
-      { icon: 'domain', label: '2 Availability Zones', highlightColor: 'secondary' },
-      { icon: 'hub', label: '6 Segmented Subnets', highlightColor: 'primary' },
-      { icon: 'speed', label: 'Auto Scaling (2-6 nodes)', highlightColor: 'tertiary' },
-      { icon: 'storage', label: 'Private Multi-AZ Aurora', highlightColor: 'secondary' },
+      { icon: 'shield', label: 'Zero-SSH SSM Access', highlightColor: 'primary' },
+      { icon: 'lock', label: 'TLS 1.3 ACM HTTPS', highlightColor: 'secondary' },
+      { icon: 'speed', label: 'Chaos Drill: 0 Drops', highlightColor: 'tertiary' },
+      { icon: 'activity', label: 'CloudWatch Telemetry', highlightColor: 'primary' },
     ],
     architectureOverview: [
-      'Edge Tier: Route 53 DNS + CloudFront CDN + AWS WAF (Web Application Firewall)',
-      'Public Web Tier: 2 Public Subnets with Internet Gateway and Dual-AZ redundant NAT Gateways',
-      'Private Compute Tier: 2 Private Subnets housing EC2 ASG nodes running custom AMI systemd services',
-      'Data Tier: 2 Isolated Subnets housing Amazon Aurora MySQL Multi-AZ cluster with KMS encryption',
-      'Security: Granular Security Groups enforcing strict least-privilege protocol & port isolation'
+      'Upgrade 1 (Zero-SSH SSM Management): Port 22 eliminated from all Security Groups; instances assume an IAM role with AmazonSSMManagedInstanceCore and strictly scoped Secrets Manager read access for auditable Session Manager connectivity.',
+      'Upgrade 2 (Automated TLS 1.3 & HTTPS Redirection): Application Load Balancer terminates modern TLS 1.3/1.2 via AWS Certificate Manager (ACM) with automated DNS validation and permanent HTTP 80 to 443 301 redirection.',
+      'Upgrade 3 (Empirical Chaos Recovery Drill): Codified continuous 1-second HTTP probe monitor (scripts/chaos_test.sh) and failure runbook proving zero dropped requests during active node termination; ASG auto-spawns replacement capacity within 90 seconds.',
+      'Upgrade 4 (Full-Stack Observability & Alarms): Codified CloudWatch alarms for ALB 5xx errors, p95 target latency SLA (>1.0s), unhealthy targets, and ASG CPU utilization (>=80%) linked to Amazon SNS alert notifications.',
+      'Isolated Data Tier: Multi-AZ RDS MySQL in isolated subnets with dynamic AES-256 KMS AWS Secrets Manager credentials (zero hardcoded secrets).'
     ],
-    techStack: ['AWS VPC', 'Route 53', 'CloudFront', 'ALB', 'EC2 Auto Scaling', 'Amazon Aurora Multi-AZ', 'KMS', 'Terraform'],
+    techStack: ['Terraform', 'AWS VPC', 'Route 53', 'ACM HTTPS', 'ALB', 'EC2 Auto Scaling', 'AWS SSM', 'RDS MySQL', 'Secrets Manager', 'CloudWatch', 'Amazon SNS'],
     iacSnippet: {
-      filename: 'three_tier_vpc.tf',
+      filename: 'alb_https_and_alarms.tf',
       language: 'hcl',
-      code: `module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+      code: `# Upgrade 2: ALB HTTPS Port 443 Listener with TLS 1.3
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.main.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = aws_acm_certificate_validation.cert[0].certificate_arn
 
-  name = "production-three-tier-vpc"
-  cidr = "10.0.0.0/16"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.arn
+  }
+}
 
-  azs              = ["us-east-1a", "us-east-1b"]
-  public_subnets   = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnets  = ["10.0.10.0/24", "10.0.11.0/24"]
-  database_subnets = ["10.0.20.0/24", "10.0.21.0/24"]
+# Upgrade 4: Real-time Alert on Target 5XX Server Errors
+resource "aws_cloudwatch_metric_alarm" "alb_5xx" {
+  alarm_name          = "three-tier-prod-alb-high-5xx-errors"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "HTTPCode_Target_5XX_Count"
+  namespace           = "AWS/ApplicationELB"
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 0
+  alarm_actions       = [aws_sns_topic.alerts.arn]
 
-  enable_nat_gateway     = true
-  single_nat_gateway     = false
-  one_nat_gateway_per_az = true
-  enable_vpn_gateway     = false
-
-  create_database_subnet_route_table     = true
-  create_database_internet_gateway_route = false
-
-  tags = {
-    Environment = "production"
-    Tier        = "3-tier-core"
+  dimensions = {
+    LoadBalancer = aws_lb.main.arn_suffix
   }
 }`
     },
     metrics: [
-      { label: 'Uptime SLA', value: '99.99%' },
-      { label: 'Subnet Count', value: '6 Subnets' },
-      { label: 'Failover RTO', value: '< 30s' },
-      { label: 'Public IP Exposure', value: 'ALB Only' }
+      { label: 'Uptime (Chaos Test)', value: '100% 200 OK' },
+      { label: 'Self-Healing RTO', value: '< 90s' },
+      { label: 'Management Surface', value: 'Zero Port 22' },
+      { label: 'Transit Security', value: 'TLS 1.3 / ACM' }
     ],
     githubUrl: 'https://github.com/expertnafees-hub/aws-three-tier-architecture'
   },
