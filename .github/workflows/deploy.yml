@@ -37,6 +37,9 @@ jobs:
       - name: Typecheck TypeScript Codebase
         run: npm run typecheck
 
+      - name: Run Deterministic Infrastructure Gate (B1-B11)
+        run: npm run gate
+
       - name: Build Production Bundle
         run: npm run build
 
