@@ -1,5 +1,11 @@
 # Nafees Ur Rehman — AWS DevOps & Cloud Infrastructure Platform
 
+[![Production Deploy & CloudFront Invalidation](https://github.com/expertnafees-hub/aws-devops/actions/workflows/deploy.yml/badge.svg)](https://github.com/expertnafees-hub/aws-devops/actions)
+[![Live Edge](https://img.shields.io/badge/Live_Edge-drqzr31lhv59g.cloudfront.net-FF9900?logo=amazon-aws&logoColor=white)](https://drqzr31lhv59g.cloudfront.net)
+[![AWS WAF](https://img.shields.io/badge/Security-AWS_WAF_v2_Active-3FB950?logo=awswaf&logoColor=white)](https://aws.amazon.com/waf/)
+[![Auth: GitHub OIDC](https://img.shields.io/badge/IAM-Zero--Secret_OIDC-22D3EE?logo=openid&logoColor=white)](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A production-grade, instrument-rated personal engineering platform for **Nafees Ur Rehman**, AWS DevOps & Cloud Engineer. Built with **React 18**, **TypeScript (Strict mode)**, **Vite**, **Tailwind CSS**, and **Terraform**.
 
 Designed around the operational gravity and precision of developer tooling (GitHub Dark, Linear, AWS CloudWatch) rather than a generic resume portfolio.
