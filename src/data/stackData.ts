@@ -1,108 +1,60 @@
 import { StackDomain } from '../types';
 
+// Project use means public code or a recorded workflow, not assessed mastery or production experience.
 export const stackData: StackDomain[] = [
   {
-    id: 'cloud-infra',
-    title: 'Cloud Infrastructure',
-    icon: 'cloud',
-    accentColor: 'primary',
-    description: 'AWS production topology with multi-tier isolation, least-privilege identity, and high-availability patterns.',
+    id: 'cloud-infra', title: 'Cloud Infrastructure', icon: 'cloud', accentColor: 'primary',
+    description: 'AWS resources used in project configuration; S3 and CloudFront delivery have a recorded run.',
     skills: [
-      { name: 'Amazon EC2', status: 'proficient', highlight: true },
-      { name: 'Amazon VPC', status: 'proficient', highlight: true },
-      { name: 'AWS IAM', status: 'proficient', highlight: true },
-      { name: 'Amazon S3', status: 'proficient', highlight: true },
-      { name: 'CloudFront', status: 'proficient', highlight: true },
-      { name: 'Route 53', status: 'proficient', highlight: true },
-      { name: 'Amazon RDS Aurora', status: 'proficient', highlight: true },
-      { name: 'AWS KMS', status: 'proficient' },
-      { name: 'CloudWatch', status: 'proficient', highlight: true },
-      { name: 'AWS WAF', status: 'learning' },
-      { name: 'AWS Secrets Manager', status: 'proficient' }
-    ]
+      { name: 'Amazon VPC', status: 'project-use' }, { name: 'Amazon EC2 / ALB', status: 'project-use' },
+      { name: 'AWS IAM', status: 'project-use' }, { name: 'Amazon S3', status: 'project-use', highlight: true },
+      { name: 'CloudFront', status: 'project-use', highlight: true }, { name: 'RDS MySQL', status: 'project-use' },
+      { name: 'Secrets Manager', status: 'project-use' },
+    ],
   },
   {
-    id: 'iac',
-    title: 'Infrastructure as Code',
-    icon: 'code_blocks',
-    accentColor: 'secondary',
-    description: 'Declarative lifecycle management, zero-drift remote states, reusable modular packages, and testing.',
+    id: 'iac', title: 'Infrastructure as Code', icon: 'code_blocks', accentColor: 'secondary',
+    description: 'Terraform configuration, reusable EKS modules, and schema validation. Shared state and deployment tests remain learning milestones.',
     skills: [
-      { name: 'Terraform v1.8+', status: 'proficient', highlight: true },
-      { name: 'HCL Modules', status: 'proficient', highlight: true },
-      { name: 'Remote S3 State', status: 'proficient', highlight: true },
-      { name: 'DynamoDB State Locks', status: 'proficient', highlight: true },
-      { name: 'AWS CloudFormation', status: 'learning' },
-      { name: 'tfsec Security Lint', status: 'proficient' },
-      { name: 'tflint', status: 'proficient' },
-      { name: 'Terragrunt', status: 'learning' },
-      { name: 'OpenTofu', status: 'planned' }
-    ]
+      { name: 'Terraform / HCL', status: 'project-use', highlight: true }, { name: 'Terraform Modules', status: 'project-use' },
+      { name: 'CloudFormation', status: 'project-use' }, { name: 'tfsec', status: 'project-use' },
+      { name: 'S3 Remote State / Locking', status: 'learning' }, { name: 'Deployment and Restore Tests', status: 'planned' },
+    ],
   },
   {
-    id: 'containers',
-    title: 'Containers & Kubernetes',
-    icon: 'developer_board',
-    accentColor: 'tertiary',
-    description: 'Multi-stage container builds, vulnerability scans, ingress controllers, and cluster operations.',
+    id: 'containers', title: 'Containers & Kubernetes', icon: 'developer_board', accentColor: 'tertiary',
+    description: 'Container builds and image publication are recorded. EKS and Helm configuration is available; cloud cluster operations are pending.',
     skills: [
-      { name: 'Docker BuildKit', status: 'proficient', highlight: true },
-      { name: 'Kubernetes v1.29', status: 'proficient', highlight: true },
-      { name: 'Amazon ECS Fargate', status: 'proficient', highlight: true },
-      { name: 'Amazon EKS', status: 'proficient', highlight: true },
-      { name: 'Helm 3 Charts', status: 'learning' },
-      { name: 'Amazon ECR', status: 'proficient', highlight: true },
-      { name: 'Distroless Bases', status: 'proficient' },
-      { name: 'Trivy Scanning', status: 'proficient' }
-    ]
+      { name: 'Docker', status: 'project-use', highlight: true }, { name: 'Amazon ECR', status: 'project-use', highlight: true },
+      { name: 'Amazon EKS Configuration', status: 'project-use' }, { name: 'Helm Configuration', status: 'project-use' },
+      { name: 'Kubernetes Operations', status: 'learning' }, { name: 'Container Rollback Validation', status: 'planned' },
+    ],
   },
   {
-    id: 'cicd',
-    title: 'CI/CD & Delivery',
-    icon: 'rocket_launch',
-    accentColor: 'primary',
-    description: 'Automated delivery cycles, pre-flight linting, container scanning, and zero-downtime blue/green rollouts.',
+    id: 'cicd', title: 'CI/CD & Delivery', icon: 'rocket_launch', accentColor: 'primary',
+    description: 'Public GitHub Actions workflows with recorded AWS OIDC, website delivery, and image publication.',
     skills: [
-      { name: 'GitHub Actions', status: 'proficient', highlight: true },
-      { name: 'AWS OIDC Role Assumption', status: 'proficient', highlight: true },
-      { name: 'Automated Rollbacks', status: 'proficient', highlight: true },
-      { name: 'Semantic Versioning', status: 'proficient' },
-      { name: 'Argo CD (GitOps)', status: 'learning' },
-      { name: 'ShellCheck', status: 'proficient' },
-      { name: 'PyTest Matrix', status: 'proficient' }
-    ]
+      { name: 'GitHub Actions', status: 'project-use', highlight: true }, { name: 'AWS OIDC', status: 'project-use', highlight: true },
+      { name: 'Trivy', status: 'project-use' }, { name: 'Pytest', status: 'project-use' },
+      { name: 'GitOps Integration', status: 'learning' }, { name: 'Runtime Deployment', status: 'planned' },
+    ],
   },
   {
-    id: 'systems',
-    title: 'Systems & Networking',
-    icon: 'terminal',
-    accentColor: 'secondary',
-    description: 'Linux kernel concepts, systemd services, routing tables, security groups, and packet inspection.',
+    id: 'systems', title: 'Systems & Networking', icon: 'terminal', accentColor: 'secondary',
+    description: 'Networking fundamentals and Linux troubleshooting practice, with Bash and bootstrap scripts in project code.',
     skills: [
-      { name: 'Ubuntu Server', status: 'proficient', highlight: true },
-      { name: 'Amazon Linux 2023', status: 'proficient', highlight: true },
-      { name: 'Bash Scripting', status: 'proficient', highlight: true },
-      { name: 'CIDR Subnetting', status: 'proficient', highlight: true },
-      { name: 'TLS / SSL Certificates', status: 'proficient' },
-      { name: 'SSH Key Management', status: 'proficient' },
-      { name: 'systemd Services', status: 'proficient' },
-      { name: 'iptables / Security Groups', status: 'proficient' }
-    ]
+      { name: 'Bash Scripts', status: 'project-use' }, { name: 'EC2 Bootstrap', status: 'project-use' },
+      { name: 'CIDR and Routes', status: 'learning' }, { name: 'DNS / TLS', status: 'learning' },
+      { name: 'Linux Processes and Permissions', status: 'learning' }, { name: 'Incident Troubleshooting', status: 'planned' },
+    ],
   },
   {
-    id: 'automation',
-    title: 'Automation & Event Loops',
-    icon: 'psychology',
-    accentColor: 'tertiary',
-    description: 'Translating operational requirements into cloud event triggers, auto-remediations, and API integrations.',
+    id: 'automation', title: 'Application & Observability', icon: 'psychology', accentColor: 'tertiary',
+    description: 'API code and CloudWatch alarm configuration. Operational measurements and recovery evidence are future work.',
     skills: [
-      { name: 'Python 3', status: 'proficient', highlight: true },
-      { name: 'Boto3 (AWS SDK)', status: 'proficient', highlight: true },
-      { name: 'AWS EventBridge', status: 'proficient', highlight: true },
-      { name: 'AWS Lambda (Serverless)', status: 'learning' },
-      { name: 'REST APIs & Webhooks', status: 'proficient' },
-      { name: 'CloudWatch Alarms', status: 'proficient', highlight: true },
-      { name: 'Synthetic Canaries', status: 'learning' }
-    ]
-  }
+      { name: 'Python API Code', status: 'project-use' }, { name: 'TypeScript', status: 'project-use' },
+      { name: 'CloudWatch Alarm Code', status: 'project-use' }, { name: 'Request Probes', status: 'learning' },
+      { name: 'Recovery Measurements', status: 'planned' },
+    ],
+  },
 ];

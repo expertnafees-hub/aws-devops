@@ -3,7 +3,7 @@ import { ArrowRight, Terminal, Network } from 'lucide-react';
 import { InteractiveTerminal } from './InteractiveTerminal';
 
 export const Hero: React.FC = () => {
-  const verifiedTools = [
+  const projectTools = [
     { name: 'AWS Cloud', color: 'text-primary' },
     { name: 'Terraform', color: 'text-on-surface' },
     { name: 'Docker', color: 'text-secondary' },
@@ -41,14 +41,14 @@ export const Hero: React.FC = () => {
 
           {/* Supporting Copy */}
           <p className="text-base sm:text-lg text-on-surface-variant max-w-xl leading-relaxed font-sans">
-            I'm <strong className="text-on-surface font-semibold">Nafees Ur Rehman</strong>, an AWS DevOps Engineer focused on resilient cloud infrastructure, Infrastructure as Code, CI/CD pipelines, containerization, and zero-drift operational environments.
+            I'm <strong className="text-on-surface font-semibold">Nafees Ur Rehman</strong>, building an AWS DevOps portfolio through Terraform infrastructure labs, CI/CD workflows, container delivery, and Linux practice.
           </p>
 
           {/* Career Transition Notice */}
           <div className="p-3.5 rounded bg-surface-container-low border border-cardBorder/80 text-xs sm:text-sm font-mono text-secondary max-w-xl flex items-start gap-2.5">
             <span className="text-primary-container font-bold text-base leading-none">↳</span>
             <span className="leading-snug text-on-surface-variant">
-              Previously <strong className="text-white">AI Automation Engineering</strong> → now engineering production cloud systems and deployment infrastructure on AWS.
+              Seeking <strong className="text-white">junior AWS DevOps opportunities</strong>. Explore the source code, recorded delivery runs, and next milestones below.
             </span>
           </div>
 
@@ -85,10 +85,10 @@ export const Hero: React.FC = () => {
           <div className="w-full pt-4 bg-surface-container-lowest/60 p-3.5 rounded border border-cardBorder/60">
             <div className="flex items-center gap-2 mb-2.5 font-mono text-[10px] text-outline uppercase tracking-wider">
               <span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-              <span>Core Tooling Verified</span>
+              <span>Project tools &amp; learning focus</span>
             </div>
             <div className="flex flex-wrap gap-2">
-              {verifiedTools.map(tool => (
+              {projectTools.map(tool => (
                 <span
                   key={tool.name}
                   className={`px-2.5 py-1 rounded bg-surface-container font-mono text-xs border border-cardBorder/80 ${tool.color}`}
@@ -100,7 +100,7 @@ export const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Interactive Production Terminal (col-span-5) */}
+        {/* Right Column: Interactive example terminal (col-span-5) */}
         <div className="lg:col-span-5 relative">
           {/* SVG Topology Backdrop */}
           <div className="absolute -inset-4 opacity-20 pointer-events-none overflow-hidden" aria-hidden="true">

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { X, Clock, Calendar, Tag } from 'lucide-react';
+import { X, Clock, Calendar, Tag, ExternalLink } from 'lucide-react';
 import { EngineeringArticle } from '../types';
 
 interface LogReaderModalProps {
@@ -105,6 +105,10 @@ export const LogReaderModal: React.FC<LogReaderModalProps> = ({ article, onClose
             );
           })}
         </div>
+
+        {article.sourceUrl && (
+          <a href={article.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-primary hover:text-white">Inspect source evidence<ExternalLink className="w-4 h-4" /></a>
+        )}
 
         {/* Tags */}
         <div className="pt-4 border-t border-cardBorder flex flex-wrap items-center justify-between gap-3">

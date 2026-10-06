@@ -48,7 +48,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 className="p-2.5 rounded bg-surface-container border border-cardBorder font-mono text-xs text-on-surface flex items-center gap-2"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                <span className="truncate">{meta.label}</span>
+                <span>{meta.label}</span>
               </div>
             ))}
           </div>

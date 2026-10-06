@@ -51,7 +51,7 @@ export const NodeInspectorDrawer: React.FC<NodeInspectorDrawerProps> = ({ node, 
               </div>
               <div>
                 <span className="font-mono text-[10px] text-outline uppercase tracking-wider block">
-                  Node Telemetry Inspector
+                  Project component details
                 </span>
                 <h3 id="node-inspector-title" className="text-base font-bold font-mono text-white">
                   {node.name}
@@ -86,7 +86,7 @@ export const NodeInspectorDrawer: React.FC<NodeInspectorDrawerProps> = ({ node, 
               <div className="flex items-center gap-2 text-secondary">
                 <Network className="w-3.5 h-3.5" />
                 <span className="text-[10px] uppercase tracking-wider font-bold">
-                  Network CIDR / Endpoint
+                  Configured location / endpoint
                 </span>
               </div>
               <div className="text-white font-medium pl-5 break-all">
@@ -138,7 +138,7 @@ export const NodeInspectorDrawer: React.FC<NodeInspectorDrawerProps> = ({ node, 
               <div className="flex items-center gap-2 text-secondary">
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span className="text-[10px] uppercase tracking-wider font-bold">
-                  Automated Failover &amp; Recovery
+                  Recovery scope &amp; remaining evidence
                 </span>
               </div>
               <div className="text-on-surface pl-5 leading-relaxed">

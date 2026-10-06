@@ -34,7 +34,7 @@ export const EngineeringStack: React.FC = () => {
             Engineering Stack &amp; Tooling
           </h2>
           <p className="text-sm text-on-surface-variant max-w-2xl mt-1.5 leading-relaxed font-sans">
-            Deterministic, hardened platforms built on modern cloud conventions, declarative definitions, and security-first engineering.
+            Project use means public configuration or a recorded workflow, rather than assessed mastery. Learning and planned items identify the next skills to practice.
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export const EngineeringStack: React.FC = () => {
             <Filter className="w-3 h-3" />
             <span className="hidden sm:inline">Status:</span>
           </span>
-          {(['all', 'proficient', 'learning', 'planned'] as const).map(filter => (
+          {(['all', 'project-use', 'learning', 'planned'] as const).map(filter => (
             <button
               key={filter}
               type="button"
@@ -55,7 +55,7 @@ export const EngineeringStack: React.FC = () => {
                   : 'text-on-surface-variant hover:text-white'
               }`}
             >
-              {filter}
+              {filter === 'project-use' ? 'Project use' : filter}
             </button>
           ))}
         </div>
@@ -99,7 +99,7 @@ export const EngineeringStack: React.FC = () => {
                 {filteredSkills.length > 0 ? (
                   filteredSkills.map(skill => {
                     const statusDotColor =
-                      skill.status === 'proficient' ? 'bg-tertiary' :
+                      skill.status === 'project-use' ? 'bg-tertiary' :
                       skill.status === 'learning' ? 'bg-secondary' : 'bg-primary';
 
                     return (

@@ -30,7 +30,7 @@ export const App: React.FC = () => {
         {/* 3 & 4. Hero Section with Interactive Terminal */}
         <Hero />
 
-        {/* 5. Infrastructure Overview (4 Telemetry Cards) */}
+        {/* 5. Recorded project evidence overview */}
         <InfrastructureOverview />
 
         {/* 6. Engineering Journey (DAG Graph) */}
@@ -39,10 +39,10 @@ export const App: React.FC = () => {
         {/* 7. Engineering Stack (6 Taxonomy Domains with Filter) */}
         <EngineeringStack />
 
-        {/* 8. Featured Infrastructure Projects (4 Deep Case Studies & Modal) */}
+        {/* 8. Six project case studies and source evidence */}
         <FeaturedProjects />
 
-        {/* 9. Architecture Lab (Visual Centerpiece SVG Topologies & Node Inspector) */}
+        {/* 9. Configured component walkthroughs and inspector */}
         <ArchitectureLab />
 
         {/* 10. DevOps Delivery Pipeline (7-Stage Progression) */}
@@ -54,10 +54,10 @@ export const App: React.FC = () => {
         {/* 12. Currently Building (Active Curriculum File-Tree Tracker) */}
         <CurrentlyBuilding />
 
-        {/* 13. Engineering Logs (5 Editorial Write-Ups & Reader Modal) */}
+        {/* 13. Source-linked repository review notes */}
         <EngineeringLogs />
 
-        {/* 14. GitHub / Building in Public (Heatmap & Repositories) */}
+        {/* 14. Public repository links and genuine GitHub activity */}
         <GitHubPublic />
 
         {/* 15. Certifications & Continuous Learning */}

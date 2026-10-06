@@ -1,216 +1,183 @@
 import { ProjectCaseStudy } from '../types';
+import { evidenceLinks, githubProfileUrl, portfolioUrl } from './portfolioEvidence';
 
 export const projectsData: ProjectCaseStudy[] = [
   {
-    id: 'three-tier-architecture',
-    projectNumber: 'PROJECT_01',
-    tag: 'PRODUCTION SPEC // 4 UPGRADES VERIFIED',
-    tagColor: 'tertiary',
-    title: 'Production AWS Three-Tier Architecture',
-    summary: 'Enterprise AWS Three-Tier Architecture across dual AZs with Zero-SSH AWS Systems Manager (SSM) access, automated Route 53/ACM HTTPS (TLS 1.3), chaos-tested ASG self-healing (<90s failover with 0 dropped requests), and full-stack CloudWatch observability with SNS alerting.',
-    fullDescription: 'A battle-tested cloud infrastructure blueprint engineered strictly according to the AWS Well-Architected Framework and audited through 4 production upgrades. Public client traffic enters via Amazon Route 53 with automated ACM TLS 1.3 certificate validation and permanent HTTP 80 -> 443 redirection on the Application Load Balancer. The compute tier runs stateless Amazon Linux 2023 EC2 instances in an Auto Scaling Group across dual Availability Zones, hardened with IMDSv2 and managed via AWS Systems Manager Session Manager (zero Port 22 SSH exposure). The database tier features a Multi-AZ Amazon RDS MySQL instance residing in isolated subnets with dynamic AES-256 KMS AWS Secrets Manager credentials. Operational resilience is proven via an empirical chaos recovery drill (100% 200 OK during instance termination) and codified CloudWatch metric alarms monitoring 5xx error rates, p95 target latency SLAs, and fleet health.',
+    id: 'three-tier-architecture', projectNumber: 'PROJECT_01',
+    tag: 'INFRASTRUCTURE LAB', tagColor: 'secondary',
+    title: 'AWS Three-Tier Infrastructure Lab',
+    summary: 'Terraform configuration for a public ALB, private EC2 Auto Scaling fleet, and isolated RDS MySQL. The current application serves a static Nginx page.',
+    fullDescription: 'The lab defines network boundaries, instance management, database settings, and CloudWatch alarms. Formatting and validation have passed in GitHub Actions. Nginx does not query RDS or retrieve a secret. HTTPS and Multi-AZ RDS are optional; HTTP and Single-AZ RDS are the defaults.',
     metadata: [
-      { icon: 'shield', label: 'Zero-SSH SSM Access', highlightColor: 'primary' },
-      { icon: 'lock', label: 'TLS 1.3 ACM HTTPS', highlightColor: 'secondary' },
-      { icon: 'speed', label: 'Chaos Drill: 0 Drops', highlightColor: 'tertiary' },
-      { icon: 'activity', label: 'CloudWatch Telemetry', highlightColor: 'primary' },
+      { icon: 'code', label: 'Terraform validation' },
+      { icon: 'shield', label: 'SSM / no SSH ingress' },
+      { icon: 'database', label: 'RDS configuration' },
+      { icon: 'activity', label: 'CloudWatch alarm code' },
     ],
     architectureOverview: [
-      'Upgrade 1 (Zero-SSH SSM Management): Port 22 eliminated from all Security Groups; instances assume an IAM role with AmazonSSMManagedInstanceCore and strictly scoped Secrets Manager read access for auditable Session Manager connectivity.',
-      'Upgrade 2 (Automated TLS 1.3 & HTTPS Redirection): Application Load Balancer terminates modern TLS 1.3/1.2 via AWS Certificate Manager (ACM) with automated DNS validation and permanent HTTP 80 to 443 301 redirection.',
-      'Upgrade 3 (Empirical Chaos Recovery Drill): Codified continuous 1-second HTTP probe monitor (scripts/chaos_test.sh) and failure runbook proving zero dropped requests during active node termination; ASG auto-spawns replacement capacity within 90 seconds.',
-      'Upgrade 4 (Full-Stack Observability & Alarms): Codified CloudWatch alarms for ALB 5xx errors, p95 target latency SLA (>1.0s), unhealthy targets, and ASG CPU utilization (>=80%) linked to Amazon SNS alert notifications.',
-      'Isolated Data Tier: Multi-AZ RDS MySQL in isolated subnets with dynamic AES-256 KMS AWS Secrets Manager credentials (zero hardcoded secrets).'
+      'Public ALB across two Availability Zones; HTTP port-80 targets and / health checks.',
+      'Private EC2 instances with IMDSv2, encrypted root disks, and an SSM instance role; ASG min 2, desired 2, max 4.',
+      'Isolated RDS MySQL with managed credentials; app-to-DB traffic is allowed by security groups but unused by Nginx.',
+      'Optional ACM/Route 53 HTTPS and Multi-AZ RDS are disabled by default.',
+      'Four CloudWatch alarms and an SNS topic are configured in code. CI security scanning is advisory.',
+      'Local Terraform state is the default. Deployment, database queries, restore tests, and measured recovery remain pending.',
     ],
-    techStack: ['Terraform', 'AWS VPC', 'Route 53', 'ACM HTTPS', 'ALB', 'EC2 Auto Scaling', 'AWS SSM', 'RDS MySQL', 'Secrets Manager', 'CloudWatch', 'Amazon SNS'],
-    iacSnippet: {
-      filename: 'alb_https_and_alarms.tf',
-      language: 'hcl',
-      code: `# Upgrade 2: ALB HTTPS Port 443 Listener with TLS 1.3
-resource "aws_lb_listener" "https" {
-  load_balancer_arn = aws_lb.main.arn
-  port              = 443
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn   = aws_acm_certificate_validation.cert[0].certificate_arn
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
-  }
-}
-
-# Upgrade 4: Real-time Alert on Target 5XX Server Errors
-resource "aws_cloudwatch_metric_alarm" "alb_5xx" {
-  alarm_name          = "three-tier-prod-alb-high-5xx-errors"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  metric_name         = "HTTPCode_Target_5XX_Count"
-  namespace           = "AWS/ApplicationELB"
-  period              = 60
-  statistic           = "Sum"
-  threshold           = 0
-  alarm_actions       = [aws_sns_topic.alerts.arn]
-
-  dimensions = {
-    LoadBalancer = aws_lb.main.arn_suffix
-  }
-}`
-    },
+    techStack: ['Terraform', 'VPC', 'ALB', 'EC2 Auto Scaling', 'SSM', 'RDS MySQL', 'Secrets Manager', 'CloudWatch'],
     metrics: [
-      { label: 'Uptime (Chaos Test)', value: '100% 200 OK' },
-      { label: 'Self-Healing RTO', value: '< 90s' },
-      { label: 'Management Surface', value: 'Zero Port 22' },
-      { label: 'Transit Security', value: 'TLS 1.3 / ACM' }
+      { label: 'Application', value: 'Static Nginx' },
+      { label: 'Default RDS', value: 'Single-AZ' },
+      { label: 'Default listener', value: 'HTTP' },
+      { label: 'Runtime evidence', value: 'Pending' },
     ],
-    githubUrl: 'https://github.com/expertnafees-hub/aws-three-tier-architecture'
+    githubUrl: `${githubProfileUrl}/aws-three-tier-architecture`,
+    evidenceLabel: 'Recorded Terraform CI validation', evidenceUrl: evidenceLinks.threeTierValidation,
+    evidenceNote: 'Validation checks configuration syntax and schema. Security findings are non-blocking. No measured uptime, failover, database integration, or AWS deployment result is published.',
   },
   {
-    id: 'terraform-modular-infra',
-    projectNumber: 'PROJECT_02',
-    tag: 'INFRA AS CODE',
-    tagColor: 'secondary',
-    title: 'Terraform Modular AWS Infrastructure',
-    summary: 'Standardized enterprise-grade Terraform modules covering VPC, Bastion, EKS, and secure RDS instances with parameter validation and automatic state locking. 100% declarative and version-controlled.',
-    fullDescription: 'Architected and codified a comprehensive collection of production-ready Terraform modules. Built strictly following HashiCorp best practices: semantic versioning, strict variable type constraints, input validations, and comprehensive output definitions. Integrates an automated remote state architecture powered by S3 with AES256 KMS encryption and DynamoDB distributed mutex tables to guarantee concurrency locks during team applies and CI workflow execution.',
+    id: 'portfolio-delivery', projectNumber: 'PROJECT_02',
+    tag: 'DEPLOYMENT RECORDED', tagColor: 'tertiary',
+    title: 'AWS Portfolio Delivery with OIDC',
+    summary: 'GitHub Actions builds this React portfolio, assumes an AWS role through OIDC, synchronizes static files to S3, and requests CloudFront invalidation.',
+    fullDescription: 'A recorded main-branch workflow passed TypeScript checks, the infrastructure gate, and the Vite build. Its deployment job used the OIDC authentication path, synchronized the website to S3, and created a CloudFront invalidation. This demonstrates one successful delivery run, without implying continuous uptime or a recovery guarantee.',
     metadata: [
-      { icon: 'lock', label: 'Zero-Drift S3 State', highlightColor: 'secondary' },
-      { icon: 'shield', label: 'DynamoDB Mutex Lock', highlightColor: 'primary' },
-      { icon: 'vpn_key', label: 'KMS Enforced', highlightColor: 'tertiary' },
-      { icon: 'fact_check', label: '100% HCL Linted', highlightColor: 'secondary' },
+      { icon: 'code', label: 'TypeScript / Vite' },
+      { icon: 'shield', label: 'OIDC run recorded' },
+      { icon: 'cloud', label: 'S3 synchronization' },
+      { icon: 'activity', label: 'CloudFront invalidation' },
     ],
     architectureOverview: [
-      'State Isolation: Independent remote state files partitioned by environment (dev, staging, prod)',
-      'Concurrency Control: Atomic DynamoDB LockID acquisition preventing race conditions',
-      'Data Integrity: S3 bucket versioning with MFA delete protection and strict lifecycle retention',
-      'Continuous Validation: Automated GitHub Actions runners executing tflint, terraform fmt, and tfsec scans'
+      'Pull requests run type checking, infrastructure checks, and a frontend build.',
+      'The deployment job is restricted to main-branch pushes or manual main-branch workflow dispatch.',
+      'The recorded run assumed an AWS role through OIDC; the workflow also contains an access-key fallback.',
+      'Hashed assets use immutable caching; entry-point files use revalidation headers.',
+      'Trivy filesystem scanning is advisory (exit code 0). A successful job does not establish a clean security scan.',
     ],
-    techStack: ['Terraform v1.8+', 'HCL', 'AWS S3', 'AWS DynamoDB', 'AWS KMS', 'tfsec', 'tflint'],
-    iacSnippet: {
-      filename: 'backend.tf',
-      language: 'hcl',
-      code: `terraform {
-  backend "s3" {
-    bucket         = "expertnafees-tf-state-prod-useast1"
-    key            = "core/vpc-fleet.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "terraform-state-lock"
-    encrypt        = true
-    kms_key_id     = "arn:aws:kms:us-east-1:xxxx:key/tf-backend"
-  }
-}`
-    },
+    techStack: ['React', 'TypeScript', 'Vite', 'GitHub Actions', 'AWS OIDC', 'S3', 'CloudFront'],
     metrics: [
-      { label: 'Drift Rate', value: '0%' },
-      { label: 'Deploy Time', value: '3m 15s' },
-      { label: 'Reusable Modules', value: '8 Packages' },
-      { label: 'Security Pass', value: '100% tfsec' }
+      { label: 'Run authentication', value: 'OIDC' },
+      { label: 'Artifact destination', value: 'S3' },
+      { label: 'Cache action', value: 'Invalidation' },
+      { label: 'Uptime measurement', value: 'Not published' },
     ],
-    githubUrl: 'https://github.com/expertnafees-hub/terraform-aws-infrastructure'
+    githubUrl: `${githubProfileUrl}/aws-devops`, liveDemoUrl: portfolioUrl,
+    evidenceLabel: 'Recorded S3 / CloudFront deployment run', evidenceUrl: evidenceLinks.websiteDeploy,
+    evidenceNote: 'The linked historical run proves successful role assumption, file synchronization, and an invalidation request. Current AWS health and delivery latency are not monitored by this page.',
   },
   {
-    id: 'git-to-cloud-cicd',
-    projectNumber: 'PROJECT_03',
-    tag: 'AUTOMATION',
-    tagColor: 'tertiary',
-    title: 'End-to-End Automated CI/CD Pipeline (Git-to-Cloud)',
-    summary: 'Zero-human-touch production pipeline. Automatically triggers unit tests, checks linting, runs Docker layer-cached builds, pushes to AWS ECR, and orchestrates rolling updates on AWS ECS Fargate with automated rollbacks on health check failure.',
-    fullDescription: 'Production continuous integration and continuous deployment workflow powered by GitHub Actions and AWS ECS Fargate. The pipeline is activated upon Git pull requests and commits to main. It authenticates to AWS using OpenID Connect (OIDC) federated role assumption, eliminating vulnerable long-lived static AWS access keys. It builds lightweight multi-stage Docker container images with BuildKit caching, scans for CVE vulnerabilities with Trivy, publishes to Amazon Elastic Container Registry (ECR), updates task definitions, and initiates an ECS rolling service deployment with automatic rollback thresholds.',
+    id: 'payment-api', projectNumber: 'PROJECT_03',
+    tag: 'IMAGE PUBLICATION RECORDED', tagColor: 'tertiary',
+    title: 'Container CI and Amazon ECR Publication',
+    summary: 'A demo payment API with passing unit tests, a Trivy container scan gate, and a recorded GitHub Actions OIDC image push to Amazon ECR.',
+    fullDescription: 'The recorded workflow runs API tests, builds and scans a container, then authenticates to AWS and publishes an image to ECR. The payment endpoint is a simulation. Image publication is the current delivery milestone; an ECS/EKS runtime deployment and rollback demonstration remain pending.',
     metadata: [
-      { icon: 'play_arrow', label: 'Trigger: Git Push', highlightColor: 'secondary' },
-      { icon: 'fact_check', label: 'Test: Pytest & Lint', highlightColor: 'tertiary' },
-      { icon: 'inventory_2', label: 'Build: Docker BuildKit', highlightColor: 'primary' },
-      { icon: 'rocket', label: 'Ship: ECS Fargate', highlightColor: 'tertiary' },
+      { icon: 'code', label: 'Python unit tests' },
+      { icon: 'shield', label: 'Trivy scan gate' },
+      { icon: 'cloud', label: 'AWS OIDC' },
+      { icon: 'box', label: 'ECR push recorded' },
     ],
     architectureOverview: [
-      'Authentication: AWS OIDC Federated Role Assumption with short-lived STS tokens',
-      'Build Matrix: Multi-stage Dockerfile optimizing layers down to ~65MB distroless base',
-      'Image Security: Amazon ECR immutable image tags + Trivy CVE vulnerability scan gating',
-      'Deployment Target: AWS ECS Fargate cluster with Application Load Balancer target groups',
-      'Rollback Guard: CloudWatch alarming triggers automatic rollback if 5xx error rate exceeds 1% during rolling updates'
+      'Automated tests exercise the demo API.',
+      'A CI job builds a Docker image and runs the configured Trivy scan gate.',
+      'A separate publishing job rebuilds the image, assumes an AWS role through OIDC, and pushes to ECR.',
+      'The passing run establishes the configured scan result and image publication; it does not prove that the published digest is the exact scanned artifact.',
+      'Runtime deployment, health checks, and rollback evidence are the next milestones.',
     ],
-    techStack: ['GitHub Actions', 'AWS OIDC', 'Docker BuildKit', 'Amazon ECR', 'Amazon ECS Fargate', 'Trivy', 'CloudWatch'],
-    iacSnippet: {
-      filename: '.github/workflows/deploy.yml',
-      language: 'yaml',
-      code: `- name: Configure AWS Credentials (OIDC)
-  uses: aws-actions/configure-aws-credentials@v4
-  with:
-    role-to-assume: arn:aws:iam::123456789012:role/GitHubActionsECSPipeline
-    aws-region: us-east-1
-    audience: sts.amazonaws.com
-
-- name: Build and Push Docker image to ECR
-  uses: docker/build-push-action@v5
-  with:
-    context: .
-    push: true
-    tags: \${{ steps.login-ecr.outputs.registry }}/app:\${{ github.sha }}
-    cache-from: type=gha
-    cache-to: type=gha,mode=max`
-    },
+    techStack: ['Python', 'Pytest', 'Docker', 'Trivy', 'GitHub Actions', 'AWS OIDC', 'Amazon ECR'],
     metrics: [
-      { label: 'Pipeline Duration', value: '4m 12s' },
-      { label: 'Image Size Reduction', value: '72%' },
-      { label: 'Human Intervention', value: '0 Clicks' },
-      { label: 'Rollback Speed', value: '< 45s' }
+      { label: 'API behavior', value: 'Demo' },
+      { label: 'Recorded tests', value: 'Passed' },
+      { label: 'Image publication', value: 'ECR' },
+      { label: 'Runtime deployment', value: 'Pending' },
     ],
-    githubUrl: 'https://github.com/expertnafees-hub/docker-cicd-pipeline'
+    githubUrl: `${githubProfileUrl}/payment-api`,
+    evidenceLabel: 'Recorded test, scan, and ECR publication run', evidenceUrl: evidenceLinks.paymentPublish,
+    evidenceNote: 'The configured scan gate passed in this run. This is not a general claim of zero vulnerabilities, production payment processing, or a deployed service.',
   },
   {
-    id: 'eks-microservices',
-    projectNumber: 'PROJECT_04',
-    tag: 'ORCHESTRATION',
-    tagColor: 'primary',
-    title: 'Amazon EKS Microservices Deployment & Observability',
-    summary: 'Container orchestrator running on managed nodes. Integrates AWS Load Balancer Controller for dynamic TargetGroupBindings, AWS Secrets Manager sidecars, and fluent-bit logging.',
-    fullDescription: 'Production Kubernetes deployment on Amazon EKS v1.29. Provisioned with managed node groups across two Availability Zones, utilizing IAM Roles for Service Accounts (IRSA) for least-privilege pod permissions. Ingress is governed dynamically by the AWS Load Balancer Controller. Full-stack observability is established via Fluent Bit log shippers pushing to Amazon CloudWatch Container Insights and Prometheus/Grafana monitoring dashboards.',
+    id: 'eks-platform', projectNumber: 'PROJECT_04',
+    tag: 'PLATFORM CODE / VALIDATION', tagColor: 'secondary',
+    title: 'EKS Terraform Platform Lab',
+    summary: 'Modular Terraform foundation and add-on configuration for EKS, private cluster access, and IAM Roles for Service Accounts. Cloud deployment tests are pending.',
+    fullDescription: 'The repository separates foundation and add-on roots and records formatting and provider schema validation. A private EKS API and IRSA are configured. The validation document explicitly states that AWS plan/apply, TLS issuance, scaling, and cloud recovery have not been performed.',
     metadata: [
-      { icon: 'hub', label: 'EKS v1.29 Cluster', highlightColor: 'primary' },
-      { icon: 'call_split', label: 'AWS ALB Ingress Controller', highlightColor: 'secondary' },
-      { icon: 'vpn_key', label: 'IRSA Pod Security', highlightColor: 'tertiary' },
-      { icon: 'monitoring', label: 'CloudWatch Container Insights', highlightColor: 'primary' },
+      { icon: 'code', label: 'Modular Terraform' },
+      { icon: 'shield', label: 'Private EKS API' },
+      { icon: 'lock', label: 'IRSA configuration' },
+      { icon: 'activity', label: 'Schema validation' },
     ],
     architectureOverview: [
-      'Compute Fleet: EKS Managed Node Groups with Karpenter auto-provisioning',
-      'Ingress Routing: AWS Load Balancer Controller provisioning Layer 7 ALBs per ingress manifest',
-      'Identity: IRSA granting pods native IAM credentials without node-level instance profiles',
-      'Secret Management: External Secrets Operator syncing credentials from AWS Secrets Manager',
-      'Telemetry: Fluent Bit log streaming with JSON structured logs and Prometheus metric scrapers'
+      'Separate environment roots share reusable module interfaces.',
+      'Foundation and add-on roots separate cluster provisioning from Kubernetes/Helm configuration.',
+      'Private cluster endpoint and IRSA permissions are defined in code.',
+      'Recorded CI validates configuration; account-backed plan/apply and acceptance tests remain pending.',
     ],
-    techStack: ['Amazon EKS', 'Kubernetes', 'Helm', 'AWS Load Balancer Controller', 'IRSA', 'Fluent Bit', 'Prometheus'],
-    iacSnippet: {
-      filename: 'eks_cluster.tf',
-      language: 'hcl',
-      code: `module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.0"
-
-  cluster_name    = "prod-microservices-fleet"
-  cluster_version = "1.29"
-
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnets
-
-  cluster_endpoint_public_access = true
-
-  eks_managed_node_groups = {
-    primary = {
-      min_size     = 2
-      max_size     = 6
-      desired_size = 3
-      instance_types = ["t3.medium"]
-      capacity_type  = "ON_DEMAND"
-    }
-  }
-}`
-    },
+    techStack: ['Terraform', 'Amazon EKS', 'VPC', 'IAM / IRSA', 'Kubernetes', 'Helm'],
     metrics: [
-      { label: 'Node Autoscaling', value: '2-6 Nodes' },
-      { label: 'Ingress Latency', value: '18ms' },
-      { label: 'Security Context', value: 'Non-Root' },
-      { label: 'Log Ingestion', value: 'Real-time' }
+      { label: 'Foundation', value: 'Code available' },
+      { label: 'Validation', value: 'Recorded' },
+      { label: 'AWS apply', value: 'Pending' },
+      { label: 'Recovery exercise', value: 'Pending' },
     ],
-    githubUrl: 'https://github.com/expertnafees-hub/aws-networking-labs'
-  }
+    githubUrl: `${githubProfileUrl}/aws-eks-terraform-platform`,
+    evidenceLabel: 'Recorded platform validation run', evidenceUrl: evidenceLinks.eksValidation,
+    evidenceNote: 'See docs/validation.md for the exact checks and remaining limitations. This page does not claim a running EKS cluster or measured ingress performance.',
+  },
+  {
+    id: 'gitops-delivery', projectNumber: 'PROJECT_05',
+    tag: 'INTEGRATION IN PROGRESS', tagColor: 'primary',
+    title: 'GitOps API and Environment Configuration',
+    summary: 'One GitOps project across two repositories: a containerized API plus Helm and environment configuration. The reviewed main CI run stops at the Trivy scan step.',
+    fullDescription: 'The application and platform configuration show the proposed release and promotion path. Tests and image build passed in the reviewed main run, but Trivy failed and smoke testing was skipped. The failure cause needs log investigation; it has not been established as a vulnerability finding. Cluster synchronization and a complete release remain unverified.',
+    metadata: [
+      { icon: 'code', label: 'Python API' },
+      { icon: 'box', label: 'Docker / Helm code' },
+      { icon: 'activity', label: 'Promotion workflow code' },
+      { icon: 'shield', label: 'Trivy step failing' },
+    ],
+    architectureOverview: [
+      'gitops-core-api contains application code, container configuration, CI, and release workflow code.',
+      'gitops-platform-config contains Helm and environment configuration for the same project.',
+      'Reviewed main CI: tests and build passed; Trivy failed; smoke tests were skipped.',
+      'Investigate the scan logs, then record a successful release, configuration promotion, and cluster sync before claiming delivery.',
+    ],
+    techStack: ['Python', 'Docker', 'Trivy', 'GitHub Actions', 'Helm', 'GitOps'],
+    metrics: [
+      { label: 'Repositories', value: '2 / 1 project' },
+      { label: 'Reviewed main CI', value: 'Failed' },
+      { label: 'Failing step', value: 'Trivy' },
+      { label: 'Cluster evidence', value: 'Pending' },
+    ],
+    githubUrl: `${githubProfileUrl}/gitops-core-api`,
+    relatedRepositories: [{ name: 'gitops-platform-config', url: `${githubProfileUrl}/gitops-platform-config` }],
+    evidenceLabel: 'Reviewed main CI run (failure)', evidenceUrl: evidenceLinks.gitopsCi,
+    evidenceNote: 'This is a historical main-branch run. The page does not fetch live CI status, and the scan failure cause has not been confirmed.',
+  },
+  {
+    id: 'vpc-foundation', projectNumber: 'PROJECT_06',
+    tag: 'FOUNDATIONAL NETWORK LAB', tagColor: 'secondary',
+    title: 'Terraform VPC Networking Foundation',
+    summary: 'A small AWS networking lab defining one VPC, one public subnet, an internet gateway, and a route table.',
+    fullDescription: 'This repository demonstrates the basic relationship between VPC addressing, subnet association, and an internet gateway route. Its limited scope is useful for explaining networking fundamentals. It does not implement a private tier, NAT gateways, or a highly available multi-AZ platform.',
+    metadata: [
+      { icon: 'cloud', label: 'One VPC' },
+      { icon: 'network', label: 'One public subnet' },
+      { icon: 'code', label: 'Terraform resources' },
+      { icon: 'activity', label: 'IGW / route table' },
+    ],
+    architectureOverview: [
+      'VPC and public subnet are declared as Terraform resources.',
+      'An internet gateway and associated route table define the public network path.',
+      'Private subnets, NAT gateways, multi-AZ redundancy, and runtime connectivity tests are outside the published scope.',
+    ],
+    techStack: ['Terraform', 'Amazon VPC', 'Subnets', 'Internet Gateway', 'Route Tables'],
+    metrics: [
+      { label: 'VPC count', value: '1' },
+      { label: 'Public subnet count', value: '1' },
+      { label: 'Private tier', value: 'Not configured' },
+      { label: 'Deploy evidence', value: 'Pending' },
+    ],
+    githubUrl: `${githubProfileUrl}/aws-terraform-vpc-foundation`,
+    evidenceLabel: 'Inspect the published Terraform source', evidenceUrl: `${githubProfileUrl}/aws-terraform-vpc-foundation`,
+    evidenceNote: 'Source code establishes the configured scope. No recorded deployment or connectivity result is linked.',
+  },
 ];

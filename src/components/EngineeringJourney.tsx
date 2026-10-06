@@ -41,8 +41,8 @@ export const EngineeringJourney: React.FC = () => {
           {/* Right Column: DAG Flow Graph (7 cols) */}
           <div className="lg:col-span-7 flex flex-col">
             <div className="flex items-center justify-between font-mono text-xs text-on-surface-variant mb-3 border-b border-cardBorder/60 pb-2">
-              <span className="uppercase tracking-wider text-[11px]">Career Capability Pipeline (DAG Graph)</span>
-              <span className="text-tertiary text-[11px] font-medium">ALL STAGES RESOLVED</span>
+              <span className="uppercase tracking-wider text-[11px]">Learning progression</span>
+              <span className="text-secondary text-[11px] font-medium">ONGOING</span>
             </div>
 
             {/* Flow Nodes Container */}

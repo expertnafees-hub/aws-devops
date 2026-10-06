@@ -1,137 +1,60 @@
-# Nafees Ur Rehman — AWS DevOps & Cloud Infrastructure Platform
+# AWS DevOps Portfolio — Nafees Ur Rehman
 
-[![Production Deploy & CloudFront Invalidation](https://github.com/expertnafees-hub/aws-devops/actions/workflows/deploy.yml/badge.svg)](https://github.com/expertnafees-hub/aws-devops/actions)
-[![Live Edge](https://img.shields.io/badge/Live_Edge-drqzr31lhv59g.cloudfront.net-FF9900?logo=amazon-aws&logoColor=white)](https://drqzr31lhv59g.cloudfront.net)
-[![AWS WAF](https://img.shields.io/badge/Security-AWS_WAF_v2_Active-3FB950?logo=awswaf&logoColor=white)](https://aws.amazon.com/waf/)
-[![Auth: GitHub OIDC](https://img.shields.io/badge/IAM-Zero--Secret_OIDC-22D3EE?logo=openid&logoColor=white)](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+A React/TypeScript portfolio for junior AWS DevOps opportunities. Project cards link public source code and dated workflow evidence, with explicit scope and remaining work.
 
-A production-grade, instrument-rated personal engineering platform for **Nafees Ur Rehman**, AWS DevOps & Cloud Engineer. Built with **React 18**, **TypeScript (Strict mode)**, **Vite**, **Tailwind CSS**, and **Terraform**.
+[Portfolio URL](https://drqzr31lhv59g.cloudfront.net) · [GitHub profile](https://github.com/expertnafees-hub) · [LinkedIn](https://www.linkedin.com/in/nafees-ur-rehman556/)
 
-Designed around the operational gravity and precision of developer tooling (GitHub Dark, Linear, AWS CloudWatch) rather than a generic resume portfolio.
+## Evidence and presentation
 
----
+The manual evidence snapshot is **6 October 2026**. The website presents six projects across seven code repositories; the GitOps application and configuration are one project.
 
-## ⚡ Key Architectural Highlights
+- [Website deployment run](https://github.com/expertnafees-hub/aws-devops/actions/runs/34621327732): type checking, infrastructure gate, build, AWS OIDC role assumption, S3 synchronization, and CloudFront invalidation request passed.
+- [Payment API publication run](https://github.com/expertnafees-hub/payment-api/actions/runs/36395971162): unit tests, configured Trivy gate, OIDC, and ECR publication passed. Runtime deployment remains pending.
+- [Three-tier validation run](https://github.com/expertnafees-hub/aws-three-tier-architecture/actions/runs/36328616959): configuration checks passed. Security scanning is advisory. The static Nginx app does not query RDS; deployment and recovery evidence remain pending.
+- [EKS validation run](https://github.com/expertnafees-hub/aws-eks-terraform-platform/actions/runs/34342770395): configuration validation recorded. Cloud plan/apply and acceptance tests remain pending.
+- [Reviewed GitOps main CI failure](https://github.com/expertnafees-hub/gitops-core-api/actions/runs/34343077403): Trivy failed; the cause has not been established; smoke tests were skipped.
 
-- **Aesthetic & Telemetry:** Deep obsidian ground (`#070A0F`), multi-tiered container elevation (`#0D1117`, `#111827`), hairline structural borders (`#21262D`), and semantic operational signals (AWS Amber `#FF9900`, Cyan `#22D3EE`, Green `#3FB950`).
-- **Interactive Shell:** Real-time CLI emulator with sequential typing animations, transcript clipboard copy, and an interactive prompt executing commands (`help`, `status`, `whoami`, `role`, `plan`, `deploy`, `skills`, `projects`, `uptime`, `clear`).
-- **Architecture Lab:** High-fidelity interactive SVG topology viewer with 4 production systems (High Availability Web, Air-gapped VPC, Remote State Locking, Kubernetes/ECS Microservices) and an interactive Node Telemetry Inspector drawer.
-- **Strict Accessibility (WCAG AA):** Full keyboard navigation, visible focus rings, ARIA dialog models, and explicit `prefers-reduced-motion` compliance.
-- **Enterprise IaC & CI/CD:** Complete Terraform modules in `/infra` for S3 private origin, CloudFront OAC, ACM TLS certificates, Route 53 aliases, plus GitHub Actions OIDC role assumption pipeline with zero long-lived AWS keys.
+The repository links, summaries, limitations, and learning statuses are maintained in `src/data/`. Update the evidence snapshot when reviewing newer results. Historical runs are not live health checks.
 
----
+The terminal displays labelled examples and project records. Architecture walkthroughs describe configured components; they do not read AWS state. Current availability, performance, contribution counts, and star counts are not simulated as telemetry. GitHub is linked directly for genuine activity. Certification study and coursework are distinguished from issued credentials; a certified card requires an issuer link.
 
-## 🏗️ 16 Platform Sections
+## Local development
 
-1. **Top Diagnostic Line:** Sticky telemetry beacon displaying AWS Control Plane status, region (`us-east-1a`), latency (`18ms`), Terraform lock status (`S3_LOCKED`), and agent version.
-2. **Navigation Bar:** Sticky header with `NR.` monogram, live availability beacon, smooth-scrolling section links, GitHub profile link, and responsive mobile drawer.
-3. **Hero Section:** Core value proposition (*"Building reliable infrastructure. Automating everything else."*), career evolution note, primary CTAs, and verified tooling badges.
-4. **Interactive Production Terminal:** Sequential boot animation simulating Terraform dry-runs and automated deployments, plus an interactive input terminal.
-5. **Infrastructure Overview:** 4 telemetry metric cards covering AWS Platform, IaC Terraform, Automated CI/CD, and Docker & K8s.
-6. **Engineering Journey (DAG Graph):** 4-stage directed acyclic graph tracing the progression from AI Automation Engineering to Cloud Infrastructure & DevOps.
-7. **Engineering Stack:** 6 domain taxonomies (Cloud, IaC, Containers, CI/CD, Systems, Automation) with interactive status filtering (`proficient`, `learning`, `planned`).
-8. **Featured Infrastructure Projects:** 4 in-depth case studies with topology schematics, production metrics, and an interactive technical breakdown modal.
-9. **Architecture Lab:** 4 interactive systems with animated SVG flow paths and a clickable telemetry inspector drawer.
-10. **DevOps Delivery Pipeline:** 7-stage horizontal progression detailing the path from feature branch commit to CloudWatch alarm monitoring.
-11. **Engineering Principles:** 4 system tenets (*Automate Repetitive Work*, *Infrastructure as Code*, *Reliability Over Complexity*, *Security by Default*).
-12. **Currently Building Tracker:** File-tree curriculum tracker displaying real-time commit activity and active learning tracks.
-13. **Engineering Logs:** 5 deep-dive technical articles with a dedicated modal reader.
-14. **GitHub / Building in Public:** Year-long commit activity heatmap and 4 structured repository cards.
-15. **Certifications & Continuous Learning:** AWS Solutions Architect Associate target, Terraform Associate, and Linux administration competencies with domain progress bars.
-16. **Contact CTA & Terminal Echo:** Direct message dispatcher modal, social connections, and command line echo output (*"Build. Automate. Scale."*).
-17. **Footer:** System normal status, telemetry version `v2.4.0`, region, and infrastructure disclosures.
+Use Node.js 22, matching the repository workflow.
 
----
-
-## 🛠️ Technology Stack
-
-| Layer | Technology |
-|---|---|
-| **Framework** | React 18 with TypeScript (Strict mode, zero `any`) |
-| **Bundler** | Vite 6 |
-| **Styling** | Tailwind CSS v3 with custom design system tokens |
-| **Icons** | Lucide React |
-| **Typography** | Geist (Display & Body) & JetBrains Mono (Code & Telemetry) |
-| **IaC** | Terraform 1.8+ (AWS Provider ~> 5.50) |
-| **CI/CD** | GitHub Actions with AWS OIDC Federated Role Assumption |
-| **Hosting** | AWS S3 (Private Bucket) + CloudFront OAC + ACM + Route 53 |
-
----
-
-## 🚀 Local Development
-
-### Prerequisites
-- Node.js >= 18.0.0
-- npm >= 9.0.0
-
-### Quick Start
 ```bash
-# Clone the repository
-git clone https://github.com/expertnafees-hub/engineering-portfolio.git
-cd engineering-portfolio
-
-# Install dependencies
-npm install
-
-# Start Vite local development server
+git clone https://github.com/expertnafees-hub/aws-devops.git
+cd aws-devops
+npm ci
 npm run dev
-# Server accessible at http://localhost:3000
-
-# Type-check TypeScript codebase
-npm run typecheck
-
-# Build production bundle
-npm run build
-
-# Preview production build locally
-npm run preview
 ```
 
----
-
-## ☁️ AWS Infrastructure Deployment (Terraform)
-
-The `/infra` directory contains production-ready Terraform to deploy this website on AWS:
+## Validation
 
 ```bash
-cd infra
-
-# Copy and configure variables
-cp terraform.tfvars.example terraform.tfvars
-
-# Initialize Terraform modules and providers
-terraform init
-
-# Review execution plan
-terraform plan
-
-# Apply infrastructure changes
-terraform apply
+npm run typecheck
+npm run gate
+npm run build
 ```
 
-### Infrastructure Components Provisioned:
-- **Private S3 Origin:** Secure bucket storing static assets with SSE-AES256 encryption and public access blocking.
-- **CloudFront OAC:** Origin Access Control replacing legacy OAI for secure S3 origin authentication.
-- **ACM SSL/TLS:** Automated DNS-validated certificate in `us-east-1`.
-- **Route 53:** Apex and `www` alias records pointing to CloudFront.
-- **Access Logs Bucket:** Dedicated bucket capturing CloudFront distribution access logs.
+The infrastructure gate runs the repository's configuration checks and reports unavailable optional external tools. It does not deploy AWS resources. A frontend build and Terraform validation do not establish cloud runtime behavior or a complete security assessment.
 
----
+## Delivery workflow
 
-## 🔒 CI/CD Deployment with AWS OIDC
+`.github/workflows/deploy.yml` runs validation and builds for pull requests and main-branch pushes. AWS delivery runs only on main pushes or a manual main-branch workflow dispatch.
 
-The deployment workflow (`.github/workflows/deploy.yml`) uses GitHub Actions with AWS OIDC Role Assumption:
+The recorded run used OIDC. The workflow also supports an access-key fallback when the corresponding secret is configured; this README does not claim that fallback has been removed. Website Trivy scanning is advisory (`exit-code: '0'`), so a successful job can contain findings.
 
-1. **Lint & Typecheck:** Validates strict TypeScript compilation and production build.
-2. **OIDC Auth:** Assumes AWS IAM role using short-lived tokens.
-3. **S3 Asset Sync:** Sets `Cache-Control: public,max-age=31536000,immutable` for `/assets/*`.
-4. **S3 HTML Sync:** Sets `Cache-Control: public,max-age=0,must-revalidate` for `index.html`.
-5. **CloudFront Invalidation:** Creates automatic cache invalidation (`/*`) for instant updates.
+The deployment job synchronizes hashed assets to S3 with immutable cache headers, synchronizes entry-point files with revalidation headers, and requests selective CloudFront invalidation. It does not measure current viewer uptime or guarantee zero downtime.
 
----
+Merging website changes to main can trigger the existing AWS deployment. Review the actual diff and validation results before merging. Branch and draft-PR preparation do not deploy the website.
 
-## 📄 License & Attribution
+## Infrastructure and profile sources
 
-Designed and engineered by **Nafees Ur Rehman**.
-Released under the MIT License.
+Existing Terraform and CloudFormation hosting configuration remains in this repository. Review its account-specific settings and AWS state separately before making claims about active resources or deploying it.
+
+`PROFILE_README.md` is the companion GitHub profile text. Keep it consistent with the actual profile repository, project READMEs, and dated evidence links.
+
+## License
+
+See [LICENSE](LICENSE).
