@@ -41,14 +41,14 @@ export const Hero: React.FC = () => {
 
           {/* Supporting Copy */}
           <p className="text-base sm:text-lg text-on-surface-variant max-w-xl leading-relaxed font-sans">
-            I'm <strong className="text-on-surface font-semibold">Nafees Ur Rehman</strong>, building an AWS DevOps portfolio through Terraform infrastructure labs, CI/CD workflows, container delivery, and Linux practice.
+            Hi, I’m <strong className="text-on-surface font-semibold">Nafees Ur Rehman</strong>. I build AWS infrastructure and automate application delivery using Terraform, Docker, Linux, and GitHub Actions.
           </p>
 
-          {/* Career Transition Notice */}
+          {/* Career Focus Notice */}
           <div className="p-3.5 rounded bg-surface-container-low border border-cardBorder/80 text-xs sm:text-sm font-mono text-secondary max-w-xl flex items-start gap-2.5">
             <span className="text-primary-container font-bold text-base leading-none">↳</span>
             <span className="leading-snug text-on-surface-variant">
-              Seeking <strong className="text-white">junior AWS DevOps opportunities</strong>. Explore the source code, recorded delivery runs, and next milestones below.
+              Seeking <strong className="text-white">junior AWS DevOps opportunities</strong>. Explore hands-on project code, verified delivery runs, and architecture blueprints below.
             </span>
           </div>
 

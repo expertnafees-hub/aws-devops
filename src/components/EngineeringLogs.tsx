@@ -16,13 +16,13 @@ export const EngineeringLogs: React.FC = () => {
       <div className="flex flex-col mb-10">
         <div className="font-mono text-xs text-primary uppercase tracking-widest mb-1 flex items-center gap-2">
           <BookOpen className="w-4 h-4 text-primary" />
-          <span>Technical Documentation &amp; Writing</span>
+          <span>Technical Writing &amp; Deep Dives</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-semibold text-on-surface font-sans">
-          Engineering Logs
+          Technical Notes
         </h2>
         <p className="text-sm text-on-surface-variant max-w-2xl mt-1 leading-relaxed font-sans">
-          Repository review notes describing recorded results, limitations, and the next validation steps. Each note links its source.
+          Practical engineering write-ups exploring Linux isolation, container networking, IAM security, and infrastructure as code patterns.
         </p>
       </div>
 

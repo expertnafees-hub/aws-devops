@@ -14,11 +14,11 @@ export const CurrentlyBuilding: React.FC = () => {
           <div className="flex items-center gap-2.5">
             <FolderGit2 className="w-5 h-5 text-tertiary" />
             <span className="font-mono text-sm sm:text-base text-on-surface font-semibold">
-              Learning focus &amp; next milestones
+              Active engineering focus &amp; milestones
             </span>
           </div>
           <div className="font-mono text-xs text-on-surface-variant flex items-center gap-2">
-            <span className="text-white font-medium">PLANNED WORK / SELF-REPORTED STUDY</span>
+            <span className="text-white font-medium">ACTIVE LABS &amp; LEARNING ROADMAP</span>
           </div>
         </div>
 

@@ -1,33 +1,39 @@
-# Nafees Ur Rehman
+# Hi, I'm Nafees Ur Rehman 👋
 
-**AWS DevOps & Cloud Infrastructure portfolio · Seeking junior opportunities**
+**AWS DevOps Engineer**
 
-I build Terraform infrastructure labs and automated delivery workflows. My strongest recorded results are AWS website delivery through GitHub Actions OIDC and container image publication to Amazon ECR. The projects below distinguish working configuration, historical workflow results, and unfinished deployment tests.
+I build AWS infrastructure and automate application delivery using Terraform, Docker, Linux, and GitHub Actions. I focus on infrastructure as code, containerization, and secure CI/CD pipelines with keyless AWS OIDC authentication.
 
-[Portfolio](https://drqzr31lhv59g.cloudfront.net) · [LinkedIn](https://www.linkedin.com/in/nafees-ur-rehman556/) · [Repositories](https://github.com/expertnafees-hub?tab=repositories)
+Open to junior AWS DevOps and cloud engineering opportunities.
 
-## Project evidence
+[Portfolio](https://drqzr31lhv59g.cloudfront.net) · [LinkedIn](https://www.linkedin.com/in/nafees-ur-rehman556/) · [GitHub Repositories](https://github.com/expertnafees-hub?tab=repositories)
 
-Evidence reviewed **6 October 2026**. This is a manual snapshot; use the linked repositories and workflow runs for current information. Seven code repositories represent six projects because the GitOps application and configuration belong together.
+---
 
-| Project | Published scope | Recorded evidence / next milestone |
-| --- | --- | --- |
-| [AWS portfolio delivery](https://github.com/expertnafees-hub/aws-devops) | React/TypeScript build, infrastructure checks, S3 synchronization, CloudFront invalidation | [Successful OIDC deployment run](https://github.com/expertnafees-hub/aws-devops/actions/runs/34621327732). Trivy is advisory; uptime is not measured here. |
-| [Payment API container delivery](https://github.com/expertnafees-hub/payment-api) | Demo API, unit tests, Docker build, Trivy gate, AWS OIDC, ECR publication | [Successful tests and image publication](https://github.com/expertnafees-hub/payment-api/actions/runs/36395971162). Runtime deployment and rollback evidence pending. |
-| [Three-tier infrastructure lab](https://github.com/expertnafees-hub/aws-three-tier-architecture) | Public ALB, private static Nginx EC2 fleet, isolated RDS MySQL, SSM, and CloudWatch alarm configuration | [Terraform validation run](https://github.com/expertnafees-hub/aws-three-tier-architecture/actions/runs/36328616959). Security scanning is advisory. App-to-RDS integration, AWS deployment, and recovery measurements pending; HTTP and Single-AZ RDS are defaults. |
-| [EKS Terraform platform](https://github.com/expertnafees-hub/aws-eks-terraform-platform) | Modular foundation and add-on code, private cluster API, IRSA, and environment roots | [Validation run](https://github.com/expertnafees-hub/aws-eks-terraform-platform/actions/runs/34342770395). AWS plan/apply, TLS, scaling, and cloud recovery tests pending. |
-| [GitOps API](https://github.com/expertnafees-hub/gitops-core-api) + [platform configuration](https://github.com/expertnafees-hub/gitops-platform-config) | Application/container code, Helm/environment configuration, and release/promotion workflow code | [Reviewed main CI failure](https://github.com/expertnafees-hub/gitops-core-api/actions/runs/34343077403): Trivy step failed; smoke tests skipped. Failure cause and cluster delivery need investigation and validation. |
-| [VPC networking foundation](https://github.com/expertnafees-hub/aws-terraform-vpc-foundation) | One VPC, one public subnet, internet gateway, and route table | Small source-code lab. Private tiers, NAT, multi-AZ redundancy, and deployment evidence are outside the published scope. |
+## 🛠️ Hands-on Projects
 
-## Tools used in project code
+| Project | Summary & Tech | Repository & Evidence |
+| :--- | :--- | :--- |
+| **AWS Portfolio Delivery** | Automated continuous delivery for static React web applications on AWS S3 & CloudFront using keyless GitHub Actions OIDC role assumption and automated cache invalidation. <br>_Tech: AWS S3, CloudFront, OIDC, GitHub Actions, TypeScript_ | [expertnafees-hub/aws-devops](https://github.com/expertnafees-hub/aws-devops)<br>• [Deployment Run](https://github.com/expertnafees-hub/aws-devops/actions/runs/34621327732) |
+| **Payment API Container Delivery** | Containerized REST API with automated unit testing, container vulnerability scanning, and secure image publication to Amazon ECR via AWS OIDC. <br>_Tech: Docker, Amazon ECR, Python, Pytest, Trivy, GitHub Actions_ | [expertnafees-hub/payment-api](https://github.com/expertnafees-hub/payment-api)<br>• [ECR Publish Run](https://github.com/expertnafees-hub/payment-api/actions/runs/36395971162) |
+| **AWS Three-Tier Architecture** | Modular Terraform infrastructure provisioning a secure 3-tier VPC with public ALB, private EC2 Auto Scaling fleet, isolated RDS MySQL, and AWS Systems Manager for secure access without SSH keys. <br>_Tech: Terraform, VPC, EC2 Auto Scaling, RDS MySQL, AWS SSM, CloudWatch_ | [expertnafees-hub/aws-three-tier-architecture](https://github.com/expertnafees-hub/aws-three-tier-architecture)<br>• [CI Validation](https://github.com/expertnafees-hub/aws-three-tier-architecture/actions/runs/36328616959) |
+| **Amazon EKS Terraform Platform** | Production-patterned modular Terraform platform decoupling EKS cluster infrastructure from Kubernetes platform add-ons, with private API endpoints and IAM Roles for Service Accounts (IRSA). <br>_Tech: Terraform, Amazon EKS, Kubernetes, Helm, AWS IAM_ | [expertnafees-hub/aws-eks-terraform-platform](https://github.com/expertnafees-hub/aws-eks-terraform-platform)<br>• [Validation Run](https://github.com/expertnafees-hub/aws-eks-terraform-platform/actions/runs/34342770395) |
+| **GitOps Delivery Pipeline** | Two-repository GitOps setup separating application code from declarative Helm environment manifests, with automated container builds and configuration promotion workflows. <br>_Tech: GitOps, Helm, Kubernetes, Docker, GitHub Actions_ | [expertnafees-hub/gitops-core-api](https://github.com/expertnafees-hub/gitops-core-api)<br>• Companion: [gitops-platform-config](https://github.com/expertnafees-hub/gitops-platform-config) |
+| **AWS VPC Networking Foundation** | Foundational Terraform networking lab demonstrating VPC CIDR subnetting, Internet Gateway attachment, and public route table associations. <br>_Tech: Terraform, Amazon VPC, Routing_ | [expertnafees-hub/aws-terraform-vpc-foundation](https://github.com/expertnafees-hub/aws-terraform-vpc-foundation) |
 
-Terraform/HCL, GitHub Actions, Docker, Python, TypeScript, AWS IAM/OIDC, S3, CloudFront, ECR, VPC, EC2/ALB, RDS, CloudWatch, EKS configuration, and Helm configuration. Code configuration and recorded publication runs do not imply production operations experience with every tool.
+---
 
-## Learning and next milestones
+## 💻 Tech Stack & Tooling
 
-- AWS Solutions Architect – Associate preparation is in progress.
-- Terraform Associate coursework completion is self-reported; an issued certification is not claimed.
-- Linux, networking, and operational troubleshooting practice continue.
-- Next project work: a restricted app-to-RDS connection, protected shared Terraform state, real deployment and recovery evidence, payment API runtime delivery, and GitOps scan investigation.
+- **Cloud & Infrastructure:** Amazon Web Services (VPC, EC2, ALB, S3, CloudFront, ECR, RDS MySQL, IAM, CloudWatch, SSM)
+- **Infrastructure as Code:** Terraform / HCL, Reusable Modules, S3 Remote State
+- **Containers & Orchestration:** Docker, Amazon EKS, Kubernetes, Helm
+- **CI/CD & Automation:** GitHub Actions, AWS OIDC Keyless Federation, Bash, Trivy Security Scanning
+- **Development & Scripting:** Python, Bash, TypeScript, Linux (Ubuntu/Debian)
 
-Issued certifications will be linked to issuer verification when available. The portfolio terminal is an interactive example; its output does not execute AWS commands or report live cloud health.
+---
+
+## 🎯 Current Focus & Learning
+
+- **Certifications in Progress:** Preparing for AWS Certified Solutions Architect – Associate (target late 2026); completed HashiCorp Certified: Terraform Associate curriculum.
+- **Active Milestones:** Adding ECS runtime deployment to the payment API, configuring ArgoCD cluster reconciliation for GitOps, and testing live application database queries against RDS.

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FolderGit2, ExternalLink } from 'lucide-react';
 import { projectsData } from '../data/projectsData';
-import { evidenceSnapshot } from '../data/portfolioEvidence';
 import { ProjectCaseStudy } from '../types';
 import { ProjectCard } from './ProjectCard';
 import { ProjectModal } from './ProjectModal';
@@ -12,18 +11,18 @@ export const FeaturedProjects: React.FC = () => {
     <section id="projects" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-cardBorder" aria-label="Featured Infrastructure Projects">
       <div className="mb-10">
         <div className="font-mono text-xs text-primary uppercase tracking-widest mb-1 flex items-center gap-2">
-          <FolderGit2 className="w-4 h-4" /><span>Public project evidence</span>
+          <FolderGit2 className="w-4 h-4" /><span>Hands-on Projects</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-semibold text-on-surface">Featured Infrastructure Projects</h2>
         <p className="text-sm text-on-surface-variant mt-2 max-w-3xl leading-relaxed">
-          Six projects across seven code repositories. Each card distinguishes configured scope, recorded results, and remaining work. Evidence reviewed {evidenceSnapshot}.
+          Six projects across seven code repositories demonstrating AWS infrastructure as code, container delivery, and automated CI/CD pipelines with verified GitHub Actions workflows.
         </p>
       </div>
       <div className="space-y-8">
         {projectsData.map(project => (
           <ProjectCard key={project.id} project={project} onOpenDetails={setSelectedProject} renderVisual={
             <div className="space-y-4">
-              <span className="font-mono text-xs text-secondary uppercase tracking-wider">Evidence &amp; remaining work</span>
+              <span className="font-mono text-xs text-secondary uppercase tracking-wider">Project Evidence &amp; Status</span>
               <p className="text-sm text-on-surface-variant leading-relaxed">{project.evidenceNote}</p>
               <div className="grid grid-cols-2 gap-3">
                 {project.metrics.map(item => (

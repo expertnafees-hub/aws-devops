@@ -1,7 +1,7 @@
 import React from 'react';
 import { GitCommit, ExternalLink } from 'lucide-react';
 import { githubRepositories } from '../data/githubData';
-import { evidenceSnapshot, githubProfileUrl } from '../data/portfolioEvidence';
+import { githubProfileUrl } from '../data/portfolioEvidence';
 import { RepositoryCard } from './RepositoryCard';
 
 export const GitHubPublic: React.FC = () => (
@@ -12,11 +12,11 @@ export const GitHubPublic: React.FC = () => (
         <h2 className="text-2xl sm:text-3xl font-semibold text-on-surface">Engineering in Public</h2>
       </div>
       <a href={githubProfileUrl} target="_blank" rel="noreferrer" className="font-mono text-xs text-secondary hover:text-white flex items-center gap-2 break-all">
-        <span>View genuine activity on GitHub</span><ExternalLink className="w-4 h-4 shrink-0" />
+        <span>View GitHub Profile &amp; Repositories</span><ExternalLink className="w-4 h-4 shrink-0" />
       </a>
     </div>
     <p className="text-sm text-on-surface-variant mb-6 max-w-3xl leading-relaxed">
-      These seven public code repositories were reviewed {evidenceSnapshot}. Status descriptions are a manual snapshot. GitHub maintains the current contribution graph, star counts, and workflow results.
+      Public repositories containing my AWS infrastructure as code, container delivery pipelines, and automation workflows. Explore the source code and commit histories directly on GitHub.
     </p>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {githubRepositories.map(repo => <RepositoryCard key={repo.name} repo={repo} />)}

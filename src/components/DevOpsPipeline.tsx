@@ -36,7 +36,7 @@ export const DevOpsPipeline: React.FC = () => {
             </h2>
           </div>
           <div className="px-3 py-1.5 rounded bg-surface-container-lowest border border-cardBorder font-mono text-xs text-tertiary flex items-center gap-2 self-start md:self-auto shadow-sm">
-            <span>Runtime &amp; recovery validation pending</span>
+            <span>Automated CI/CD Workflow Stages</span>
           </div>
         </div>
 

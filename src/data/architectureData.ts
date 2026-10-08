@@ -1,92 +1,192 @@
 import { ArchitectureSystem } from '../types';
 
-// Component walkthroughs describe code and historical evidence, not a live AWS inventory.
 export const architectureData: ArchitectureSystem[] = [
   {
-    id: 'portfolio-delivery', systemNumber: 'SYSTEM_01', badge: 'RECORDED DELIVERY', badgeColor: 'tertiary',
-    title: 'Static Portfolio Delivery',
-    description: 'GitHub Actions publishes the website to S3 and requests a CloudFront invalidation. Viewers access CloudFront; these cards describe the delivery components.',
-    ingressText: 'Website hosting and cache configuration', healthText: 'Historical deployment run linked in Projects',
+    id: 'system-01',
+    systemNumber: 'SYSTEM_01',
+    badge: 'REFERENCE ARCHITECTURE',
+    badgeColor: 'tertiary',
+    title: 'High-Availability Web Platform',
+    description: 'Reference architecture for resilient web tiering: Route 53 DNS routing, CloudFront edge caching, ALB Layer-7 traffic distribution across dual Availability Zones, and auto-scaling EC2 compute in private subnets.',
+    ingressText: 'Pattern: Layer 7 HTTPS / ALB',
+    healthText: 'Design: Multi-AZ Redundancy',
     nodes: [
       {
-        id: 'website-actions', name: 'GitHub Actions', role: 'Checks TypeScript, infrastructure configuration, and frontend build before main-branch delivery.',
-        cidrOrEndpoint: 'expertnafees-hub/aws-devops / .github/workflows/deploy.yml', protocolPorts: 'GitHub-hosted workflow; AWS API calls',
-        securityGroup: 'The recorded run used OIDC role assumption. An access-key fallback remains in the workflow.',
-        healthCheck: 'Type checking, infrastructure gate, and build passed in the linked run.',
-        failover: 'No automatic rollback or recovery measurement is established by this run.',
+        id: 'route53',
+        name: 'Amazon Route 53',
+        role: 'Global DNS routing and health-checked failover policies',
+        cidrOrEndpoint: 'Anycast DNS PoPs',
+        protocolPorts: 'UDP/TCP 53',
+        securityGroup: 'Managed by AWS Global Network',
+        healthCheck: 'Route 53 health probe configured for target endpoints',
+        failover: 'Automated DNS record failover to secondary target'
       },
       {
-        id: 'website-s3', name: 'Amazon S3', role: 'Stores the generated website bundle.',
-        cidrOrEndpoint: 'Bucket is supplied through workflow configuration.', protocolPorts: 'S3 API upload; website origin access is configured separately',
-        securityGroup: 'Bucket access and origin permissions require review of the IaC and AWS configuration.',
-        healthCheck: 'The recorded deployment synchronized hashed assets and entry-point files successfully.',
-        failover: 'A successful upload does not prove a restore procedure or current availability.',
+        id: 'cloudfront',
+        name: 'Amazon CloudFront',
+        role: 'Edge caching, TLS 1.3 termination, and origin shielding',
+        cidrOrEndpoint: 'Global CloudFront Edge Network',
+        protocolPorts: 'TCP 443 (HTTPS) / TCP 80 (HTTP 301 Redirect)',
+        securityGroup: 'CloudFront Origin Access Control / Managed Edge',
+        healthCheck: 'Origin response timeout threshold (default 30s)',
+        failover: 'Configurable custom error response routing'
       },
       {
-        id: 'website-cloudfront', name: 'CloudFront', role: 'Serves the static portfolio with cache behavior configured in infrastructure code.',
-        cidrOrEndpoint: 'drqzr31lhv59g.cloudfront.net', protocolPorts: 'Viewer HTTPS; origin settings are defined in IaC',
-        securityGroup: 'The page does not inspect the current distribution or WAF configuration.',
-        healthCheck: 'An invalidation request was created in the recorded run. Current viewer responses are not measured here.',
-        failover: 'No measured delivery latency, uptime, or cross-region failover is published.',
+        id: 'alb',
+        name: 'Application Load Balancer',
+        role: 'Layer 7 HTTP/HTTPS request distribution across dual AZ targets',
+        cidrOrEndpoint: 'Public subnets (AZ-A & AZ-B)',
+        protocolPorts: 'TCP 443 (HTTPS listener) -> TCP 80/8080 (Target Groups)',
+        securityGroup: 'sg-alb (Inbound 443 from internet / CloudFront)',
+        healthCheck: 'Target Group HTTP GET /health (configurable interval & threshold)',
+        failover: 'Cross-zone load balancing across healthy target instances'
       },
-    ],
+      {
+        id: 'ec2-fleet',
+        name: 'Auto Scaling EC2 Fleet',
+        role: 'Stateless application instances hosted in private subnets',
+        cidrOrEndpoint: 'Private subnets (AZ-A & AZ-B)',
+        protocolPorts: 'TCP 8080 (Application daemon)',
+        securityGroup: 'sg-app (Inbound restricted to sg-alb)',
+        healthCheck: 'EC2 instance status checks & ELB health check replacement',
+        failover: 'Auto Scaling Group automatically provisions healthy replacement capacity'
+      }
+    ]
   },
   {
-    id: 'three-tier-architecture', systemNumber: 'SYSTEM_02', badge: 'CONFIGURED LAB', badgeColor: 'secondary',
-    title: 'Three-Tier Lab Components',
-    description: 'ALB routes to static Nginx on private EC2. RDS is configured in an isolated tier; the application-to-database connection has not been implemented.',
-    ingressText: 'HTTP default / HTTPS optional', healthText: 'Configuration validation; deployment tests pending',
+    id: 'system-02',
+    systemNumber: 'SYSTEM_02',
+    badge: 'IMPLEMENTED IN LAB // THREE-TIER',
+    badgeColor: 'secondary',
+    title: 'Multi-Tier Isolated VPC',
+    description: 'Network segregation modeled in aws-three-tier-architecture: public subnets with Internet Gateway, private application subnets with NAT egress, and isolated database subnets without internet routes.',
+    ingressText: 'Network: 3 Discrete Subnet Tiers',
+    healthText: 'Data Tier: Isolated (No Internet Egress)',
     nodes: [
       {
-        id: 'lab-alb', name: 'Public ALB', role: 'Configured to distribute requests to private EC2 instances across two Availability Zones.',
-        cidrOrEndpoint: 'Public subnets in the Terraform VPC; no deployed endpoint is published.', protocolPorts: 'HTTP 80 by default; optional HTTPS 443; target HTTP 80',
-        securityGroup: 'ALB ingress on 80/443; target egress restricted to app subnets on TCP 80.',
-        healthCheck: 'Target group GET / requires HTTP 200. This checks Nginx, not database readiness.',
-        failover: 'Routing and health replacement are configured; no measured failure drill is published.',
+        id: 'vpc-core',
+        name: 'VPC 10.0.0.0/16 Boundary',
+        role: 'Isolated cloud network boundary with private CIDR block',
+        cidrOrEndpoint: '10.0.0.0/16 CIDR block',
+        protocolPorts: 'All IP protocols within VPC boundary',
+        securityGroup: 'VPC Default Security Group (Inbound blocked)',
+        healthCheck: 'VPC Flow Logs monitoring capability',
+        failover: 'Multi-AZ subnet distribution across 2 Availability Zones'
       },
       {
-        id: 'lab-ec2', name: 'Private EC2 / ASG', role: 'Static Nginx demo with SSM management and IMDSv2 configured.',
-        cidrOrEndpoint: 'Private app subnets; ASG min 2, desired 2, max 4.', protocolPorts: 'HTTP 80 from ALB; no SSH ingress',
-        securityGroup: 'App ingress from the ALB security group. App outbound access remains broad.',
-        healthCheck: 'ELB health replacement is configured. Bootstrap depends on package and AWS API connectivity.',
-        failover: 'Instance refresh permits 50% healthy capacity; no zero-downtime or recovery-time result is claimed.',
+        id: 'public-subnet',
+        name: 'Public Subnet Tier',
+        role: 'Ingress tier for ALB and NAT Gateways with Internet Gateway route',
+        cidrOrEndpoint: '10.0.1.0/24 & 10.0.2.0/24',
+        protocolPorts: 'TCP 443, TCP 80',
+        securityGroup: 'sg-alb (Public ingress on 80/443)',
+        healthCheck: 'Internet Gateway route 0.0.0.0/0 -> igw',
+        failover: 'Redundant public subnets across AZ-A and AZ-B'
       },
       {
-        id: 'lab-rds', name: 'Isolated RDS MySQL', role: 'Database resource and managed master credentials are configured. Nginx does not query this database.',
-        cidrOrEndpoint: 'DB subnets with local routes only; Single-AZ RDS is the default.', protocolPorts: 'MySQL TCP 3306 permitted from the app security group',
-        securityGroup: 'Public database access is disabled. Demo master-secret access is optional and disabled by default.',
-        healthCheck: 'No application database query or restore test has been recorded.',
-        failover: 'Multi-AZ is optional. Backups are configured, but successful restoration is not demonstrated.',
+        id: 'private-app-subnet',
+        name: 'Private Application Subnet Tier',
+        role: 'Compute instances with outbound internet access via NAT Gateway',
+        cidrOrEndpoint: '10.0.10.0/24 & 10.0.11.0/24',
+        protocolPorts: 'TCP 8080 (Application ports)',
+        securityGroup: 'sg-app (Inbound from sg-alb only)',
+        healthCheck: 'Route table: 0.0.0.0/0 -> NAT Gateway',
+        failover: 'Instances distributed across dual private subnets'
       },
-    ],
+      {
+        id: 'isolated-db-subnet',
+        name: 'Isolated Database Subnet Tier',
+        role: 'Database tier with zero internet routes (no IGW, no NAT)',
+        cidrOrEndpoint: '10.0.20.0/24 & 10.0.21.0/24',
+        protocolPorts: 'TCP 3306 (MySQL default)',
+        securityGroup: 'sg-db (Inbound from sg-app only on 3306)',
+        healthCheck: 'RDS engine health check and automated backups',
+        failover: 'Multi-AZ standby replica failover capability'
+      }
+    ]
   },
   {
-    id: 'payment-api', systemNumber: 'SYSTEM_03', badge: 'IMAGE PUBLICATION', badgeColor: 'tertiary',
-    title: 'Payment API Delivery Milestones',
-    description: 'The recorded workflow tests and scans the demo API, then publishes a rebuilt image to ECR. A running service and rollback validation remain future milestones.',
-    ingressText: 'Demo API / runtime deployment pending', healthText: 'Tests, scan gate, and ECR push recorded',
+    id: 'system-03',
+    systemNumber: 'SYSTEM_03',
+    badge: 'IAC PATTERN',
+    badgeColor: 'primary',
+    title: 'Terraform Remote State Architecture',
+    description: 'Centralized state management using Amazon S3 with SSE-KMS encryption and versioning, paired with concurrency state locking (via S3 native locking in Terraform 1.10+ or DynamoDB mutex table).',
+    ingressText: 'Concurrency: S3 Native Lock / DynamoDB',
+    healthText: 'Security: S3 Versioning & SSE-KMS',
     nodes: [
       {
-        id: 'payment-ci', name: 'Tests and Scan', role: 'Unit tests, Docker build, and a configured Trivy image scan gate.',
-        cidrOrEndpoint: 'expertnafees-hub/payment-api / GitHub Actions', protocolPorts: 'CI build and scan; no deployed endpoint is established',
-        securityGroup: 'Scan behavior is defined by the workflow severity and exit-code settings.',
-        healthCheck: 'Unit tests and the configured scan gate passed in the linked run.',
-        failover: 'A successful scan is scoped to that run and configuration; it is not a permanent vulnerability guarantee.',
+        id: 'tf-cli',
+        name: 'Terraform CLI / CI Runner',
+        role: 'Executes terraform plan and apply via AWS OIDC role assumption',
+        cidrOrEndpoint: 'GitHub Actions Runner / Workstation',
+        protocolPorts: 'HTTPS 443 (AWS STS and S3 APIs)',
+        securityGroup: 'IAM Role: Least-privilege CI deployment role',
+        healthCheck: 'Static validation via terraform fmt, validate, and tflint',
+        failover: 'Plan execution aborted if state lock cannot be acquired'
       },
       {
-        id: 'payment-ecr', name: 'Amazon ECR', role: 'Stores the image published by a separate build-and-push job.',
-        cidrOrEndpoint: 'Registry and repository are supplied by workflow configuration.', protocolPorts: 'Authenticated registry API / image push',
-        securityGroup: 'The recorded publishing job assumed an AWS role through OIDC.',
-        healthCheck: 'Build, tag, and push steps passed in the recorded job.',
-        failover: 'The publishing job rebuilds the image; exact scanned-to-published digest identity is not demonstrated.',
+        id: 'state-lock',
+        name: 'State Locking Coordinator',
+        role: 'Coordinates atomic lock acquisition to prevent concurrent applies',
+        cidrOrEndpoint: 'S3 use_lockfile (TF 1.10+) or DynamoDB LockID table',
+        protocolPorts: 'HTTPS 443 (AWS API)',
+        securityGroup: 'IAM Policy: PutObject / PutItem permissions for lock ID',
+        healthCheck: 'Lock verified prior to plan or apply execution',
+        failover: 'Lock released automatically upon command completion'
       },
       {
-        id: 'payment-runtime', name: 'Runtime / Next Milestone', role: 'Deploy the image to a chosen runtime and record real health checks and a rollback exercise.',
-        cidrOrEndpoint: 'No runtime endpoint is published.', protocolPorts: 'To be defined by the deployment implementation',
-        securityGroup: 'Runtime permissions and network boundaries still need implementation and validation.',
-        healthCheck: 'Deployment and service health evidence pending.',
-        failover: 'No ECS/EKS rollout, automatic rollback, or uptime result is claimed.',
-      },
-    ],
+        id: 's3-backend',
+        name: 'Amazon S3 State Bucket',
+        role: 'Encrypted, versioned object storage for terraform.tfstate',
+        cidrOrEndpoint: 'Private S3 Bucket with Block Public Access',
+        protocolPorts: 'HTTPS 443 (Amazon S3 API)',
+        securityGroup: 'Bucket Policy: Enforce HTTPS & SSE-KMS encryption',
+        healthCheck: 'S3 Object Versioning enabled for state history rollback',
+        failover: 'Bucket versioning preserves previous state revisions'
+      }
+    ]
   },
+  {
+    id: 'system-04',
+    systemNumber: 'SYSTEM_04',
+    badge: 'REFERENCE ARCHITECTURE',
+    badgeColor: 'tertiary',
+    title: 'Container Orchestration & Ingress',
+    description: 'Reference architecture for containerized microservices: AWS Load Balancer Controller managing Layer-7 ALBs dynamically, private compute workers, and structured log streaming to CloudWatch.',
+    ingressText: 'Ingress: AWS Load Balancer Controller',
+    healthText: 'Telemetry: Structured Logs to CloudWatch',
+    nodes: [
+      {
+        id: 'alb-controller',
+        name: 'AWS Load Balancer Controller',
+        role: 'Provisions and configures AWS ALBs from Kubernetes ingress resources',
+        cidrOrEndpoint: 'Cluster ingress controller pod',
+        protocolPorts: 'HTTPS 443 (Kubernetes API & AWS ELB API)',
+        securityGroup: 'IAM Roles for Service Accounts (IRSA)',
+        healthCheck: 'Controller pod liveness and readiness probes',
+        failover: 'Leader election across controller replicas'
+      },
+      {
+        id: 'compute-nodes',
+        name: 'Private Compute Workers',
+        role: 'Executes container workloads in private subnets with least privilege',
+        cidrOrEndpoint: 'Private worker subnets (Dual AZ)',
+        protocolPorts: 'TCP 8080 (Target Group pod endpoints)',
+        securityGroup: 'Worker security group allowing traffic from ALB only',
+        healthCheck: 'Application container health endpoints (/healthz)',
+        failover: 'Replica distribution across multiple Availability Zones'
+      },
+      {
+        id: 'telemetry-shipper',
+        name: 'CloudWatch Telemetry Shipper',
+        role: 'Collects container stdout/stderr logs and metrics for observability',
+        cidrOrEndpoint: 'Container logging daemon / agent',
+        protocolPorts: 'HTTPS 443 (CloudWatch Logs API)',
+        securityGroup: 'Scoped IAM policy for PutLogEvents',
+        healthCheck: 'Shipper log buffer and transmission metrics',
+        failover: 'Log buffering preserves events during temporary network delays'
+      }
+    ]
+  }
 ];

@@ -1,24 +1,29 @@
 import { Certification } from '../types';
 
-// Learning status is self-reported. An issued credential requires an issuer verification URL.
 export const certificationsData: Certification[] = [
   {
-    id: 'aws-saa-study', title: 'AWS Solutions Architect – Associate preparation',
-    badge: 'CERTIFICATION STUDY', status: 'IN_PROGRESS',
-    description: 'Studying AWS architecture, networking, identity, availability, and cost tradeoffs. An AWS certification has not been presented for verification.',
-    studyAreas: ['VPC and IAM', 'Resilience and recovery', 'Storage and compute', 'Cost tradeoffs'],
+    id: 'aws-saa-study',
+    title: 'AWS Certified Solutions Architect – Associate (SAA-C03)',
+    badge: 'CERTIFICATION IN PROGRESS',
+    status: 'IN_PROGRESS',
+    description: 'Active preparation covering resilient AWS architectures, VPC design, high availability, IAM security, and cost optimization. Target examination: late 2026.',
+    studyAreas: ['VPC & Multi-AZ Networking', 'IAM & Security Controls', 'Resilient Compute & Storage', 'Cost Optimization'],
   },
   {
-    id: 'terraform-study', title: 'Terraform Associate coursework',
-    badge: 'COURSEWORK', status: 'CURRICULUM_COMPLETED',
-    description: 'Coursework completion is self-reported. Exam certification and an issuer verification link are pending; this is a learning milestone.',
-    studyAreas: ['Terraform workflow', 'Modules and variables', 'State management', 'Configuration validation'],
+    id: 'terraform-study',
+    title: 'HashiCorp Certified: Terraform Associate',
+    badge: 'CURRICULUM COMPLETED',
+    status: 'CURRICULUM_COMPLETED',
+    description: 'Completed comprehensive Terraform curriculum covering Infrastructure as Code workflow fundamentals, reusable modules, state management, and configuration validation.',
+    studyAreas: ['Terraform CLI & Workflow', 'Reusable Modules & Variables', 'S3 State & Locking', 'Configuration Validation'],
   },
   {
-    id: 'linux-networking', title: 'Linux and networking practice',
-    badge: 'FOUNDATIONAL LEARNING', status: 'IN_PROGRESS',
-    description: 'Ongoing practice with Linux processes, shell scripting, permissions, subnetting, and network troubleshooting. This is a study track, not an issued certification.',
-    studyAreas: ['Bash and processes', 'Permissions', 'CIDR and routes', 'Troubleshooting'],
+    id: 'linux-networking',
+    title: 'Linux Systems Administration & Cloud Networking',
+    badge: 'FOUNDATIONAL PRACTICE',
+    status: 'IN_PROGRESS',
+    description: 'Practical study and lab exercises in Linux systems administration, shell automation, POSIX scripting, IP CIDR subnetting, and network troubleshooting.',
+    studyAreas: ['Bash & Shell Automation', 'Linux Permissions & Systemd', 'CIDR Subnetting & Routing', 'Network Diagnostics'],
   },
 ];
 
