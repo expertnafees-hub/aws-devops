@@ -29,15 +29,14 @@ export const DevOpsPipeline: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-3">
           <div>
             <div className="font-mono text-xs text-primary uppercase tracking-widest mb-1">
-              Operational Guarantee
+              Delivery milestones across projects
             </div>
             <h2 className="text-xl sm:text-2xl font-semibold font-sans text-on-surface">
               “Infrastructure shouldn't depend on someone remembering the right commands.”
             </h2>
           </div>
           <div className="px-3 py-1.5 rounded bg-surface-container-lowest border border-cardBorder font-mono text-xs text-tertiary flex items-center gap-2 self-start md:self-auto shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
-            <span>Automated Rollback Safeguard Engaged</span>
+            <span>Automated CI/CD Workflow Stages</span>
           </div>
         </div>
 
@@ -127,7 +126,7 @@ export const DevOpsPipeline: React.FC = () => {
             <ul className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs font-mono text-on-surface-variant">
               {pipelineSteps[activeStep].details.map((detail, dIdx) => (
                 <li key={dIdx} className="p-2 rounded bg-surface-container border border-cardBorder/60 flex items-start gap-1.5">
-                  <span className="text-tertiary font-bold">✓</span>
+                  <span className="text-secondary">•</span>
                   <span>{detail}</span>
                 </li>
               ))}

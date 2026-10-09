@@ -1,5 +1,5 @@
 import React from 'react';
-import { FolderGit2, Folder, GitCommit } from 'lucide-react';
+import { FolderGit2, Folder } from 'lucide-react';
 import { curriculumData } from '../data/pipelineAndBuildingData';
 
 export const CurrentlyBuilding: React.FC = () => {
@@ -14,16 +14,11 @@ export const CurrentlyBuilding: React.FC = () => {
           <div className="flex items-center gap-2.5">
             <FolderGit2 className="w-5 h-5 text-tertiary" />
             <span className="font-mono text-sm sm:text-base text-on-surface font-semibold">
-              ~/active-engineering-curriculum
+              Active engineering focus &amp; milestones
             </span>
           </div>
           <div className="font-mono text-xs text-on-surface-variant flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            <GitCommit className="w-3.5 h-3.5 text-primary" />
-            <span className="text-white font-medium">COMMITS PUSHED THIS WEEK: 19</span>
+            <span className="text-white font-medium">ACTIVE LABS &amp; LEARNING ROADMAP</span>
           </div>
         </div>
 
@@ -49,7 +44,7 @@ export const CurrentlyBuilding: React.FC = () => {
                   className="flex flex-col sm:flex-row sm:items-center justify-between pl-3 py-1.5 hover:bg-surface-container-low/60 rounded transition-colors gap-2"
                 >
                   <div className="flex items-start sm:items-center gap-2">
-                    <span className="text-outline-variant font-mono">├──</span>
+                    <span className="text-outline-variant">•</span>
                     <span>
                       <strong className="text-white font-medium">{item.folder}</strong>{' '}
                       <span className="text-on-surface-variant text-xs font-normal">

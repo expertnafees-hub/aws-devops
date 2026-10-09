@@ -35,8 +35,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopied(false);
     }
   };
 
@@ -76,7 +75,14 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           </button>
         </div>
 
-        {/* Narrative & Metrics */}
+        <div className="p-4 rounded-lg bg-surface-container-lowest border border-cardBorder space-y-2">
+          <p className="text-sm text-on-surface-variant leading-relaxed">{project.evidenceNote}</p>
+          <a href={project.evidenceUrl} target="_blank" rel="noreferrer" className="text-xs text-primary hover:text-white font-mono inline-flex items-center gap-2">
+            {project.evidenceLabel}<ExternalLink className="w-4 h-4 shrink-0" />
+          </a>
+        </div>
+
+        {/* Narrative & configured scope */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2 space-y-4">
             <h3 className="font-mono text-xs text-secondary uppercase tracking-wider flex items-center gap-1.5">
@@ -106,7 +112,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           <div className="space-y-5 bg-surface-container-lowest p-4 rounded-lg border border-cardBorder">
             <div>
               <span className="font-mono text-[11px] text-outline uppercase tracking-wider block mb-3">
-                Production Metrics
+                Configured scope &amp; evidence
               </span>
               <div className="grid grid-cols-2 gap-2.5">
                 {project.metrics.map(metric => (
@@ -173,7 +179,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
         )}
 
         {/* Footer actions */}
-        <div className="flex items-center justify-between pt-4 border-t border-cardBorder">
+        <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-cardBorder">
           <a
             href={project.githubUrl}
             target="_blank"
@@ -184,10 +190,17 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
 
+          {project.relatedRepositories?.map(repo => (
+            <a key={repo.url} href={repo.url} target="_blank" rel="noreferrer" className="text-xs font-mono text-secondary hover:text-white break-all">{repo.name} ↗</a>
+          ))}
+          {project.liveDemoUrl && (
+            <a href={project.liveDemoUrl} target="_blank" rel="noreferrer" className="text-xs font-mono text-primary hover:text-white">Visit portfolio ↗</a>
+          )}
+
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded bg-surface-container text-on-surface-variant hover:text-white font-mono text-xs transition-colors"
+            className="ml-auto px-4 py-2 rounded bg-surface-container text-on-surface-variant hover:text-white font-mono text-xs transition-colors"
           >
             Close Breakdown
           </button>

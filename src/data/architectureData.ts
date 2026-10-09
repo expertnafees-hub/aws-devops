@@ -4,188 +4,188 @@ export const architectureData: ArchitectureSystem[] = [
   {
     id: 'system-01',
     systemNumber: 'SYSTEM_01',
-    badge: '99.99% RESILIENT',
+    badge: 'REFERENCE ARCHITECTURE',
     badgeColor: 'tertiary',
-    title: 'Highly Available Web Platform',
-    description: 'Global edge routing with AWS Route 53 latency DNS, CloudFront caching, ALB layer-7 traffic distribution across 2 AZs, and automated recovery EC2 fleets.',
-    ingressText: 'Active Ingress: Port 443 HTTPS',
-    healthText: 'Healthchecks passing: 200 OK /health',
+    title: 'High-Availability Web Platform',
+    description: 'Reference architecture for resilient web tiering: Route 53 DNS routing, CloudFront edge caching, ALB Layer-7 traffic distribution across dual Availability Zones, and auto-scaling EC2 compute in private subnets.',
+    ingressText: 'Pattern: Layer 7 HTTPS / ALB',
+    healthText: 'Design: Multi-AZ Redundancy',
     nodes: [
       {
         id: 'route53',
-        name: 'Route 53 Global DNS',
-        role: 'Global Latency & Health-based DNS Failover',
-        cidrOrEndpoint: 'ns-124.awsdns.org / Anycast PoPs',
+        name: 'Amazon Route 53',
+        role: 'Global DNS routing and health-checked failover policies',
+        cidrOrEndpoint: 'Anycast DNS PoPs',
         protocolPorts: 'UDP/TCP 53',
         securityGroup: 'Managed by AWS Global Network',
-        healthCheck: 'Route 53 Health Check: HTTP /health probe every 10s',
-        failover: 'Automated failover to secondary DR region within 30 seconds'
+        healthCheck: 'Route 53 health probe configured for target endpoints',
+        failover: 'Automated DNS record failover to secondary target'
       },
       {
         id: 'cloudfront',
-        name: 'Amazon CloudFront CDN',
-        role: 'Edge Caching, TLS 1.3 Termination, WAF Filtering',
-        cidrOrEndpoint: 'd111111abcdef8.cloudfront.net',
-        protocolPorts: 'TCP 443 (HTTPS) / TCP 80 (Redirect)',
-        securityGroup: 'CloudFront Origin Shield IP List',
-        healthCheck: 'Origin response timeout threshold: 15s',
-        failover: 'Dynamic route to S3 static maintenance page on origin 5xx'
+        name: 'Amazon CloudFront',
+        role: 'Edge caching, TLS 1.3 termination, and origin shielding',
+        cidrOrEndpoint: 'Global CloudFront Edge Network',
+        protocolPorts: 'TCP 443 (HTTPS) / TCP 80 (HTTP 301 Redirect)',
+        securityGroup: 'CloudFront Origin Access Control / Managed Edge',
+        healthCheck: 'Origin response timeout threshold (default 30s)',
+        failover: 'Configurable custom error response routing'
       },
       {
         id: 'alb',
-        name: 'Dual-AZ Application Load Balancer',
-        role: 'Layer 7 HTTP/HTTPS Request Router with SSL Offload',
-        cidrOrEndpoint: '10.0.1.0/24 (AZ-A), 10.0.2.0/24 (AZ-B)',
-        protocolPorts: 'TCP 443 -> TCP 8080 (Target Groups)',
-        securityGroup: 'sg-alb-ingress (0.0.0.0/0:443 Inbound only)',
-        healthCheck: 'Target Group HTTP GET /api/v1/health (Interval 15s, Healthy 2, Unhealthy 3)',
-        failover: 'Cross-zone load balancing distributes traffic evenly across both healthy AZ fleets'
+        name: 'Application Load Balancer',
+        role: 'Layer 7 HTTP/HTTPS request distribution across dual AZ targets',
+        cidrOrEndpoint: 'Public subnets (AZ-A & AZ-B)',
+        protocolPorts: 'TCP 443 (HTTPS listener) -> TCP 80/8080 (Target Groups)',
+        securityGroup: 'sg-alb (Inbound 443 from internet / CloudFront)',
+        healthCheck: 'Target Group HTTP GET /health (configurable interval & threshold)',
+        failover: 'Cross-zone load balancing across healthy target instances'
       },
       {
         id: 'ec2-fleet',
-        name: 'Multi-AZ EC2 Auto Scaling Target Group',
-        role: 'Stateless Application Workers in Private Subnets',
-        cidrOrEndpoint: '10.0.10.0/24 (AZ-A), 10.0.11.0/24 (AZ-B)',
-        protocolPorts: 'TCP 8080 (App daemon)',
-        securityGroup: 'sg-app-compute (Inbound from sg-alb only on 8080)',
-        healthCheck: 'ELB Health Check replaced by ASG termination on persistent failure',
-        failover: 'Auto Scaling launches replacement instances in alternate AZ automatically'
+        name: 'Auto Scaling EC2 Fleet',
+        role: 'Stateless application instances hosted in private subnets',
+        cidrOrEndpoint: 'Private subnets (AZ-A & AZ-B)',
+        protocolPorts: 'TCP 8080 (Application daemon)',
+        securityGroup: 'sg-app (Inbound restricted to sg-alb)',
+        healthCheck: 'EC2 instance status checks & ELB health check replacement',
+        failover: 'Auto Scaling Group automatically provisions healthy replacement capacity'
       }
     ]
   },
   {
     id: 'system-02',
     systemNumber: 'SYSTEM_02',
-    badge: 'AIR-GAPPED DB',
+    badge: 'IMPLEMENTED IN LAB // THREE-TIER',
     badgeColor: 'secondary',
-    title: 'Secure Multi-Tier Isolated VPC',
-    description: 'Granular network segregation featuring public subnets with Internet Gateway, private application subnets via NAT Gateways, and isolated database subnets without outbound internet routes.',
-    ingressText: 'Route Tables: 3 Discrete Associations',
-    healthText: 'Zero public DB leaks (Isolated Subnets)',
+    title: 'Multi-Tier Isolated VPC',
+    description: 'Network segregation modeled in aws-three-tier-architecture: public subnets with Internet Gateway, private application subnets with NAT egress, and isolated database subnets without internet routes.',
+    ingressText: 'Network: 3 Discrete Subnet Tiers',
+    healthText: 'Data Tier: Isolated (No Internet Egress)',
     nodes: [
       {
         id: 'vpc-core',
-        name: 'VPC 10.0.0.0/16 Core',
-        role: 'Primary Network Boundary with DNS Resolution & Hostnames',
-        cidrOrEndpoint: '10.0.0.0/16 (65,536 Available IPs)',
-        protocolPorts: 'All IP Protocols within VPC CIDR',
-        securityGroup: 'VPC Default SG (All ingress blocked by default)',
-        healthCheck: 'VPC Flow Logs streaming to CloudWatch Logs Group',
-        failover: 'Redundant Availability Zones us-east-1a and us-east-1b'
+        name: 'VPC 10.0.0.0/16 Boundary',
+        role: 'Isolated cloud network boundary with private CIDR block',
+        cidrOrEndpoint: '10.0.0.0/16 CIDR block',
+        protocolPorts: 'All IP protocols within VPC boundary',
+        securityGroup: 'VPC Default Security Group (Inbound blocked)',
+        healthCheck: 'VPC Flow Logs monitoring capability',
+        failover: 'Multi-AZ subnet distribution across 2 Availability Zones'
       },
       {
         id: 'public-subnet',
-        name: 'Public Subnet /24 (Web & Ingress)',
-        role: 'Internet Gateway Routing, NAT Gateways, and Bastion Host',
+        name: 'Public Subnet Tier',
+        role: 'Ingress tier for ALB and NAT Gateways with Internet Gateway route',
         cidrOrEndpoint: '10.0.1.0/24 & 10.0.2.0/24',
-        protocolPorts: 'TCP 443, TCP 80, TCP 22 (Bastion IP restricted)',
-        securityGroup: 'sg-public-ingress (WAF & ALB ingress rules)',
-        healthCheck: 'Internet Gateway active connectivity status',
-        failover: 'Dual NAT Gateways provisioned independently per AZ'
+        protocolPorts: 'TCP 443, TCP 80',
+        securityGroup: 'sg-alb (Public ingress on 80/443)',
+        healthCheck: 'Internet Gateway route 0.0.0.0/0 -> igw',
+        failover: 'Redundant public subnets across AZ-A and AZ-B'
       },
       {
         id: 'private-app-subnet',
-        name: 'Private Application Subnet /24',
-        role: 'Compute Instances & Container Workloads (Outbound via NAT)',
+        name: 'Private Application Subnet Tier',
+        role: 'Compute instances with outbound internet access via NAT Gateway',
         cidrOrEndpoint: '10.0.10.0/24 & 10.0.11.0/24',
-        protocolPorts: 'TCP 8080, TCP 443 (Outbound for OS package updates)',
-        securityGroup: 'sg-app-internal (Accepts requests from ALB SG only)',
-        healthCheck: 'Route table: 0.0.0.0/0 -> NAT Gateway (nat-0a1b2c3)',
-        failover: 'AZ-A traffic routes through NAT-A; AZ-B through NAT-B'
+        protocolPorts: 'TCP 8080 (Application ports)',
+        securityGroup: 'sg-app (Inbound from sg-alb only)',
+        healthCheck: 'Route table: 0.0.0.0/0 -> NAT Gateway',
+        failover: 'Instances distributed across dual private subnets'
       },
       {
         id: 'isolated-db-subnet',
-        name: 'Isolated Database Subnet /24',
-        role: 'Amazon Aurora Multi-AZ MySQL / PostgreSQL Cluster',
+        name: 'Isolated Database Subnet Tier',
+        role: 'Database tier with zero internet routes (no IGW, no NAT)',
         cidrOrEndpoint: '10.0.20.0/24 & 10.0.21.0/24',
-        protocolPorts: 'TCP 3306 (MySQL) or TCP 5432 (PostgreSQL)',
-        securityGroup: 'sg-rds-cluster (Ingress from sg-app-internal ONLY)',
-        healthCheck: 'Aurora automated failover monitoring daemon (< 30s crash recovery)',
-        failover: 'Automatic promotion of read replica in AZ-B if primary in AZ-A degrades'
+        protocolPorts: 'TCP 3306 (MySQL default)',
+        securityGroup: 'sg-db (Inbound from sg-app only on 3306)',
+        healthCheck: 'RDS engine health check and automated backups',
+        failover: 'Multi-AZ standby replica failover capability'
       }
     ]
   },
   {
     id: 'system-03',
     systemNumber: 'SYSTEM_03',
-    badge: 'STATE LOCKING',
+    badge: 'IAC PATTERN',
     badgeColor: 'primary',
     title: 'Terraform Remote State Architecture',
-    description: 'Centralized state repository utilizing Amazon S3 bucket with strict versioning, KMS SSE-KMS encryption, and DynamoDB lock tables preventing concurrent mutating plans.',
-    ingressText: 'Concurrency Control: Active DynamoDB Mutex',
-    healthText: 'Atomic state writes with KMS encryption',
+    description: 'Centralized state management using Amazon S3 with SSE-KMS encryption and versioning, paired with concurrency state locking (via S3 native locking in Terraform 1.10+ or DynamoDB mutex table).',
+    ingressText: 'Concurrency: S3 Native Lock / DynamoDB',
+    healthText: 'Security: S3 Versioning & SSE-KMS',
     nodes: [
       {
         id: 'tf-cli',
         name: 'Terraform CLI / CI Runner',
-        role: 'Executes terraform plan and apply via AWS OIDC Authentication',
-        cidrOrEndpoint: 'GitHub Actions Runner / Local Terminal',
-        protocolPorts: 'HTTPS 443 (AWS STS & API endpoints)',
-        securityGroup: 'IAM Role: TerraformDeployerRole (Least privilege)',
-        healthCheck: 'Pre-flight tfsec and tflint static validation checks',
-        failover: 'Automatic abort if state lock cannot be acquired'
+        role: 'Executes terraform plan and apply via AWS OIDC role assumption',
+        cidrOrEndpoint: 'GitHub Actions Runner / Workstation',
+        protocolPorts: 'HTTPS 443 (AWS STS and S3 APIs)',
+        securityGroup: 'IAM Role: Least-privilege CI deployment role',
+        healthCheck: 'Static validation via terraform fmt, validate, and tflint',
+        failover: 'Plan execution aborted if state lock cannot be acquired'
       },
       {
-        id: 'dynamodb-lock',
-        name: 'DynamoDB Mutex Lock Table',
-        role: 'Distributed LockID Coordinator preventing concurrent mutations',
-        cidrOrEndpoint: 'arn:aws:dynamodb:us-east-1:xxxx:table/terraform-state-lock',
-        protocolPorts: 'HTTPS 443 (DynamoDB API)',
-        securityGroup: 'IAM Policy: PutItem, DeleteItem, GetItem on LockID',
-        healthCheck: 'DynamoDB Table Status: ACTIVE (Pay-Per-Request billing)',
-        failover: 'Lock timeout expiration and emergency force-unlock procedures'
+        id: 'state-lock',
+        name: 'State Locking Coordinator',
+        role: 'Coordinates atomic lock acquisition to prevent concurrent applies',
+        cidrOrEndpoint: 'S3 use_lockfile (TF 1.10+) or DynamoDB LockID table',
+        protocolPorts: 'HTTPS 443 (AWS API)',
+        securityGroup: 'IAM Policy: PutObject / PutItem permissions for lock ID',
+        healthCheck: 'Lock verified prior to plan or apply execution',
+        failover: 'Lock released automatically upon command completion'
       },
       {
         id: 's3-backend',
-        name: 'Amazon S3 State Storage Bucket',
-        role: 'Encrypted, Versioned Storage for .tfstate infrastructure maps',
-        cidrOrEndpoint: 's3://nafees-tf-state-prod-useast1/core/vpc-fleet.tfstate',
+        name: 'Amazon S3 State Bucket',
+        role: 'Encrypted, versioned object storage for terraform.tfstate',
+        cidrOrEndpoint: 'Private S3 Bucket with Block Public Access',
         protocolPorts: 'HTTPS 443 (Amazon S3 API)',
-        securityGroup: 'Bucket Policy: Require TLS 1.2+ & KMS SSE Header',
-        healthCheck: 'S3 Object Versioning Enabled (Instant rollback capability)',
-        failover: 'S3 Cross-Region Replication (CRR) to us-west-2 disaster recovery bucket'
+        securityGroup: 'Bucket Policy: Enforce HTTPS & SSE-KMS encryption',
+        healthCheck: 'S3 Object Versioning enabled for state history rollback',
+        failover: 'Bucket versioning preserves previous state revisions'
       }
     ]
   },
   {
     id: 'system-04',
     systemNumber: 'SYSTEM_04',
-    badge: 'CONTAINERS',
+    badge: 'REFERENCE ARCHITECTURE',
     badgeColor: 'tertiary',
-    title: 'Microservices on AWS EKS / ECS Fargate',
-    description: 'Container orchestrator running on managed nodes. Integrates AWS Load Balancer Controller for dynamic TargetGroupBindings, AWS Secret Manager sidecars, and fluent-bit logging.',
-    ingressText: 'Kubernetes: v1.29 Compatible Engine',
-    healthText: 'Autoscaling enabled: HPA & Karpenter',
+    title: 'Container Orchestration & Ingress',
+    description: 'Reference architecture for containerized microservices: AWS Load Balancer Controller managing Layer-7 ALBs dynamically, private compute workers, and structured log streaming to CloudWatch.',
+    ingressText: 'Ingress: AWS Load Balancer Controller',
+    healthText: 'Telemetry: Structured Logs to CloudWatch',
     nodes: [
       {
         id: 'alb-controller',
         name: 'AWS Load Balancer Controller',
-        role: 'Watches Kubernetes Ingress manifests and provisions AWS ALBs',
-        cidrOrEndpoint: 'kube-system / alb-ingress-controller pod',
-        protocolPorts: 'HTTPS 443 (Kubernetes API) -> AWS ElasticLoadBalancing API',
-        securityGroup: 'IRSA Role: AWSLoadBalancerControllerIAMPolicy',
-        healthCheck: 'Controller healthz endpoint on port 10254',
-        failover: 'Dual-replica controller deployment with leader election'
+        role: 'Provisions and configures AWS ALBs from Kubernetes ingress resources',
+        cidrOrEndpoint: 'Cluster ingress controller pod',
+        protocolPorts: 'HTTPS 443 (Kubernetes API & AWS ELB API)',
+        securityGroup: 'IAM Roles for Service Accounts (IRSA)',
+        healthCheck: 'Controller pod liveness and readiness probes',
+        failover: 'Leader election across controller replicas'
       },
       {
-        id: 'fargate-compute',
-        name: 'ECS Fargate / EKS Node Group',
-        role: 'Runs isolated, ephemeral microservices in private worker subnets',
-        cidrOrEndpoint: '10.0.10.0/24 (AZ-A) & 10.0.11.0/24 (AZ-B)',
-        protocolPorts: 'TCP 8080 (Pod IP target mode)',
-        securityGroup: 'sg-eks-nodes (Inter-pod network policy enforcement)',
-        healthCheck: 'Kubernetes Liveness and Readiness probes (HTTP /healthz 5s)',
-        failover: 'Horizontal Pod Autoscaler (HPA) scales pods from 3 to 15 under load'
+        id: 'compute-nodes',
+        name: 'Private Compute Workers',
+        role: 'Executes container workloads in private subnets with least privilege',
+        cidrOrEndpoint: 'Private worker subnets (Dual AZ)',
+        protocolPorts: 'TCP 8080 (Target Group pod endpoints)',
+        securityGroup: 'Worker security group allowing traffic from ALB only',
+        healthCheck: 'Application container health endpoints (/healthz)',
+        failover: 'Replica distribution across multiple Availability Zones'
       },
       {
-        id: 'telemetry-sidecar',
-        name: 'Fluent Bit & CloudWatch Shipper',
-        role: 'DaemonSet collecting stdout/stderr container logs and metrics',
-        cidrOrEndpoint: 'DaemonSet on each worker node',
-        protocolPorts: 'Unix socket /var/log/containers -> CloudWatch Logs API',
-        securityGroup: 'IRSA Role: CloudWatchAgentServerPolicy',
-        healthCheck: 'Fluent Bit internal buffer metrics check',
-        failover: 'Disk-backed buffering prevents data loss during upstream network blips'
+        id: 'telemetry-shipper',
+        name: 'CloudWatch Telemetry Shipper',
+        role: 'Collects container stdout/stderr logs and metrics for observability',
+        cidrOrEndpoint: 'Container logging daemon / agent',
+        protocolPorts: 'HTTPS 443 (CloudWatch Logs API)',
+        securityGroup: 'Scoped IAM policy for PutLogEvents',
+        healthCheck: 'Shipper log buffer and transmission metrics',
+        failover: 'Log buffering preserves events during temporary network delays'
       }
     ]
   }

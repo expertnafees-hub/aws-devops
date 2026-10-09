@@ -10,14 +10,14 @@ interface TechBadgeProps {
 
 export const TechBadge: React.FC<TechBadgeProps> = ({
   name,
-  status = 'proficient',
+  status = 'project-use',
   highlight = false,
   className = ''
 }) => {
   const statusIndicator = () => {
     switch (status) {
-      case 'proficient':
-        return <span className="w-1.5 h-1.5 rounded-full bg-tertiary" title="Proficient / Production" />;
+      case 'project-use':
+        return <span className="w-1.5 h-1.5 rounded-full bg-tertiary" title="Project code or recorded workflow" />;
       case 'learning':
         return <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" title="Active Learning" />;
       case 'planned':

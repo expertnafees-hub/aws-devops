@@ -2,50 +2,29 @@ import { Certification } from '../types';
 
 export const certificationsData: Certification[] = [
   {
-    id: 'aws-csaa',
+    id: 'aws-saa-study',
     title: 'AWS Certified Solutions Architect – Associate (SAA-C03)',
-    badge: 'TARGET CREDENTIAL',
-    description: 'Comprehensive mastery of AWS architectural design patterns, multi-tier high availability, VPC security, and cost optimization.',
-    hash: '#AWS-VERIFY-READY',
-    targetDate: 'Target Completion: Q2 2025',
-    status: 'TARGET',
-    domains: [
-      { name: 'Design Secure Architectures', percentage: 30 },
-      { name: 'Design Resilient Architectures', percentage: 26 },
-      { name: 'Design High-Performing Architectures', percentage: 24 },
-      { name: 'Design Cost-Optimized Architectures', percentage: 20 }
-    ]
+    badge: 'CERTIFICATION IN PROGRESS',
+    status: 'IN_PROGRESS',
+    description: 'Active preparation covering resilient AWS architectures, VPC design, high availability, IAM security, and cost optimization. Target examination: late 2026.',
+    studyAreas: ['VPC & Multi-AZ Networking', 'IAM & Security Controls', 'Resilient Compute & Storage', 'Cost Optimization'],
   },
   {
-    id: 'hashicorp-terraform',
-    title: 'HashiCorp Certified: Terraform Associate (003)',
-    badge: 'INFRASTRUCTURE AS CODE',
-    description: 'In-depth mastery of IaC principles, state management, module authoring, dynamic blocks, and remote backend collaboration.',
-    hash: '#TERRAFORM-ASSOC-ACTIVE',
-    targetDate: 'Curriculum Completed',
-    status: 'COMPLETED',
-    domains: [
-      { name: 'Understand IaC Concepts', percentage: 25 },
-      { name: 'Terraform CLI & Workflow', percentage: 25 },
-      { name: 'Modules, Variables & State', percentage: 30 },
-      { name: 'Terraform Cloud & Security', percentage: 20 }
-    ]
+    id: 'terraform-study',
+    title: 'HashiCorp Certified: Terraform Associate',
+    badge: 'CURRICULUM COMPLETED',
+    status: 'CURRICULUM_COMPLETED',
+    description: 'Completed comprehensive Terraform curriculum covering Infrastructure as Code workflow fundamentals, reusable modules, state management, and configuration validation.',
+    studyAreas: ['Terraform CLI & Workflow', 'Reusable Modules & Variables', 'S3 State & Locking', 'Configuration Validation'],
   },
   {
     id: 'linux-networking',
-    title: 'Linux Systems Administration & Networking Foundation',
-    badge: 'CORE SYSTEMS',
-    description: 'Advanced Linux systems administration: systemd unit configurations, POSIX permissions, network namespaces, iptables, and Bash scripting.',
-    hash: '#LINUX-CORE-VERIFIED',
-    targetDate: 'Validated in Production',
-    status: 'COMPLETED',
-    domains: [
-      { name: 'Kernel & Namespaces', percentage: 30 },
-      { name: 'Networking & Subnets', percentage: 25 },
-      { name: 'Security & Permissions', percentage: 25 },
-      { name: 'Shell Automation', percentage: 20 }
-    ]
-  }
+    title: 'Linux Systems Administration & Cloud Networking',
+    badge: 'FOUNDATIONAL PRACTICE',
+    status: 'IN_PROGRESS',
+    description: 'Practical study and lab exercises in Linux systems administration, shell automation, POSIX scripting, IP CIDR subnetting, and network troubleshooting.',
+    studyAreas: ['Bash & Shell Automation', 'Linux Permissions & Systemd', 'CIDR Subnetting & Routing', 'Network Diagnostics'],
+  },
 ];
 
 export const certifications = certificationsData;

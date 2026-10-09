@@ -1,6 +1,6 @@
 // Domain types for the platform
 
-export type ProficiencyLevel = 'proficient' | 'learning' | 'planned';
+export type ProficiencyLevel = 'project-use' | 'learning' | 'planned';
 
 export interface TechItem {
   name: string;
@@ -56,6 +56,10 @@ export interface ProjectCaseStudy {
   }[];
   githubUrl: string;
   liveDemoUrl?: string;
+  evidenceLabel: string;
+  evidenceNote: string;
+  evidenceUrl: string;
+  relatedRepositories?: { name: string; url: string }[];
 }
 
 export interface ArchitectureNodeInfo {
@@ -119,26 +123,28 @@ export interface EngineeringArticle {
   summary: string;
   contentMarkdown: string;
   tags: string[];
+  sourceUrl?: string;
 }
 
 export interface GitRepository {
   name: string;
   description: string;
-  stars: number;
   language: string;
   languageColor: string;
   branch: string;
-  updatedAt: string;
   githubUrl: string;
+  status: string;
 }
 
-export interface Certification {
+interface CertificationLearningDetails {
   id: string;
   title: string;
   badge: string;
   description: string;
-  hash: string;
-  targetDate: string;
-  status: 'COMPLETED' | 'TARGET';
-  domains: { name: string; percentage: number }[];
+  studyAreas: string[];
 }
+
+export type Certification = CertificationLearningDetails & (
+  | { status: 'IN_PROGRESS' | 'CURRICULUM_COMPLETED'; credentialUrl?: never }
+  | { status: 'CERTIFIED'; credentialUrl: string }
+);

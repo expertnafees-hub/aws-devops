@@ -1,137 +1,140 @@
-# Nafees Ur Rehman — AWS DevOps & Cloud Infrastructure Platform
+# AWS Portfolio Delivery Platform
 
-[![Production Deploy & CloudFront Invalidation](https://github.com/expertnafees-hub/aws-devops/actions/workflows/deploy.yml/badge.svg)](https://github.com/expertnafees-hub/aws-devops/actions)
-[![Live Edge](https://img.shields.io/badge/Live_Edge-drqzr31lhv59g.cloudfront.net-FF9900?logo=amazon-aws&logoColor=white)](https://drqzr31lhv59g.cloudfront.net)
-[![AWS WAF](https://img.shields.io/badge/Security-AWS_WAF_v2_Active-3FB950?logo=awswaf&logoColor=white)](https://aws.amazon.com/waf/)
-[![Auth: GitHub OIDC](https://img.shields.io/badge/IAM-Zero--Secret_OIDC-22D3EE?logo=openid&logoColor=white)](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI Validation](https://github.com/expertnafees-hub/aws-devops/actions/workflows/deploy.yml/badge.svg)](https://github.com/expertnafees-hub/aws-devops/actions/workflows/deploy.yml)
+[![Live Site](https://img.shields.io/badge/Live%20Site-Amazon%20CloudFront-blue?logo=amazon-aws)](https://drqzr31lhv59g.cloudfront.net)
+[![IaC](https://img.shields.io/badge/IaC-Terraform-844fba?logo=terraform)](https://github.com/expertnafees-hub/aws-three-tier-architecture)
 
-A production-grade, instrument-rated personal engineering platform for **Nafees Ur Rehman**, AWS DevOps & Cloud Engineer. Built with **React 18**, **TypeScript (Strict mode)**, **Vite**, **Tailwind CSS**, and **Terraform**.
-
-Designed around the operational gravity and precision of developer tooling (GitHub Dark, Linear, AWS CloudWatch) rather than a generic resume portfolio.
+> **Live Platform URL**: [drqzr31lhv59g.cloudfront.net](https://drqzr31lhv59g.cloudfront.net)  
+> **Engineering Profile**: [github.com/expertnafees-hub](https://github.com/expertnafees-hub)
 
 ---
 
-## ⚡ Key Architectural Highlights
+## Overview
 
-- **Aesthetic & Telemetry:** Deep obsidian ground (`#070A0F`), multi-tiered container elevation (`#0D1117`, `#111827`), hairline structural borders (`#21262D`), and semantic operational signals (AWS Amber `#FF9900`, Cyan `#22D3EE`, Green `#3FB950`).
-- **Interactive Shell:** Real-time CLI emulator with sequential typing animations, transcript clipboard copy, and an interactive prompt executing commands (`help`, `status`, `whoami`, `role`, `plan`, `deploy`, `skills`, `projects`, `uptime`, `clear`).
-- **Architecture Lab:** High-fidelity interactive SVG topology viewer with 4 production systems (High Availability Web, Air-gapped VPC, Remote State Locking, Kubernetes/ECS Microservices) and an interactive Node Telemetry Inspector drawer.
-- **Strict Accessibility (WCAG AA):** Full keyboard navigation, visible focus rings, ARIA dialog models, and explicit `prefers-reduced-motion` compliance.
-- **Enterprise IaC & CI/CD:** Complete Terraform modules in `/infra` for S3 private origin, CloudFront OAC, ACM TLS certificates, Route 53 aliases, plus GitHub Actions OIDC role assumption pipeline with zero long-lived AWS keys.
+Hi, I'm Nafees Ur Rehman. I build AWS infrastructure and automate application delivery using Terraform, Docker, Linux, and GitHub Actions.
 
----
+This repository contains the source code and continuous delivery pipeline for my engineering portfolio. The project demonstrates a production-patterned static delivery architecture on Amazon Web Services using **Amazon S3**, **Amazon CloudFront**, and **GitHub Actions** with keyless **AWS OIDC authentication**.
 
-## 🏗️ 16 Platform Sections
-
-1. **Top Diagnostic Line:** Sticky telemetry beacon displaying AWS Control Plane status, region (`us-east-1a`), latency (`18ms`), Terraform lock status (`S3_LOCKED`), and agent version.
-2. **Navigation Bar:** Sticky header with `NR.` monogram, live availability beacon, smooth-scrolling section links, GitHub profile link, and responsive mobile drawer.
-3. **Hero Section:** Core value proposition (*"Building reliable infrastructure. Automating everything else."*), career evolution note, primary CTAs, and verified tooling badges.
-4. **Interactive Production Terminal:** Sequential boot animation simulating Terraform dry-runs and automated deployments, plus an interactive input terminal.
-5. **Infrastructure Overview:** 4 telemetry metric cards covering AWS Platform, IaC Terraform, Automated CI/CD, and Docker & K8s.
-6. **Engineering Journey (DAG Graph):** 4-stage directed acyclic graph tracing the progression from AI Automation Engineering to Cloud Infrastructure & DevOps.
-7. **Engineering Stack:** 6 domain taxonomies (Cloud, IaC, Containers, CI/CD, Systems, Automation) with interactive status filtering (`proficient`, `learning`, `planned`).
-8. **Featured Infrastructure Projects:** 4 in-depth case studies with topology schematics, production metrics, and an interactive technical breakdown modal.
-9. **Architecture Lab:** 4 interactive systems with animated SVG flow paths and a clickable telemetry inspector drawer.
-10. **DevOps Delivery Pipeline:** 7-stage horizontal progression detailing the path from feature branch commit to CloudWatch alarm monitoring.
-11. **Engineering Principles:** 4 system tenets (*Automate Repetitive Work*, *Infrastructure as Code*, *Reliability Over Complexity*, *Security by Default*).
-12. **Currently Building Tracker:** File-tree curriculum tracker displaying real-time commit activity and active learning tracks.
-13. **Engineering Logs:** 5 deep-dive technical articles with a dedicated modal reader.
-14. **GitHub / Building in Public:** Year-long commit activity heatmap and 4 structured repository cards.
-15. **Certifications & Continuous Learning:** AWS Solutions Architect Associate target, Terraform Associate, and Linux administration competencies with domain progress bars.
-16. **Contact CTA & Terminal Echo:** Direct message dispatcher modal, social connections, and command line echo output (*"Build. Automate. Scale."*).
-17. **Footer:** System normal status, telemetry version `v2.4.0`, region, and infrastructure disclosures.
+The portfolio showcases four flagship AWS infrastructure and delivery projects, featuring interactive SVG architecture topologies, deep-dive technical notes, and verified GitHub Actions CI/CD workflows.
 
 ---
 
-## 🛠️ Technology Stack
+## Documentation Index
 
-| Layer | Technology |
-|---|---|
-| **Framework** | React 18 with TypeScript (Strict mode, zero `any`) |
-| **Bundler** | Vite 6 |
-| **Styling** | Tailwind CSS v3 with custom design system tokens |
-| **Icons** | Lucide React |
-| **Typography** | Geist (Display & Body) & JetBrains Mono (Code & Telemetry) |
-| **IaC** | Terraform 1.8+ (AWS Provider ~> 5.50) |
-| **CI/CD** | GitHub Actions with AWS OIDC Federated Role Assumption |
-| **Hosting** | AWS S3 (Private Bucket) + CloudFront OAC + ACM + Route 53 |
+Following a standardized repository documentation framework, this project maintains comprehensive documentation across four core files:
+
+| Document | Description | Link |
+| :--- | :--- | :--- |
+| **README** | System overview, quickstart, architecture, and CI/CD workflow | [`README.md`](README.md) |
+| **Validation** | Local typechecking, infrastructure gates, and remote deployment records | [`docs/validation.md`](docs/validation.md) |
+| **Decisions** | Architectural Decision Records (ADRs) with direct file:line code citations | [`docs/decisions.md`](docs/decisions.md) |
+| **Failures** | Operational incidents, CI failure post-mortems (F-001/F-002/F-003), and fixes | [`docs/failures.md`](docs/failures.md) |
+| **Walkthrough** | Engineer's personal architecture walkthrough and component guide | [`docs/walkthrough.md`](docs/walkthrough.md) |
 
 ---
 
-## 🚀 Local Development
+## Architecture
+
+```
++---------------------------------------------------------------------------------------------------+
+|                                       CI/CD Delivery Flow                                         |
++---------------------------------------------------------------------------------------------------+
+
+   +-------------+       +-------------------+       +--------------------+       +---------------+
+   | GitHub Push | ----> | GitHub Actions CI | ----> | AWS STS (OIDC Auth)| ----> | AWS Deploy Job|
+   | (PR / main) |       | (Validate & Build)|       | (Temporary Creds)  |       | (S3 + CDN Inv)|
+   +-------------+       +-------------------+       +--------------------+       +---------------+
+                                                                                          |
+                                 +--------------------------------------------------------+
+                                 |
+                                 v
+   +-----------------------------------------------------------------------------------------------+
+   |                                      AWS Cloud Edge & Storage                                 |
+   |                                                                                               |
+   |      +---------------------------+              +------------------------------+              |
+   |      |   Amazon CloudFront CDN   |  <-(OAC)---  |       Amazon S3 Bucket       |              |
+   |      |  (Edge Caching & TLS 1.3) |              |  (Private Static Hosting)    |              |
+   |      +---------------------------+              +------------------------------+              |
+   |                   |                                                                           |
+   +-------------------|---------------------------------------------------------------------------+
+                       v
+                 End User Browser
+```
+
+### Key Engineering Features
+1. **Keyless AWS OIDC Federation**: Eliminates long-lived IAM credentials in GitHub secrets. The pipeline assumes a dedicated IAM role via temporary AWS STS tokens scoped strictly to `ref:refs/heads/main`.
+2. **Two-Tier Cache-Control Strategy**:
+   - `dist/assets/*`: Fingerprinted filenames cached immutably for 1 year (`max-age=31536000, immutable`).
+   - `dist/index.html`: Zero-age revalidation (`max-age=0, must-revalidate`) ensuring immediate updates upon release.
+3. **Edge Invalidation**: Automatically dispatches CloudFront cache invalidation (`/*`) across edge POPs upon new asset deployment.
+4. **Advisory DevSecOps Gating**: Automated filesystem security scanning via Trivy in CI.
+
+---
+
+## Flagship Projects Featured
+
+The portfolio showcases four focused AWS DevOps repositories:
+
+1. **[aws-three-tier-architecture](https://github.com/expertnafees-hub/aws-three-tier-architecture)**  
+   Modular Terraform infrastructure provisioning a secure 3-tier VPC with public ALB, private EC2 Auto Scaling fleet, isolated RDS MySQL, and AWS Systems Manager for secure access without SSH keys. *(CI Validated)*
+
+2. **[gitops-platform-config](https://github.com/expertnafees-hub/gitops-platform-config)**  
+   Security-hardened Helm environment configurations and Argo CD application manifests enforcing non-root execution, read-only root filesystems, and immutable SHA256 image digest pinning. *(Hardened GitOps)*
+
+3. **[aws-devops](https://github.com/expertnafees-hub/aws-devops)** *(This repository)*  
+   Production portfolio delivery platform built with React, Vite, and Tailwind; automated via GitHub Actions using keyless AWS OIDC, S3 sync, and CloudFront edge invalidation. *(Live Deployment)*
+
+4. **[aws-eks-terraform-platform](https://github.com/expertnafees-hub/aws-eks-terraform-platform)**  
+   Modular Terraform platform decoupling EKS cluster infrastructure from Kubernetes platform add-ons, with private API endpoints and IAM Roles for Service Accounts (IRSA). *(CI Validated)*
+
+---
+
+## Local Development & Validation
 
 ### Prerequisites
-- Node.js >= 18.0.0
-- npm >= 9.0.0
+- Node.js 22.x
+- npm 10.x
 
-### Quick Start
+### Quickstart
+
 ```bash
-# Clone the repository
-git clone https://github.com/expertnafees-hub/engineering-portfolio.git
-cd engineering-portfolio
+# 1. Clone repository
+git clone https://github.com/expertnafees-hub/aws-devops.git
+cd aws-devops
 
-# Install dependencies
-npm install
+# 2. Install dependencies
+npm ci
 
-# Start Vite local development server
+# 3. Start local development server
 npm run dev
-# Server accessible at http://localhost:3000
+```
 
-# Type-check TypeScript codebase
+### Running Validation Checks
+
+All checks run locally without requiring AWS credentials:
+
+```bash
+# Run TypeScript static typechecking
 npm run typecheck
 
-# Build production bundle
+# Run deterministic infrastructure checks
+npm run gate
+
+# Run production build compilation
 npm run build
-
-# Preview production build locally
-npm run preview
 ```
 
 ---
 
-## ☁️ AWS Infrastructure Deployment (Terraform)
+## CI/CD Workflow
 
-The `/infra` directory contains production-ready Terraform to deploy this website on AWS:
+The automated deployment pipeline is defined in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
-```bash
-cd infra
-
-# Copy and configure variables
-cp terraform.tfvars.example terraform.tfvars
-
-# Initialize Terraform modules and providers
-terraform init
-
-# Review execution plan
-terraform plan
-
-# Apply infrastructure changes
-terraform apply
-```
-
-### Infrastructure Components Provisioned:
-- **Private S3 Origin:** Secure bucket storing static assets with SSE-AES256 encryption and public access blocking.
-- **CloudFront OAC:** Origin Access Control replacing legacy OAI for secure S3 origin authentication.
-- **ACM SSL/TLS:** Automated DNS-validated certificate in `us-east-1`.
-- **Route 53:** Apex and `www` alias records pointing to CloudFront.
-- **Access Logs Bucket:** Dedicated bucket capturing CloudFront distribution access logs.
+- **Pull Requests**: Executes the `validate-and-test` job (linting, typechecking, deterministic infrastructure gate, production build, and advisory Trivy scan) without requiring AWS credentials.
+- **Main Pushes**: Upon successful validation, assumes the AWS IAM deployer role via OIDC, synchronizes artifacts to Amazon S3, and invalidates the CloudFront distribution.
 
 ---
 
-## 🔒 CI/CD Deployment with AWS OIDC
+## License
 
-The deployment workflow (`.github/workflows/deploy.yml`) uses GitHub Actions with AWS OIDC Role Assumption:
-
-1. **Lint & Typecheck:** Validates strict TypeScript compilation and production build.
-2. **OIDC Auth:** Assumes AWS IAM role using short-lived tokens.
-3. **S3 Asset Sync:** Sets `Cache-Control: public,max-age=31536000,immutable` for `/assets/*`.
-4. **S3 HTML Sync:** Sets `Cache-Control: public,max-age=0,must-revalidate` for `index.html`.
-5. **CloudFront Invalidation:** Creates automatic cache invalidation (`/*`) for instant updates.
-
----
-
-## 📄 License & Attribution
-
-Designed and engineered by **Nafees Ur Rehman**.
-Released under the MIT License.
+This project is open-source under the [MIT License](LICENSE).

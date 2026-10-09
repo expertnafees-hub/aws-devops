@@ -34,7 +34,7 @@ export const EngineeringStack: React.FC = () => {
             Engineering Stack &amp; Tooling
           </h2>
           <p className="text-sm text-on-surface-variant max-w-2xl mt-1.5 leading-relaxed font-sans">
-            Deterministic, hardened platforms built on modern cloud conventions, declarative definitions, and security-first engineering.
+            Core technologies and cloud services applied across my GitHub repositories, alongside active learning areas.
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export const EngineeringStack: React.FC = () => {
             <Filter className="w-3 h-3" />
             <span className="hidden sm:inline">Status:</span>
           </span>
-          {(['all', 'proficient', 'learning', 'planned'] as const).map(filter => (
+          {(['all', 'project-use', 'learning', 'planned'] as const).map(filter => (
             <button
               key={filter}
               type="button"
@@ -55,7 +55,7 @@ export const EngineeringStack: React.FC = () => {
                   : 'text-on-surface-variant hover:text-white'
               }`}
             >
-              {filter}
+              {filter === 'project-use' ? 'Hands-on projects' : filter === 'learning' ? 'Learning' : filter === 'planned' ? 'Planned' : 'All'}
             </button>
           ))}
         </div>
@@ -99,7 +99,7 @@ export const EngineeringStack: React.FC = () => {
                 {filteredSkills.length > 0 ? (
                   filteredSkills.map(skill => {
                     const statusDotColor =
-                      skill.status === 'proficient' ? 'bg-tertiary' :
+                      skill.status === 'project-use' ? 'bg-tertiary' :
                       skill.status === 'learning' ? 'bg-secondary' : 'bg-primary';
 
                     return (
@@ -108,7 +108,7 @@ export const EngineeringStack: React.FC = () => {
                         className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container border border-cardBorder font-mono text-xs ${
                           skill.highlight ? 'text-white font-medium' : 'text-on-surface-variant'
                         }`}
-                        title={`Status: ${skill.status}`}
+                        title={skill.status === 'project-use' ? 'Hands-on project work' : skill.status === 'learning' ? 'Active learning' : 'Planned milestone'}
                       >
                         <span className={`w-1.5 h-1.5 rounded-full ${statusDotColor}`} />
                         <span>{skill.name}</span>

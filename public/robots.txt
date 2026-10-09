@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nafees.cloud/sitemap.xml
+Sitemap: https://drqzr31lhv59g.cloudfront.net/sitemap.xml

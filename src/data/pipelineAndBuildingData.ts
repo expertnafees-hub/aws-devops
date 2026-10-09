@@ -1,188 +1,29 @@
 import { PipelineStep, EngineeringPrinciple, CurriculumItem } from '../types';
 
 export const pipelineSteps: PipelineStep[] = [
-  {
-    stepNumber: '01',
-    name: 'CODE',
-    subtext: 'Feature branch',
-    badge: 'LOCAL DEV',
-    badgeColor: 'secondary',
-    icon: 'code',
-    details: [
-      'Modular branch creation: feature/vpc-subnets-v2',
-      'Local pre-commit hooks running formatters',
-      'tflint & terraform fmt validation checks'
-    ]
-  },
-  {
-    stepNumber: '02',
-    name: 'GIT',
-    subtext: 'PR Review',
-    badge: 'PEER AUDIT',
-    badgeColor: 'primary',
-    icon: 'merge',
-    details: [
-      'Automated Pull Request triggers CI lint runner',
-      'Branch protection rules enforcing 1+ approval',
-      'Automated terraform plan output posted as PR comment'
-    ]
-  },
-  {
-    stepNumber: '03',
-    name: 'CI / TEST',
-    subtext: 'PyTest / Lint',
-    badge: 'TEST PASS',
-    badgeColor: 'tertiary',
-    icon: 'fact_check',
-    details: [
-      'Python unit testing with PyTest & coverage check',
-      'ShellCheck static bash script verification',
-      'Flake8 & Black code compliance tests'
-    ]
-  },
-  {
-    stepNumber: '04',
-    name: 'BUILD',
-    subtext: 'Docker Layered',
-    badge: 'BUILDKIT',
-    badgeColor: 'secondary',
-    icon: 'inventory_2',
-    details: [
-      'Multi-stage Docker build with GitHub Actions cache',
-      'Distroless minimal runtime reducing layer size',
-      'Deterministic SHA-256 digest tagging'
-    ]
-  },
-  {
-    stepNumber: '05',
-    name: 'SCAN',
-    subtext: 'Trivy / tfsec',
-    badge: 'ZERO CRITICAL',
-    badgeColor: 'tertiary',
-    icon: 'shield',
-    details: [
-      'Trivy container image CVE vulnerability audit',
-      'tfsec static security audit on IaC resources',
-      'Blocking build if CRITICAL or HIGH CVE is discovered'
-    ]
-  },
-  {
-    stepNumber: '06',
-    name: 'DEPLOY',
-    subtext: 'AWS ECS/EKS',
-    badge: 'ROLLING ZERO-DOWNTIME',
-    badgeColor: 'primary',
-    icon: 'rocket',
-    details: [
-      'OIDC authenticated deployment to AWS ECS Fargate',
-      'New task definitions registered and drained smoothly',
-      'ALB target health verification before traffic switch'
-    ]
-  },
-  {
-    stepNumber: '07',
-    name: 'OBSERVE',
-    subtext: 'CloudWatch Alarms',
-    badge: 'SYNTHETIC 24/7',
-    badgeColor: 'tertiary',
-    icon: 'monitoring',
-    details: [
-      'CloudWatch Metric Alarms tracking 5xx rates & latency',
-      'Automated rollback triggered if failure rate > 1%',
-      'Slack/Email alert dispatch via SNS topic'
-    ]
-  }
+  { stepNumber: '01', name: 'CODE', subtext: 'Version Control', badge: 'GIT', badgeColor: 'secondary', icon: 'code', details: ['Source code version-controlled in GitHub repositories.', 'Trunk-based and feature branch workflows.', 'Declarative infrastructure and application code separation.'] },
+  { stepNumber: '02', name: 'REVIEW', subtext: 'Pull Requests', badge: 'PR GATES', badgeColor: 'primary', icon: 'merge', details: ['Automated CI status checks run on pull requests before merging.', 'Peer review and code verification standards.', 'Linting, syntax checks, and configuration diffs reviewed in PRs.'] },
+  { stepNumber: '03', name: 'TEST', subtext: 'Automated Tests', badge: 'CI CHECKS', badgeColor: 'tertiary', icon: 'fact_check', details: ['FastAPI / Python unit test execution using Pytest.', 'Frontend type checking and bundling validation.', 'Terraform validate and format checks in CI pipelines.'] },
+  { stepNumber: '04', name: 'BUILD', subtext: 'Artifacts', badge: 'CONTAINERS', badgeColor: 'secondary', icon: 'inventory_2', details: ['Multi-stage Docker builds for minimal container image sizes.', 'Production Vite builds optimizing static frontend assets.', 'Predictable, reproducible artifact packaging.'] },
+  { stepNumber: '05', name: 'SCAN', subtext: 'Security Gates', badge: 'SEC SCAN', badgeColor: 'secondary', icon: 'shield', details: ['Trivy container image scanning for CVE vulnerabilities in dependencies.', 'Static infrastructure code analysis for AWS security anti-patterns.', 'Automated gating preventing high-severity issues from reaching registries.'] },
+  { stepNumber: '06', name: 'PUBLISH', subtext: 'AWS Registries', badge: 'OIDC AUTH', badgeColor: 'tertiary', icon: 'rocket', details: ['Keyless AWS OIDC authentication avoiding stored long-lived secrets.', 'Publishing versioned Docker images to Amazon ECR.', 'Deploying static assets to Amazon S3 with CloudFront cache invalidation.'] },
+  { stepNumber: '07', name: 'OPERATE', subtext: 'Observability', badge: 'MONITORING', badgeColor: 'primary', icon: 'monitoring', details: ['Automated CloudWatch alarms for compute, errors, and target health.', 'Application Load Balancer health check probe routing.', 'Ongoing focus on resilient deployment and cluster operations.'] },
 ];
 
 export const principlesData: EngineeringPrinciple[] = [
-  {
-    id: 'p1',
-    number: 'PRINCIPLE_01',
-    title: 'Automate Repetitive Work',
-    quote: '“If it needs to happen repeatedly, automate it.”',
-    body: 'Manual configuration drifts, decays, and introduces human error during high-stress outages. Automated systems ensure predictable, repeatable outcomes every single time.',
-    footerTag: 'ZERO MANUAL CLICKS',
-    color: 'primary'
-  },
-  {
-    id: 'p2',
-    number: 'PRINCIPLE_02',
-    title: 'Infrastructure as Code',
-    quote: '“Infrastructure should be version-controlled, reviewable, and reproducible.”',
-    body: 'If a configuration does not exist in Git, it does not exist in production. Declarative state files guarantee that staging matches production without drift.',
-    footerTag: '100% DECLARATIVE HCL',
-    color: 'secondary'
-  },
-  {
-    id: 'p3',
-    number: 'PRINCIPLE_03',
-    title: 'Reliability Over Complexity',
-    quote: '“Good systems aren’t the ones with the most technologies. They’re the ones that continue running predictably when components fail.”',
-    body: 'Over-engineered distributed architectures multiply failure domains. Clean boundaries, redundant AZs, and clear recovery paths outperform complex topologies.',
-    footerTag: 'LEAN ARCHITECTURES',
-    color: 'tertiary'
-  },
-  {
-    id: 'p4',
-    number: 'PRINCIPLE_04',
-    title: 'Security by Default',
-    quote: '“Least privilege IAM, private networking by default, zero secrets in plain text, and strict ingress/egress boundaries.”',
-    body: 'Security is not an audit checkpoint before release; it is an architectural invariant. Air-gapped databases and short-lived OIDC tokens eliminate attack vectors.',
-    footerTag: 'ZERO TRUST NETWORK',
-    color: 'primary'
-  }
+  { id: 'p1', number: 'PRINCIPLE_01', title: 'Automate Repetitive Work', quote: '“Make recurring steps repeatable and reviewable.”', body: 'Use scripts and automated pipelines to eliminate manual mistakes and accelerate safe feedback loops.', footerTag: 'REPEATABLE WORKFLOWS', color: 'primary' },
+  { id: 'p2', number: 'PRINCIPLE_02', title: 'Infrastructure as Code', quote: '“Infrastructure should be version-controlled, reviewable, and reproducible.”', body: 'Manage cloud resources declaratively using Terraform. Version every change in Git, review execution plans, and enforce state locking.', footerTag: 'DECLARATIVE INFRASTRUCTURE', color: 'secondary' },
+  { id: 'p3', number: 'PRINCIPLE_03', title: 'Security by Design', quote: '“Enforce least-privilege identity and security gates early.”', body: 'Use short-lived OIDC tokens instead of static IAM credentials, isolate network tiers, and scan containers before publishing.', footerTag: 'LEAST-PRIVILEGE SECURITY', color: 'tertiary' },
+  { id: 'p4', number: 'PRINCIPLE_04', title: 'Observe and Verify', quote: '“Verify every pipeline run and monitor operational signals.”', body: 'Track real build and deployment metrics, instrument health checks, and monitor systems with actionable CloudWatch alarms.', footerTag: 'OBSERVABILITY & METRICS', color: 'primary' },
 ];
 
 export const curriculumData: CurriculumItem[] = [
-  {
-    id: 'c1',
-    folder: 'linux-systems/',
-    details: 'kernel namespaces, systemd services, POSIX ACLs, signal handling',
-    status: 'ACTIVE',
-    statusColor: 'tertiary'
-  },
-  {
-    id: 'c2',
-    folder: 'networking/',
-    details: 'CIDR subnet allocation, route tables, NAT gateways, TCP 3-way handshake',
-    status: 'ACTIVE',
-    statusColor: 'tertiary'
-  },
-  {
-    id: 'c3',
-    folder: 'aws-core-services/',
-    details: 'VPC, IAM trust policies, ALB target groups, RDS Multi-AZ Aurora',
-    status: 'ACTIVE',
-    statusColor: 'tertiary'
-  },
-  {
-    id: 'c4',
-    folder: 'terraform-modules/',
-    details: 'reusable templates, workspaces, remote S3 locking with DynamoDB',
-    status: 'ACTIVE',
-    statusColor: 'tertiary'
-  },
-  {
-    id: 'c5',
-    folder: 'docker-microservices/',
-    details: 'distroless images, multi-stage caching, vulnerability scanning with Trivy',
-    status: 'IN PROGRESS',
-    statusColor: 'primary'
-  },
-  {
-    id: 'c6',
-    folder: 'ci-cd-automation/',
-    details: 'GitHub Actions runners, AWS OIDC authentication, automated rollback gates',
-    status: 'ACTIVE',
-    statusColor: 'tertiary'
-  },
-  {
-    id: 'c7',
-    folder: 'kubernetes-orchestration/',
-    details: 'EKS v1.29, AWS Load Balancer Controller, Helm charts, Karpenter',
-    status: 'UPCOMING',
-    statusColor: 'secondary'
-  }
+  { id: 'c1', folder: 'aws-saa-certification/', details: 'resilient multi-AZ architectures, IAM security, VPC networking, and cost optimization', status: 'IN PROGRESS', statusColor: 'primary' },
+  { id: 'c2', folder: 'three-tier-rds-integration/', details: 'connecting application runtime to RDS MySQL with Secrets Manager credentials', status: 'ACTIVE', statusColor: 'secondary' },
+  { id: 'c3', folder: 'gitops-argocd-reconciliation/', details: 'deploying declarative Helm configurations with Argo CD cluster reconciliation', status: 'ACTIVE', statusColor: 'secondary' },
+  { id: 'c4', folder: 'terraform-s3-locking/', details: 'S3 native locking with use_lockfile on Terraform v1.10+ and remote state workflows', status: 'ACTIVE', statusColor: 'secondary' },
+  { id: 'c5', folder: 'eks-cluster-operations/', details: 'Kubernetes ingress controllers, metrics-server, and IRSA service account mapping', status: 'UPCOMING', statusColor: 'secondary' },
+  { id: 'c6', folder: 'linux-networking-labs/', details: 'deep-dive into Linux namespaces, cgroups, iptables, and network diagnostics', status: 'IN PROGRESS', statusColor: 'primary' },
 ];
 
 export const activeCurriculumTree = curriculumData;

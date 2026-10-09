@@ -1,88 +1,29 @@
 import React from 'react';
-import { Cloud, Code, Rocket, Boxes } from 'lucide-react';
+import { Cloud, Code, ShieldCheck, Boxes } from 'lucide-react';
+import { evidenceLinks } from '../data/portfolioEvidence';
 
-export const InfrastructureOverview: React.FC = () => {
-  const cards = [
-    {
-      title: 'AWS Cloud Platform',
-      icon: Cloud,
-      status: 'OPERATIONAL',
-      statusType: 'pulse',
-      statusColor: 'text-tertiary bg-tertiary/10 border-tertiary/30',
-      metric: '14 Services',
-      description: 'Multi-AZ Resilient Architecture (VPC, ECS, RDS, CloudFront, Route53)'
-    },
-    {
-      title: 'IaC Terraform',
-      icon: Code,
-      status: 'SYNCHRONIZED',
-      statusType: 'static',
-      statusColor: 'text-secondary bg-secondary/10 border-secondary/30',
-      metric: 'v1.8+ Declarative',
-      description: 'Remote S3 Backend with DynamoDB State Locking & KMS encryption'
-    },
-    {
-      title: 'Automated CI/CD',
-      icon: Rocket,
-      status: '99.8% STABLE',
-      statusType: 'static',
-      statusColor: 'text-tertiary bg-tertiary/10 border-tertiary/30',
-      metric: '4.2m Deploy',
-      description: 'GitHub Actions, Docker BuildKit, Automated ECR push & ECS rollout'
-    },
-    {
-      title: 'Docker & K8s',
-      icon: Boxes,
-      status: 'RUNNING',
-      statusType: 'static',
-      statusColor: 'text-primary bg-primary/10 border-primary/30',
-      metric: 'ECS + EKS',
-      description: 'Microservices containerization with zero-downtime blue/green rollouts'
-    },
-  ];
+const cards = [
+  { title: 'Three-tier architecture', icon: Code, status: 'CI VALIDATED', detail: 'Modular Terraform Lab', description: 'High-availability 3-tier VPC topology with public ALB, private EC2 ASG fleet, and isolated RDS MySQL passing CI validation.', url: evidenceLinks.threeTierValidation },
+  { title: 'GitOps platform', icon: ShieldCheck, status: 'HARDENED GITOPS', detail: 'Helm & Argo CD Config', description: 'Declarative Kubernetes environments enforcing non-root execution, read-only root filesystems, and immutable SHA256 digest pinning.', url: evidenceLinks.gitopsPlatformConfig },
+  { title: 'Continuous delivery', icon: Cloud, status: 'DEPLOYED', detail: 'S3 + CloudFront', description: 'Keyless AWS OIDC role assumption, S3 bucket synchronization, and CloudFront cache invalidation automated via GitHub Actions.', url: evidenceLinks.websiteDeploy },
+  { title: 'Kubernetes platform', icon: Boxes, status: 'CI VALIDATED', detail: 'Modular EKS Platform', description: 'Modular Terraform EKS infrastructure with private cluster endpoint configuration and IAM Roles for Service Accounts (IRSA).', url: evidenceLinks.eksValidation },
+];
 
-  return (
-    <section
-      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
-      aria-label="Infrastructure Telemetry Overview"
-    >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {cards.map(card => {
-          const Icon = card.icon;
-          return (
-            <div
-              key={card.title}
-              className="rounded-lg bg-surface-container-low border border-cardBorder p-5 hover:bg-surface-container hover:border-outline-variant transition-all shadow-sm flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <Icon className="w-4 h-4 text-outline" />
-                    <span className="font-mono text-xs text-on-surface-variant">
-                      {card.title}
-                    </span>
-                  </div>
-                  <span
-                    className={`flex items-center gap-1.5 px-2 py-0.5 rounded font-mono text-[10px] font-medium border ${card.statusColor}`}
-                  >
-                    {card.statusType === 'pulse' && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
-                    )}
-                    <span>{card.status}</span>
-                  </span>
-                </div>
-                <div className="text-xl sm:text-2xl text-on-surface font-semibold font-sans mb-1.5">
-                  {card.metric}
-                </div>
-              </div>
-
-              <div className="text-xs text-on-surface-variant leading-relaxed">
-                {card.description}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-};
+export const InfrastructureOverview: React.FC = () => (
+  <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" aria-label="Project evidence overview">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {cards.map(card => {
+        const Icon = card.icon;
+        return (
+          <a key={card.title} href={card.url} target="_blank" rel="noreferrer" className="rounded-lg bg-surface-container-low border border-cardBorder p-5 hover:border-outline-variant transition-all focus-visible:ring-2 focus-visible:ring-primary">
+            <div className="flex items-center gap-2 text-on-surface-variant text-xs font-mono mb-3"><Icon className="w-4 h-4" />{card.title}</div>
+            <span className="text-[10px] text-secondary font-mono">{card.status}</span>
+            <h2 className="text-lg text-on-surface font-semibold mt-2 mb-2">{card.detail}</h2>
+            <p className="text-xs text-on-surface-variant leading-relaxed">{card.description}</p>
+            <span className="block mt-3 text-xs text-primary">View recorded evidence ↗</span>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+);
