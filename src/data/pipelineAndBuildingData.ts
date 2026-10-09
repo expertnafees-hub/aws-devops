@@ -19,11 +19,11 @@ export const principlesData: EngineeringPrinciple[] = [
 
 export const curriculumData: CurriculumItem[] = [
   { id: 'c1', folder: 'aws-saa-certification/', details: 'resilient multi-AZ architectures, IAM security, VPC networking, and cost optimization', status: 'IN PROGRESS', statusColor: 'primary' },
-  { id: 'c2', folder: 'terraform-s3-locking/', details: 'S3 native locking with use_lockfile on Terraform v1.10+ and remote state workflows', status: 'ACTIVE', statusColor: 'secondary' },
-  { id: 'c3', folder: 'ecs-container-deployment/', details: 'runtime container delivery to Amazon ECS Fargate with health-checked rollouts', status: 'UPCOMING', statusColor: 'secondary' },
-  { id: 'c4', folder: 'gitops-argocd-cluster/', details: 'resolving Trivy scan gate and configuring declarative cluster reconciliation', status: 'UPCOMING', statusColor: 'secondary' },
-  { id: 'c5', folder: 'linux-networking-labs/', details: 'deep-dive into Linux namespaces, cgroups, iptables, and network diagnostics', status: 'IN PROGRESS', statusColor: 'primary' },
-  { id: 'c6', folder: 'three-tier-rds-integration/', details: 'connecting backend container runtime to RDS MySQL with Secrets Manager credentials', status: 'UPCOMING', statusColor: 'secondary' },
+  { id: 'c2', folder: 'three-tier-rds-integration/', details: 'connecting application runtime to RDS MySQL with Secrets Manager credentials', status: 'ACTIVE', statusColor: 'secondary' },
+  { id: 'c3', folder: 'gitops-argocd-reconciliation/', details: 'deploying declarative Helm configurations with Argo CD cluster reconciliation', status: 'ACTIVE', statusColor: 'secondary' },
+  { id: 'c4', folder: 'terraform-s3-locking/', details: 'S3 native locking with use_lockfile on Terraform v1.10+ and remote state workflows', status: 'ACTIVE', statusColor: 'secondary' },
+  { id: 'c5', folder: 'eks-cluster-operations/', details: 'Kubernetes ingress controllers, metrics-server, and IRSA service account mapping', status: 'UPCOMING', statusColor: 'secondary' },
+  { id: 'c6', folder: 'linux-networking-labs/', details: 'deep-dive into Linux namespaces, cgroups, iptables, and network diagnostics', status: 'IN PROGRESS', statusColor: 'primary' },
 ];
 
 export const activeCurriculumTree = curriculumData;

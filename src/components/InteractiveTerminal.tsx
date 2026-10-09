@@ -38,23 +38,19 @@ const commands: Record<string, string> = {
   ].join('\n'),
 
   projects: [
-    'Six projects across seven public repositories:',
-    '1. Three-Tier Infrastructure Lab - Terraform ALB, ASG, SSM, and RDS MySQL',
-    '2. AWS Portfolio Delivery - OIDC-authenticated S3 sync and CloudFront invalidation',
-    '3. Payment API Container Delivery - Docker, Trivy security gate, and ECR publish',
-    '4. EKS Platform Lab - Modular Terraform, private cluster endpoint, and IRSA',
-    '5. GitOps Delivery - Containerized API paired with Helm platform configuration',
-    '6. VPC Networking Foundation - Custom VPC, public subnetting, and IGW routing'
+    'Four flagship infrastructure & delivery repositories:',
+    '1. aws-three-tier-architecture — Modular Terraform VPC, public ALB, private EC2 ASG, and isolated RDS MySQL',
+    '2. gitops-platform-config — Security-hardened Helm charts and Argo CD manifests (non-root, read-only rootfs, SHA256 digests)',
+    '3. aws-devops — Live portfolio delivery via GitHub Actions with keyless AWS OIDC, S3 sync, and CloudFront invalidation',
+    '4. aws-eks-terraform-platform — Modular Terraform EKS platform with private cluster API and IRSA'
   ].join('\n'),
 
   status: [
     'Workflow Verification Status:',
-    '• Portfolio Website: S3 sync & CloudFront invalidation passing in GitHub Actions',
-    '• Payment API: Unit tests, Trivy scan, and ECR image publication passing in CI',
-    '• Three-Tier Architecture: Terraform syntax and schema validation passing in CI',
-    '• EKS Platform Lab: Modular Terraform validation passing in CI',
-    '• GitOps API: Main branch CI fails at Trivy step (investigation in progress)',
-    '• VPC Foundation: Published Terraform networking lab'
+    '• aws-three-tier-architecture: Terraform syntax, formatting, and schema validation passing in CI',
+    '• gitops-platform-config: Local template rendering & security policies validated; Argo CD configs ready',
+    '• aws-devops: Live deployment pipeline verified in GitHub Actions (AWS OIDC, S3 sync, CloudFront invalidation)',
+    '• aws-eks-terraform-platform: Modular Terraform formatting and provider schema validation passing in CI'
   ].join('\n'),
 
   plan: [
@@ -89,7 +85,7 @@ const commands: Record<string, string> = {
 
 const initialBootLines: HistoryItem[] = [
   { command: 'whoami', output: commands.whoami },
-  { command: 'status', output: 'Portfolio deployment & ECR image publication verified in GitHub Actions. Type "help" for commands.' }
+  { command: 'status', output: 'Live portfolio delivery & modular AWS infrastructure validation verified. Type "help" for commands.' }
 ];
 
 export const InteractiveTerminal: React.FC = () => {

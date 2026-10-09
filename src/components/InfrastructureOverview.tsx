@@ -1,11 +1,11 @@
 import React from 'react';
-import { Cloud, Code, Rocket, Boxes } from 'lucide-react';
+import { Cloud, Code, ShieldCheck, Boxes } from 'lucide-react';
 import { evidenceLinks } from '../data/portfolioEvidence';
 
 const cards = [
-  { title: 'Continuous delivery', icon: Cloud, status: 'DEPLOYED', detail: 'S3 + CloudFront', description: 'Keyless AWS OIDC role assumption, S3 bucket synchronization, and CloudFront cache invalidation automated via GitHub Actions.', url: evidenceLinks.websiteDeploy },
   { title: 'Three-tier architecture', icon: Code, status: 'CI VALIDATED', detail: 'Modular Terraform Lab', description: 'High-availability 3-tier VPC topology with public ALB, private EC2 ASG fleet, and isolated RDS MySQL passing CI validation.', url: evidenceLinks.threeTierValidation },
-  { title: 'Container pipeline', icon: Rocket, status: 'ECR PUBLISHED', detail: 'Amazon ECR Delivery', description: 'Automated Pytest unit tests, Trivy container vulnerability scan gate, and OIDC image push to Amazon ECR.', url: evidenceLinks.paymentPublish },
+  { title: 'GitOps platform', icon: ShieldCheck, status: 'HARDENED GITOPS', detail: 'Helm & Argo CD Config', description: 'Declarative Kubernetes environments enforcing non-root execution, read-only root filesystems, and immutable SHA256 digest pinning.', url: evidenceLinks.gitopsPlatformConfig },
+  { title: 'Continuous delivery', icon: Cloud, status: 'DEPLOYED', detail: 'S3 + CloudFront', description: 'Keyless AWS OIDC role assumption, S3 bucket synchronization, and CloudFront cache invalidation automated via GitHub Actions.', url: evidenceLinks.websiteDeploy },
   { title: 'Kubernetes platform', icon: Boxes, status: 'CI VALIDATED', detail: 'Modular EKS Platform', description: 'Modular Terraform EKS infrastructure with private cluster endpoint configuration and IAM Roles for Service Accounts (IRSA).', url: evidenceLinks.eksValidation },
 ];
 

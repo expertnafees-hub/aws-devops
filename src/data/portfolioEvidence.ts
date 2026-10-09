@@ -9,4 +9,5 @@ export const evidenceLinks = {
   threeTierValidation: `${githubProfileUrl}/aws-three-tier-architecture/actions/runs/36328616959`,
   eksValidation: `${githubProfileUrl}/aws-eks-terraform-platform/actions/runs/34342770395`,
   gitopsCi: `${githubProfileUrl}/gitops-core-api/actions/runs/34343077403`,
+  gitopsPlatformConfig: `${githubProfileUrl}/gitops-platform-config`,
 };

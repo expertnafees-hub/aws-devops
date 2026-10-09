@@ -15,7 +15,7 @@ export const FeaturedProjects: React.FC = () => {
         </div>
         <h2 className="text-2xl sm:text-3xl font-semibold text-on-surface">Featured Infrastructure Projects</h2>
         <p className="text-sm text-on-surface-variant mt-2 max-w-3xl leading-relaxed">
-          Six projects across seven code repositories demonstrating AWS infrastructure as code, container delivery, and automated CI/CD pipelines with verified GitHub Actions workflows.
+          Four flagship infrastructure and delivery repositories demonstrating AWS infrastructure as code, hardened container delivery, and automated CI/CD pipelines with verified GitHub Actions workflows.
         </p>
       </div>
       <div className="space-y-8">
