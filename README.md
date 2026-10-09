@@ -27,8 +27,9 @@ Following a standardized repository documentation framework, this project mainta
 | :--- | :--- | :--- |
 | **README** | System overview, quickstart, architecture, and CI/CD workflow | [`README.md`](README.md) |
 | **Validation** | Local typechecking, infrastructure gates, and remote deployment records | [`docs/validation.md`](docs/validation.md) |
-| **Walkthrough** | Technical deep dive into OIDC federation, caching, and component design | [`docs/walkthrough.md`](docs/walkthrough.md) |
-| **Decisions** | Architectural Decision Records (ADRs) covering trade-offs and design rationale | [`docs/decisions.md`](docs/decisions.md) |
+| **Decisions** | Architectural Decision Records (ADRs) with direct file:line code citations | [`docs/decisions.md`](docs/decisions.md) |
+| **Failures** | Operational incidents, CI failure post-mortems (F-001/F-002/F-003), and fixes | [`docs/failures.md`](docs/failures.md) |
+| **Walkthrough** | Engineer's personal architecture walkthrough and component guide | [`docs/walkthrough.md`](docs/walkthrough.md) |
 
 ---
 

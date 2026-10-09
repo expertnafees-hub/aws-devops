@@ -1,117 +1,57 @@
 # Engineering Walkthrough: AWS Portfolio Delivery Platform
 
-## 1. System Overview
+> **Purpose**: This walkthrough explains the technical architecture, continuous delivery mechanisms, and code-level design of the portfolio platform. Every component references specific files and lines in this repository.
 
-This repository hosts and delivers my professional AWS DevOps engineering portfolio. Rather than relying on traditional containerized server instances or third-party static hosting platforms, the site is deployed directly onto native AWS infrastructure using an automated, keyless continuous delivery pipeline.
+---
 
-```
-+---------------------------------------------------------------------------------------------------+
-|                                       CI/CD Delivery Flow                                         |
-+---------------------------------------------------------------------------------------------------+
+## 1. System Delivery Architecture
 
-   +-------------+       +-------------------+       +--------------------+       +---------------+
-   | GitHub Push | ----> | GitHub Actions CI | ----> | AWS STS (OIDC Auth)| ----> | AWS Deploy Job|
-   | (PR / main) |       | (Validate & Build)|       | (Temporary Creds)  |       | (S3 + CDN Inv)|
-   +-------------+       +-------------------+       +--------------------+       +---------------+
-                                                                                          |
-                                 +--------------------------------------------------------+
-                                 |
-                                 v
-   +-----------------------------------------------------------------------------------------------+
-   |                                      AWS Cloud Edge & Storage                                 |
-   |                                                                                               |
-   |      +---------------------------+              +------------------------------+              |
-   |      |   Amazon CloudFront CDN   |  <-(OAC)---  |       Amazon S3 Bucket       |              |
-   |      |  (Edge Caching & TLS 1.3) |              |  (Private Static Hosting)    |              |
-   |      +---------------------------+              +------------------------------+              |
-   |                   |                                                                           |
-   +-------------------|---------------------------------------------------------------------------+
-                       v
-                 End User Browser
-```
+The application is deployed as a static Single-Page Application (SPA) on Amazon S3 and distributed via Amazon CloudFront.
+
+- **Private S3 Origin**: `aws_s3_bucket.website` in [`infra/main.tf:42-70`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L42-L70) stores built static assets.
+- **Origin Access Control (OAC)**: `aws_cloudfront_origin_access_control.oac` in [`infra/main.tf:75-81`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L75-L81) enforces that S3 is accessible only via CloudFront, blocking direct public internet access via `aws_s3_bucket_public_access_block.website` ([`infra/main.tf:64-70`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L64-L70)).
+- **CDN Edge Distribution**: `aws_cloudfront_distribution.cdn` in [`infra/main.tf:229-296`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L229-L296) routes traffic globally, redirects HTTP to HTTPS ([`infra/main.tf:262`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L262)), and handles SPA client-side routing via custom error responses ([`infra/main.tf:270-283`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L270-L283)).
 
 ---
 
 ## 2. Keyless Authentication via AWS OIDC
 
-A core operational principle of modern cloud security is **zero long-lived credentials**. Traditional CI/CD pipelines often rely on static IAM user access keys (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`) stored as repository secrets. These keys introduce security risks:
-- They do not expire automatically.
-- They require manual rotation schedules.
-- If leaked or compromised, they grant standing privileges to the AWS account.
+Continuous delivery avoids static IAM user keys by authenticating GitHub Actions via OpenID Connect (OIDC) identity federation with AWS STS.
 
-### How OIDC Works in this Pipeline
-
-1. **IAM Identity Provider**: AWS IAM is configured with an OpenID Connect identity provider pointing to `token.actions.githubusercontent.com` with client ID `sts.amazonaws.com`.
-2. **Scanned IAM Trust Policy**: An IAM deployer role is provisioned with a strict trust relationship condition:
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Principal": {
-           "Federated": "arn:aws:iam::<ACCOUNT_ID>:oidc-provider/token.actions.githubusercontent.com"
-         },
-         "Action": "sts:AssumeRoleWithWebIdentity",
-         "Condition": {
-           "StringEquals": {
-             "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
-           },
-           "StringLike": {
-             "token.actions.githubusercontent.com:sub": "repo:expertnafees-hub/aws-devops:ref:refs/heads/main"
-           }
-         }
-       }
-     ]
-   }
-   ```
-3. **Session Token Issuance**: When the GitHub Actions workflow triggers on `main`, the runner requests an OIDC token signed by GitHub's private keys. It presents this token to AWS STS via `AssumeRoleWithWebIdentity`. AWS verifies the signature and issues temporary session credentials valid for 1 hour.
-4. **Least Privilege**: The assumed role possesses permissions only to sync objects to the specific portfolio S3 bucket and issue invalidation requests on the CloudFront distribution.
+- **Workflow Permissions**: `permissions.id-token: write` in [`.github/workflows/deploy.yml:12-14`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L12-L14) authorizes the GitHub runner to request an OIDC JSON Web Token (JWT).
+- **STS Federation**: `aws-actions/configure-aws-credentials@v4` in [`.github/workflows/deploy.yml:95-103`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L95-L103) exchanges the GitHub token for short-lived AWS STS credentials with `audience: sts.amazonaws.com`.
+- **Branch Scoping**: The IAM role trust policy restricts access strictly to the `main` branch (`repo:expertnafees-hub/aws-devops:ref:refs/heads/main`), preventing unauthorized branch deployments.
+- **Credential Duration**: STS credentials expire automatically after 1 hour, eliminating long-term credential exposure risks.
 
 ---
 
-## 3. Two-Tier Cache-Control Strategy
+## 3. Two-Tier Cache-Control Policy
 
-Static single-page applications (SPAs) require careful HTTP caching headers to achieve fast edge loading while avoiding stale cached content when new code is deployed.
+The deployment workflow uses two distinct S3 upload steps to balance permanent edge caching with instant updates:
 
-### Tier 1: Fingerprinted Bundles (Immutable Cache)
-- **Target Path**: `dist/assets/*` (CSS, JavaScript, images)
-- **Vite Bundler Behavior**: Every production build generates content-hashed filenames (e.g., `index-D8x2a1.css`, `index-B7y9z2.js`).
-- **HTTP Header**: `Cache-Control: public, max-age=31536000, immutable`
-- **Rationale**: Because the filename uniquely represents the file contents, the browser and CDN can safely cache these assets for 1 year without re-validating. If a file changes, its hash changes, creating a completely new URL.
-
-### Tier 2: Application Entry Points (Must-Revalidate)
-- **Target Path**: `dist/index.html`, `dist/robots.txt`, `dist/sitemap.xml`
-- **HTTP Header**: `Cache-Control: public, max-age=0, must-revalidate`
-- **Rationale**: When a user navigates to the website, the browser must always revalidate `index.html` against the edge CDN. The new `index.html` references the newly hashed asset filenames, guaranteeing instantaneous updates for users upon deployment.
-
-### CDN Invalidation
-Following the S3 upload, the deployment job invokes `aws cloudfront create-invalidation --paths "/*"`. This immediately evicts cached copies of `index.html` across all global CloudFront Points of Presence (POPs).
+1. **Fingerprinted Bundles (Immutable Cache)**:
+   - Target: `dist/assets/*`
+   - Command: `aws s3 sync dist/ s3://${S3_BUCKET}/ ... --cache-control "public, max-age=31536000, immutable"` in [`.github/workflows/deploy.yml:108-115`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L108-L115)
+   - Behavior: Files contain content hashes generated by Vite (`vite.config.ts`). Browsers and CDN POPs cache them for 1 year without re-validating.
+2. **Application Entry Points (Must-Revalidate)**:
+   - Target: `dist/index.html`, `dist/robots.txt`, `dist/sitemap.xml`
+   - Command: `aws s3 sync dist/ s3://${S3_BUCKET}/ ... --cache-control "public, max-age=0, must-revalidate"` in [`.github/workflows/deploy.yml:116-121`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L116-L121)
+   - Behavior: Browsers always check for the newest `index.html`, immediately discovering new asset hashes.
+3. **CDN Invalidation**:
+   - Command: `aws cloudfront create-invalidation --distribution-id ... --paths "/*"` in [`.github/workflows/deploy.yml:123-125`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L123-L125)
+   - Behavior: Evicts cached copies of `index.html` across all global CloudFront POPs on release.
 
 ---
 
-## 4. Codebase Architecture
+## 4. Codebase Architecture & Modularity
 
-The application is structured for type safety, modular UI composition, and clear data separation:
-
-```
-src/
-├── components/          # Reusable UI components
-│   ├── ArchitectureLab.tsx       # Interactive SVG topology diagrams with inspector drawers
-│   ├── FeaturedProjects.tsx      # Pinned infrastructure project cards & modal triggers
-│   ├── Header.tsx                # Responsive navigation with active section highlights
-│   ├── InfrastructureOverview.tsx# Flagship project summary badges
-│   ├── InteractiveTerminal.tsx   # Command-line simulator supporting help, plan, status
-│   ├── ProjectCard.tsx           # Accessible card component for project evidence
-│   ├── ProjectModal.tsx          # Full-bleed accessible modal for deep architecture dives
-│   └── TechnicalNotes.tsx        # Fact-checked engineering articles & guides
-├── data/                # Declarative data stores (Single Source of Truth)
-│   ├── architectureData.ts       # SVG node topologies & reference architectures
-│   ├── githubData.ts             # 4 flagship repositories and descriptions
-│   ├── logsData.ts               # Fact-checked technical articles
-│   ├── portfolioEvidence.ts      # Dated GitHub Actions run IDs and repository URLs
-│   ├── projectsData.ts           # 4 pinned project case studies and technical metrics
-│   └── stackData.ts              # Categorized skills matrix with project-use indicators
-├── types.ts             # TypeScript interfaces for all data models
-└── App.tsx              # Root layout & section composition
-```
+- **UI Components** ([`src/components/`](file:///Users/app/Desktop/My%20Website/src/components/)):
+  - [`FeaturedProjects.tsx`](file:///Users/app/Desktop/My%20Website/src/components/FeaturedProjects.tsx): Renders the 4 flagship project cards and handles modal state.
+  - [`ArchitectureLab.tsx`](file:///Users/app/Desktop/My%20Website/src/components/ArchitectureLab.tsx): Interactive SVG topologies with drawer inspection.
+  - [`InteractiveTerminal.tsx`](file:///Users/app/Desktop/My%20Website/src/components/InteractiveTerminal.tsx): Command simulator with strict 4-repo scoping.
+  - [`TechnicalNotes.tsx`](file:///Users/app/Desktop/My%20Website/src/components/TechnicalNotes.tsx): Engineering reference articles.
+- **Single Sources of Truth** ([`src/data/`](file:///Users/app/Desktop/My%20Website/src/data/)):
+  - [`projectsData.ts`](file:///Users/app/Desktop/My%20Website/src/data/projectsData.ts): 4 pinned projects in exact priority order.
+  - [`githubData.ts`](file:///Users/app/Desktop/My%20Website/src/data/githubData.ts): Public repository list and status badges.
+  - [`portfolioEvidence.ts`](file:///Users/app/Desktop/My%20Website/src/data/portfolioEvidence.ts): Verified GitHub Actions run IDs and links.
+  - [`stackData.ts`](file:///Users/app/Desktop/My%20Website/src/data/stackData.ts): Skills taxonomy with honest `project-use`, `learning`, and `planned` indicators.

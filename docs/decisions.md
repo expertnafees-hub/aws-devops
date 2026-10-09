@@ -1,6 +1,6 @@
 # Architectural Decision Records (ADRs): AWS Portfolio Delivery Platform
 
-This document captures the architectural decisions, trade-offs, and design choices made in the implementation and delivery of the `aws-devops` platform.
+This document captures the architectural decisions, trade-offs, and code-level references for the `aws-devops` platform. Every decision links directly to files and lines in this repository.
 
 ---
 
@@ -10,21 +10,18 @@ This document captures the architectural decisions, trade-offs, and design choic
 Accepted
 
 ### Context
-The engineering portfolio must be hosted with high availability, low latency globally, robust TLS security, and minimal operational overhead. Two primary architectures were evaluated:
-1. Running a containerized Nginx instance on Amazon ECS (Fargate) behind an Application Load Balancer (ALB).
-2. Hosting static assets in an Amazon S3 bucket fronted by an Amazon CloudFront Content Delivery Network (CDN) distribution.
+The portfolio requires globally distributed delivery, high availability, and automated TLS termination without ongoing server administration or idle compute costs.
 
-### Decision
-Deploy the application as static assets in an Amazon S3 bucket with CloudFront Origin Access Control (OAC).
+### Code References
+- **S3 Storage Origin**: `aws_s3_bucket.website` in [`infra/main.tf:42-70`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L42-L70)
+- **Origin Access Control**: `aws_cloudfront_origin_access_control.oac` in [`infra/main.tf:75-81`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L75-L81)
+- **S3 Bucket Policy**: `aws_s3_bucket_policy.website` in [`infra/main.tf:86-109`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L86-L109)
+- **CloudFront Distribution**: `aws_cloudfront_distribution.cdn` in [`infra/main.tf:229-296`](file:///Users/app/Desktop/My%20Website/infra/main.tf#L229-L296)
 
-### Consequences & Trade-offs
-- **Advantages**:
-  - **Zero Compute Management**: No OS patching, container cluster management, or scaling policies required.
-  - **Global Latency Optimization**: CloudFront edge points of presence (POPs) serve cached assets directly to visitors near their geographical location.
-  - **High Durability**: S3 provides 99.999999999% (11 9s) data durability.
-  - **Cost Efficiency**: Costs remain well within AWS Free Tier limits ($0 standing compute cost vs $15–$30/month for ALB + ECS Fargate).
-- **Trade-offs**:
-  - Cannot execute server-side Node.js logic at runtime (acceptable because the portfolio is fully client-rendered).
+### Decision & Trade-offs
+Deploy static assets to an S3 bucket restricted to CloudFront via Origin Access Control (OAC), bypassing containerized hosting (ECS/Fargate).
+- **Pro**: Zero EC2/Fargate compute cost; S3 99.999999999% durability; CloudFront edge caching.
+- **Con**: No server-side dynamic rendering runtime; dynamic features must run in client-side TypeScript.
 
 ---
 
@@ -34,39 +31,37 @@ Deploy the application as static assets in an Amazon S3 bucket with CloudFront O
 Accepted
 
 ### Context
-Automating continuous deployment from GitHub Actions to AWS requires authentication to upload objects to S3 and invalidate CloudFront caches. Historically, pipelines stored static IAM access keys (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`) in repository secrets.
+Automating continuous delivery from GitHub Actions requires AWS permissions to sync S3 objects and trigger CloudFront cache invalidations.
 
-### Decision
-Use AWS OpenID Connect (OIDC) identity federation with AWS STS via `AssumeRoleWithWebIdentity` using `aws-actions/configure-aws-credentials@v4`.
+### Code References
+- **OIDC Token Permission**: `permissions.id-token: write` in [`.github/workflows/deploy.yml:12-14`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L12-L14)
+- **STS Role Assumption**: `aws-actions/configure-aws-credentials@v4` in [`.github/workflows/deploy.yml:95-103`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L95-L103)
+- **Audience & Role Scoping**: `role-to-assume` with `audience: sts.amazonaws.com` in [`.github/workflows/deploy.yml:98-100`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L98-L100)
 
-### Consequences & Trade-offs
-- **Advantages**:
-  - **Elimination of Long-Lived Credentials**: No static secret exists in GitHub or repository settings that can leak or require manual rotation.
-  - **Ephemeral Privilege**: STS issues short-lived session tokens valid for 1 hour.
-  - **Auditable Scope**: IAM trust policy strictly enforces the repository name and git branch (`repo:expertnafees-hub/aws-devops:ref:refs/heads/main`).
-- **Trade-offs**:
-  - Requires initial IAM configuration of the OpenID Connect identity provider and trust policy in the AWS account.
+### Decision & Trade-offs
+Use OpenID Connect (OIDC) identity federation with AWS STS via `AssumeRoleWithWebIdentity` instead of static IAM user keys (`AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`).
+- **Pro**: Eliminates static long-lived credentials in GitHub secrets; session credentials expire after 1 hour.
+- **Con**: Requires one-time IAM OIDC identity provider configuration in the AWS account.
 
 ---
 
-## ADR 03: Vite Single-Page Application (SPA) vs Server-Side Rendering (SSR)
+## ADR 03: Client-Side Vite SPA vs Server-Side Framework
 
 ### Status
 Accepted
 
 ### Context
-The user interface requires interactive components: interactive terminal simulation, interactive SVG architecture topologies, dynamic project case study modals, and responsive layout filtering.
+The portfolio requires responsive interaction: an interactive terminal emulator, SVG architecture diagrams with inspection drawers, and dynamic modal dialogs.
 
-### Decision
-Build the application as a client-side Single-Page Application using Vite, React 19, TypeScript, and Tailwind CSS.
+### Code References
+- **Build Scripts**: `"typecheck"`, `"build"`, `"gate"` in [`package.json:28-31`](file:///Users/app/Desktop/My%20Website/package.json#L28-L31)
+- **Vite Configuration**: React plugin and Rollup options in [`vite.config.ts:1-20`](file:///Users/app/Desktop/My%20Website/vite.config.ts#L1-L20)
+- **Validation Step**: CI build step in [`.github/workflows/deploy.yml:43-45`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L43-L45)
 
-### Consequences & Trade-offs
-- **Advantages**:
-  - **Static Output**: Compiles into pure HTML, CSS, and JS files, enabling direct S3 static hosting without runtime server dependencies.
-  - **Build Speed & Developer Experience**: Vite provides sub-second Hot Module Replacement (HMR) and optimized Rollup production bundling.
-  - **Deterministic CI Gates**: Full TypeScript strict typechecking (`tsc --noEmit`) runs rapidly in CI without starting Node server runtimes.
-- **Trade-offs**:
-  - Initial load downloads bundle before client-side rendering occurs (mitigated by code splitting and gzip bundle sizes under 80 kB).
+### Decision & Trade-offs
+Build as a static Single-Page Application using Vite, React 19, TypeScript, and Tailwind CSS.
+- **Pro**: Fast build times (<6s); generates pure static assets deployable directly to S3 without a Node.js server.
+- **Con**: Client must download JavaScript bundle before rendering (mitigated by gzipped bundle under 80 kB).
 
 ---
 
@@ -76,18 +71,14 @@ Build the application as a client-side Single-Page Application using Vite, React
 Accepted
 
 ### Context
-A continuous delivery pipeline must ensure that end users receive newly deployed application updates immediately while maintaining optimal caching for repeat visits.
+Static SPAs with hashed assets require distinct cache lifetimes to prevent stale application state after new deployments.
 
-### Decision
-Implement a two-tier S3 upload strategy in the GitHub Actions deployment workflow:
-1. Fingerprinted static assets (`dist/assets/*`): `Cache-Control: public, max-age=31536000, immutable`.
-2. Entry points and metadata (`dist/index.html`, `dist/robots.txt`, `dist/sitemap.xml`): `Cache-Control: public, max-age=0, must-revalidate`.
-3. Post-upload CloudFront edge invalidation on `/*`.
+### Code References
+- **Immutable Asset Sync**: `aws s3 sync dist/ s3://${S3_BUCKET}/ ... --cache-control "public, max-age=31536000, immutable"` in [`.github/workflows/deploy.yml:108-115`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L108-L115)
+- **HTML Revalidation Sync**: `aws s3 sync dist/ s3://${S3_BUCKET}/ ... --cache-control "public, max-age=0, must-revalidate"` in [`.github/workflows/deploy.yml:116-121`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L116-L121)
+- **Edge Invalidation**: `aws cloudfront create-invalidation --distribution-id ... --paths "/*"` in [`.github/workflows/deploy.yml:123-125`](file:///Users/app/Desktop/My%20Website/.github/workflows/deploy.yml#L123-L125)
 
-### Consequences & Trade-offs
-- **Advantages**:
-  - **Zero Stale Code**: Browsers always check for the newest `index.html`, which points directly to new content-hashed asset files.
-  - **Bandwidth Efficiency**: Assets that do not change across builds are cached permanently by browsers and edge servers.
-- **Trade-offs**:
-  - Requires two separate `aws s3 sync` commands in the deployment workflow.
-  - CloudFront invalidations incur API calls (first 1,000 invalidations per month are free in AWS).
+### Decision & Trade-offs
+Apply 1-year immutable caching to fingerprinted assets in `/assets/`, zero-age must-revalidate caching to `index.html`, and invalidate CloudFront on every deploy.
+- **Pro**: Browsers always check for the newest `index.html`, immediately picking up new bundle hashes while keeping heavy JS/CSS permanently cached until changed.
+- **Con**: Requires two distinct S3 sync steps and invokes CloudFront invalidation API.
